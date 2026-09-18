@@ -1,4 +1,3 @@
-import './style.css';
-import { startApp } from './app';
+import {startApp} from './app';
 
 startApp();
