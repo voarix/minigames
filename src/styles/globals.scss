@@ -1,3 +1,5 @@
+@use "./tokens" as tokens;
+
 *,
 *::before,
 *::after {
@@ -15,6 +17,11 @@ p {
 
 body {
   min-height: 100vh;
+  color: tokens.$color-on-bg;
+  background-color: tokens.$color-bg;
+  font-family: tokens.$font-family-inter;
+  font-size: tokens.$font-size-body-medium;
+  font-weight: tokens.$font-weight-regular;
 }
 
 button,
