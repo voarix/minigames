@@ -1,6 +1,6 @@
 import "./header.scss";
 import logoIcon from "../../assets/icons/logo.svg";
-import menuIcon from "../../assets/icons/menu.svg";
+import { createBurgerMenu } from "../burger-menu/burger-menu";
 
 const navigationItems: string[] = [
   "Home",
@@ -23,8 +23,7 @@ export const createHeader = (): HTMLElement => {
   const actions = document.createElement("div");
   const loginButton = document.createElement("button");
   const signupButton = document.createElement("button");
-  const menuButton = document.createElement("button");
-  const menuImage = document.createElement("img");
+  const burgerMenu = createBurgerMenu(navigationItems);
 
   header.className = "header";
   container.className = "header__container";
@@ -39,8 +38,6 @@ export const createHeader = (): HTMLElement => {
   actions.className = "header__actions";
   loginButton.className = "header__login-button header__auth-button";
   signupButton.className = "header__signup-button header__auth-button";
-  menuButton.className = "header__menu-button";
-  menuImage.className = "header__menu-icon";
 
   logo.href = "./";
   logoImage.src = logoIcon;
@@ -72,16 +69,10 @@ export const createHeader = (): HTMLElement => {
   signupButton.type = "button";
   signupButton.textContent = "Sign Up";
 
-  menuImage.src = menuIcon;
-  menuImage.alt = "";
-  menuButton.type = "button";
-  menuButton.setAttribute("aria-label", "Open navigation menu");
-  menuButton.append(menuImage);
-
   navigation.append(navigationList);
   actions.append(loginButton, signupButton);
-  container.append(logo, navigation, actions, menuButton);
-  header.append(container);
+  container.append(logo, navigation, actions, burgerMenu.button);
+  header.append(container, burgerMenu.panel);
 
   return header;
 };
