@@ -5,9 +5,16 @@
   display: none;
   padding: 0;
   border: 0;
+  border-radius: tokens.$corner-small;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
   background-color: transparent;
   line-height: 0;
   cursor: pointer;
+
+  transition:
+    background-color 150ms ease,
+    outline-color 150ms ease;
 }
 
 .burger-menu__icon {
@@ -28,6 +35,18 @@ body.menu-open {
   .burger-menu__button {
     display: block;
     margin-left: tokens.$size-2;
+    background-color: tokens.$color-white;
+  }
+
+  .burger-menu__button[aria-expanded="false"] {
+    &:hover,
+    &:focus-visible {
+      background-color: tokens.$color-surface;
+    }
+
+    &:focus-visible {
+      outline-color: tokens.$color-primary;
+    }
   }
 
   .burger-menu__button[aria-expanded="true"] {
@@ -36,6 +55,12 @@ body.menu-open {
     top: tokens.$size-3;
     right: tokens.$size-5;
     margin: 0;
+    background-color: transparent;
+
+    &:hover,
+    &:focus-visible {
+      outline-color: tokens.$color-primary;
+    }
   }
 
   .burger-menu__panel {
@@ -145,6 +170,7 @@ body.menu-open {
 
     transition:
       background-color 150ms ease,
+      border-color 150ms ease,
       transform 150ms ease;
 
     &:active {
@@ -157,7 +183,7 @@ body.menu-open {
 
     &:hover,
     &:focus-visible {
-      background-color: tokens.$color-bg-footer-low;
+      border-color: tokens.$color-primary;
     }
   }
 
