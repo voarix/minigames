@@ -1,4 +1,5 @@
 import "./header.scss";
+import logoIcon from "../../assets/logo.svg";
 
 const navigationItems: string[] = [
   "Home",
@@ -10,9 +11,14 @@ const navigationItems: string[] = [
 export const createHeader = (): HTMLElement => {
   const header = document.createElement("header");
   const container = document.createElement("div");
+
   const logo = document.createElement("a");
+  const logoImage = document.createElement("img");
+  const logoText = document.createElement("span");
+
   const navigation = document.createElement("nav");
   const navigationList = document.createElement("ul");
+
   const actions = document.createElement("div");
   const loginButton = document.createElement("button");
   const signupButton = document.createElement("button");
@@ -20,20 +26,32 @@ export const createHeader = (): HTMLElement => {
 
   header.className = "header";
   container.className = "header__container";
+
   logo.className = "header__logo";
+  logoImage.className = "header__logo-icon";
+  logoText.className = "header__logo-text";
+
   navigation.className = "header__navigation";
   navigationList.className = "header__navigation-list";
+
   actions.className = "header__actions";
-  loginButton.className = "header__login-button";
-  signupButton.className = "header__signup-button";
+  loginButton.className = "header__login-button header__auth-button";
+  signupButton.className = "header__signup-button header__auth-button";
   menuButton.className = "header__menu-button";
 
   logo.href = "./";
-  logo.textContent = "MiniGames";
+  logoImage.src = logoIcon;
+  logoImage.alt = "";
+  logoText.textContent = "MiniGames";
+  logo.append(logoImage, logoText);
 
   for (const item of navigationItems) {
     const listItem = document.createElement("li");
     const link = document.createElement("a");
+
+    if (item === "Home") {
+      link.classList.add("header__navigation-link--active");
+    }
 
     listItem.className = "header__navigation-item";
     link.className = "header__navigation-link";

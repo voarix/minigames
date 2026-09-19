@@ -1,0 +1,83 @@
+@use "../../styles/tokens" as tokens;
+
+.header {
+  background-color: tokens.$color-bg;
+}
+
+.header__container {
+  display: flex;
+  align-items: center;
+  max-width: tokens.$breakpoint-desktop;
+  margin: 0 auto;
+  padding: tokens.$size-3 tokens.$size-10;
+}
+
+.header__logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: tokens.$size-1;
+  margin-right: auto;
+  color: tokens.$color-on-primary;
+  text-decoration: none;
+}
+
+.header__logo-icon {
+  width: tokens.$size-4;
+  height: tokens.$size-4;
+  flex-shrink: 0;
+}
+
+.header__logo-text {
+  font-size: tokens.$font-size-headline-medium;
+  font-weight: tokens.$font-weight-bold;
+}
+
+.header__navigation-list {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-6;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header__navigation-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.header__navigation-link--active {
+  color: tokens.$color-on-primary;
+  font-weight: tokens.$font-weight-bold;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-2;
+  margin-left: tokens.$size-4;
+}
+
+.header__auth-button {
+  padding: tokens.$button-padding-small-block
+    tokens.$button-padding-small-inline;
+  border: 2px solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-on-primary;
+  font-weight: tokens.$font-weight-bold;
+  cursor: pointer;
+  font-size: tokens.$font-size-label-large;
+}
+
+.header__login-button {
+  background-color: transparent;
+}
+
+.header__signup-button {
+  background-color: tokens.$color-primary;
+}
+
+.header__menu-button {
+  display: none;
+}
