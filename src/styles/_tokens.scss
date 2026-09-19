@@ -1,3 +1,44 @@
+// Base colors
+$color-white: #ffffff;
+$color-black: #000000;
+
+// General colors
+$color-bg: #f9f8f3;
+$color-on-bg: #5f5d75;
+$color-on-bg-low: #737380;
+
+$color-bg-footer: #1e1b3a;
+$color-bg-footer-low: #2a264f;
+$color-bg-footer-lowest: #3c376e;
+$color-on-bg-footer: #b9b5c9;
+
+$color-surface: #fff9e5;
+$color-surface-low: #fffcf5;
+
+$color-primary: #ffd02b;
+$color-primary-low: #fde047;
+$color-primary-high: #e5bb00;
+$color-on-primary: #242145;
+
+$color-secondary: #f0eeff;
+$color-tertiary: #3a2ebf;
+
+$color-like: #ff4b4b;
+$color-error: #b3261e;
+$color-price-free: #0b8a8f;
+
+// Border colors
+$color-outline: #e5e7eb;
+$color-outline-variant: #d2d2d2;
+
+// Avatar colors
+$color-avatar-random-1: #e9eef6;
+$color-avatar-random-2: #a3e2c9;
+$color-avatar-random-3: #bce3ff;
+$color-avatar-random-4: #ffc6ff;
+$color-avatar-random-5: #e8dff5;
+
+// Breakpoints
 $breakpoint-mobile: 375px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1920px;
