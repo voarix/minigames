@@ -114,6 +114,7 @@ $shadow-level-2: 6px 6px 0 $color-on-primary;
 $shadow-level-3: 8px 8px 0 $color-on-primary;
 
 // Borders and motion
+$border-width-thin: 1px;
 $border-width-regular: 2px;
 $transition-duration-fast: 150ms;
 
@@ -147,12 +148,19 @@ $carousel-card-side-width-tablet: 109px;
 $carousel-card-side-width-mobile: 56px;
 
 $game-card-information-threshold: 288px;
-
 $game-card-overlay-height: 86px;
-
 $game-card-overlay-gradient: linear-gradient(
   to bottom,
   rgba($color-black, 0) 0%,
   rgba($color-black, 0.4) 17%,
   rgba($color-black, 0.85) 46%
 );
+
+$leaderboard-rank-column-width: 80px;
+$leaderboard-column-width-desktop: 294px;
+
+$leaderboard-column-gap-tablet: 12px;
+$leaderboard-avatar-size-tablet: 28px;
+$leaderboard-row-padding-mobile: 12px;
+
+$shadow-row-divider: inset 0 -1px 0 $color-outline;
