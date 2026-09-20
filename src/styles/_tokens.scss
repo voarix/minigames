@@ -1,0 +1,190 @@
+// Base colors
+$color-white: #ffffff;
+$color-black: #000000;
+
+// General colors
+$color-bg: #f9f8f3;
+$color-on-bg: #5f5d75;
+$color-on-bg-low: #737380;
+
+$color-bg-footer: #1e1b3a;
+$color-bg-footer-low: #2a264f;
+$color-bg-footer-lowest: #3c376e;
+$color-on-bg-footer: #b9b5c9;
+
+$color-surface: #fff9e5;
+$color-surface-low: #fffcf5;
+
+$color-primary: #ffd02b;
+$color-primary-low: #fde047;
+$color-primary-high: #e5bb00;
+$color-on-primary: #242145;
+
+$color-secondary: #f0eeff;
+$color-tertiary: #3a2ebf;
+
+$color-like: #ff4b4b;
+$color-error: #b3261e;
+$color-price-free: #0b8a8f;
+
+// Border colors
+$color-outline: #e5e7eb;
+$color-outline-variant: #d2d2d2;
+
+// Avatar colors
+$color-avatar-random-1: #e9eef6;
+$color-avatar-random-2: #a3e2c9;
+$color-avatar-random-3: #bce3ff;
+$color-avatar-random-4: #ffc6ff;
+$color-avatar-random-5: #e8dff5;
+
+// Font families
+$font-family-inter: "Inter", sans-serif;
+$font-family-roboto: "Roboto", sans-serif;
+
+// Display font sizes
+$font-size-display-large: 56px;
+$font-size-display-medium: 36px;
+$font-size-display-small: 24px;
+
+// Headline font sizes
+$font-size-headline-large: 32px;
+$font-size-headline-medium: 24px;
+$font-size-headline-small: 20px;
+
+// Body font sizes
+$font-size-body-large: 18px;
+$font-size-body-medium: 16px;
+$font-size-body-small: 14px;
+
+// Label font sizes
+$font-size-label-extra-large: 16px;
+$font-size-label-large: 14px;
+$font-size-label-medium: 12px;
+$font-size-label-small: 10px;
+
+// Font weights
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$font-weight-extra-bold: 800;
+
+// Size scale
+$size-0-5: 4px;
+$size-1: 8px;
+$size-2: 16px;
+$size-3: 24px;
+$size-4: 32px;
+$size-5: 40px;
+$size-6: 48px;
+$size-7: 56px;
+$size-8: 64px;
+$size-9: 72px;
+$size-10: 80px;
+$size-11: 88px;
+$size-12: 96px;
+$size-13: 104px;
+$size-14: 112px;
+$size-15: 120px;
+
+// Corner radii
+$corner-extra-small: 4px;
+$corner-small: 8px;
+$corner-medium: 12px;
+$corner-large: 16px;
+$corner-extra-large: 24px;
+$corner-full: 9999px;
+
+// Button paddings
+$button-padding-large-inline: 24px;
+$button-padding-large-block: 16px;
+$button-padding-xsmall-inline: 14px;
+
+$button-padding-medium-inline: 20px;
+$button-padding-medium-block: 10px;
+
+$button-padding-small-inline: 16px;
+$button-padding-small-block: 8px;
+
+$button-padding-icon: 8px;
+
+// Shadows
+$shadow-level-1: 4px 4px 0 $color-on-primary;
+$shadow-level-2: 6px 6px 0 $color-on-primary;
+$shadow-level-3: 8px 8px 0 $color-on-primary;
+
+// Borders and motion
+$border-width-thin: 1px;
+$border-width-regular: 2px;
+$transition-duration-fast: 150ms;
+
+// Breakpoints
+$breakpoint-mobile: 375px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1920px;
+
+$breakpoint-compact-desktop: 1100px;
+$breakpoint-carousel-compact: 1552px;
+$breakpoint-carousel-mobile-layout: 767px;
+
+// Hero section
+$hero-height-desktop: 627px;
+$hero-height-tablet: 383px;
+$hero-height-mobile: 331px;
+$hero-content-height-desktop: 403px;
+$hero-content-width-desktop: 640px;
+$hero-content-width-tablet: 480px;
+
+// Carousel
+$carousel-card-height-desktop: 388px;
+$carousel-card-height-compact: 320px;
+$carousel-card-height-tablet: 284px;
+$carousel-card-height-mobile: 200px;
+
+$carousel-card-preview-width-desktop: 124px;
+$carousel-card-side-width-desktop: 292px;
+$carousel-card-side-width-compact: 160px;
+$carousel-card-side-width-tablet: 109px;
+$carousel-card-side-width-mobile: 56px;
+
+$game-card-information-threshold: 288px;
+$game-card-overlay-height: 86px;
+$game-card-overlay-gradient: linear-gradient(
+  to bottom,
+  rgba($color-black, 0) 0%,
+  rgba($color-black, 0.4) 17%,
+  rgba($color-black, 0.85) 46%
+);
+
+// Leaders section
+$leaderboard-rank-column-width: 80px;
+$leaderboard-column-width-desktop: 294px;
+
+$leaderboard-column-gap-tablet: 12px;
+$leaderboard-avatar-size-tablet: 28px;
+$leaderboard-row-padding-mobile: 12px;
+
+$shadow-row-divider: inset 0 -1px 0 $color-outline;
+
+// Game developer section
+$game-developer-illustration-width-desktop: 680px;
+$game-developer-illustration-height-tablet: 300px;
+$game-developer-card-min-height-desktop: 344px;
+
+$game-developer-copy-width-desktop: 590px;
+$game-developer-copy-width-tablet: 560px;
+
+// Auth dialog
+$auth-dialog-width: 420px;
+$auth-dialog-login-height: 623px;
+$auth-dialog-register-height: 768px;
+$auth-dialog-tab-height: 44px;
+$auth-dialog-border-width: 3px;
+$auth-dialog-transition-duration: 200ms;
+$auth-dialog-view-transition-duration: 180ms;
+$auth-dialog-backdrop-opacity: 0.6;
+$auth-dialog-initial-scale: 0.97;
+$auth-dialog-close-hover-scale: 1.06;
+$auth-dialog-title-line-height: 1.2;
+$auth-dialog-description-line-height: 1.4;
+$z-index-auth-dialog: 1000;
