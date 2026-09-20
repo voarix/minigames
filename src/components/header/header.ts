@@ -9,7 +9,15 @@ const navigationItems: string[] = [
   "Community",
 ];
 
-export const createHeader = (): HTMLElement => {
+interface HeaderOptions {
+  readonly onLogin: () => void;
+  readonly onRegister: () => void;
+}
+
+export const createHeader = ({
+  onLogin,
+  onRegister,
+}: HeaderOptions): HTMLElement => {
   const header = document.createElement("header");
   const container = document.createElement("div");
 
@@ -23,7 +31,10 @@ export const createHeader = (): HTMLElement => {
   const actions = document.createElement("div");
   const loginButton = document.createElement("button");
   const signupButton = document.createElement("button");
-  const burgerMenu = createBurgerMenu(navigationItems);
+  const burgerMenu = createBurgerMenu(navigationItems, {
+    onLogin,
+    onRegister,
+  });
 
   header.className = "header";
   container.className = "header__container";
@@ -68,6 +79,9 @@ export const createHeader = (): HTMLElement => {
 
   signupButton.type = "button";
   signupButton.textContent = "Sign Up";
+
+  loginButton.addEventListener("click", onLogin);
+  signupButton.addEventListener("click", onRegister);
 
   navigation.append(navigationList);
   actions.append(loginButton, signupButton);

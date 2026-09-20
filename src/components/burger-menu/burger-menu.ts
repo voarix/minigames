@@ -8,8 +8,14 @@ interface BurgerMenu {
   panel: HTMLElement;
 }
 
+interface BurgerMenuOptions {
+  readonly onLogin: () => void;
+  readonly onRegister: () => void;
+}
+
 export const createBurgerMenu = (
   navigationItems: readonly string[],
+  { onLogin, onRegister }: BurgerMenuOptions,
 ): BurgerMenu => {
   const button = document.createElement("button");
   const buttonImage = document.createElement("img");
@@ -113,6 +119,18 @@ export const createBurgerMenu = (
 
   button.addEventListener("click", () => {
     setMenuState(!isOpen);
+  });
+
+  loginButton.addEventListener("click", () => {
+    setMenuState(false);
+    button.focus();
+    onLogin();
+  });
+
+  signupButton.addEventListener("click", () => {
+    setMenuState(false);
+    button.focus();
+    onRegister();
   });
 
   panel.addEventListener("click", (event: MouseEvent) => {
