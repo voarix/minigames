@@ -1,0 +1,209 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.carousel {
+  background-color: tokens.$color-bg;
+}
+
+.carousel__container {
+  max-width: tokens.$breakpoint-desktop;
+  margin: 0 auto;
+  padding: tokens.$size-5 tokens.$size-15;
+}
+
+.carousel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: tokens.$size-5;
+}
+
+.carousel__heading {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-1;
+}
+
+.carousel__heading-accent {
+  width: tokens.$size-1;
+  height: tokens.$size-4;
+  border-radius: tokens.$corner-extra-small;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  background-color: tokens.$color-primary;
+}
+
+.carousel__title {
+  color: tokens.$color-on-primary;
+  font-size: tokens.$font-size-headline-large;
+  font-weight: tokens.$font-weight-bold;
+  line-height: 1.2;
+}
+
+.carousel__controls {
+  display: flex;
+  gap: tokens.$size-2;
+}
+
+.carousel__control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: tokens.$size-6;
+  height: tokens.$size-6;
+  padding: 0;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-full;
+  color: tokens.$color-on-primary;
+  background-color: transparent;
+  transition: background-color tokens.$transition-duration-fast ease;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background-color: tokens.$color-surface;
+  }
+}
+
+.carousel__control--next {
+  background-color: tokens.$color-primary;
+
+  &:hover,
+  &:focus-visible {
+    background-color: tokens.$color-primary-high;
+  }
+}
+
+.carousel__control-icon {
+  display: block;
+  width: tokens.$size-2;
+  height: auto;
+  pointer-events: none;
+}
+
+.carousel__control-icon--previous {
+  transform: rotate(180deg);
+}
+
+.carousel__viewport {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: tokens.$size-0-5;
+  padding-right: tokens.$size-0-5;
+}
+
+.carousel__track {
+  display: flex;
+  gap: tokens.$size-1;
+  width: 100%;
+  height: tokens.$carousel-card-height-desktop;
+}
+
+.carousel__slide {
+  min-width: 0;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.carousel__slide:nth-child(1),
+.carousel__slide:nth-child(5) {
+  width: tokens.$carousel-card-preview-width-desktop;
+}
+
+.carousel__slide:nth-child(2),
+.carousel__slide:nth-child(4) {
+  width: tokens.$carousel-card-side-width-desktop;
+}
+
+.carousel__slide:nth-child(3) {
+  flex: 1;
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-compact) {
+  .carousel__container {
+    padding: tokens.$size-5 tokens.$size-8;
+  }
+
+  .carousel__track {
+    height: tokens.$carousel-card-height-compact;
+  }
+
+  .carousel__slide:nth-child(1),
+  .carousel__slide:nth-child(5) {
+    display: none;
+  }
+
+  .carousel__slide:nth-child(2),
+  .carousel__slide:nth-child(4) {
+    width: tokens.$carousel-card-side-width-compact;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .carousel__container {
+    padding: tokens.$size-3 tokens.$size-5;
+  }
+
+  .carousel__header {
+    margin-bottom: tokens.$size-3;
+  }
+
+  .carousel__title {
+    font-size: tokens.$font-size-headline-medium;
+  }
+
+  .carousel__heading-accent {
+    height: tokens.$size-3;
+  }
+
+  .carousel__control {
+    width: tokens.$size-5;
+    height: tokens.$size-5;
+  }
+
+  .carousel__track {
+    height: tokens.$carousel-card-height-tablet;
+  }
+
+  .carousel__slide:nth-child(2),
+  .carousel__slide:nth-child(4) {
+    width: tokens.$carousel-card-side-width-tablet;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+  .carousel__container {
+    padding: tokens.$size-3 tokens.$size-2;
+  }
+
+  .carousel__track {
+    height: tokens.$carousel-card-height-mobile;
+  }
+
+  .carousel__slide:nth-child(2),
+  .carousel__slide:nth-child(4) {
+    width: tokens.$carousel-card-side-width-mobile;
+  }
+
+  .carousel__slide:nth-child(3) {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-mobile) {
+  .carousel__container {
+    padding: tokens.$size-2 tokens.$size-2;
+  }
+
+  .carousel__header {
+    margin-bottom: tokens.$size-2;
+  }
+
+  .carousel__heading-accent {
+    height: tokens.$size-3;
+  }
+
+  .carousel__controls {
+    display: none;
+  }
+}

@@ -123,6 +123,8 @@ $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1920px;
 
 $breakpoint-compact-desktop: 1100px;
+$breakpoint-carousel-compact: 1552px;
+$breakpoint-carousel-mobile-layout: 767px;
 
 // Hero section
 $hero-height-desktop: 627px;
@@ -131,3 +133,26 @@ $hero-height-mobile: 331px;
 $hero-content-height-desktop: 403px;
 $hero-content-width-desktop: 640px;
 $hero-content-width-tablet: 480px;
+
+// Carousel
+$carousel-card-height-desktop: 388px;
+$carousel-card-height-compact: 320px;
+$carousel-card-height-tablet: 284px;
+$carousel-card-height-mobile: 200px;
+
+$carousel-card-preview-width-desktop: 124px;
+$carousel-card-side-width-desktop: 292px;
+$carousel-card-side-width-compact: 160px;
+$carousel-card-side-width-tablet: 109px;
+$carousel-card-side-width-mobile: 56px;
+
+$game-card-information-threshold: 288px;
+
+$game-card-overlay-height: 86px;
+
+$game-card-overlay-gradient: linear-gradient(
+  to bottom,
+  rgba($color-black, 0) 0%,
+  rgba($color-black, 0.4) 17%,
+  rgba($color-black, 0.85) 46%
+);
