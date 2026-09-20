@@ -1,0 +1,200 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.game-developer {
+  background-color: tokens.$color-bg;
+}
+
+.game-developer__container {
+  display: grid;
+  grid-template-columns:
+    minmax(0, tokens.$game-developer-illustration-width-desktop)
+    minmax(0, 1fr);
+  align-items: center;
+  gap: tokens.$size-5;
+  max-width: tokens.$breakpoint-desktop;
+  margin: 0 auto;
+  padding: tokens.$size-5 tokens.$size-15;
+}
+
+.game-developer__illustration {
+  overflow: hidden;
+  border-radius: tokens.$corner-extra-large;
+}
+
+.game-developer__image {
+  width: 100%;
+  height: auto;
+}
+
+.game-developer__content {
+  display: flex;
+  min-height: tokens.$game-developer-card-min-height-desktop;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 tokens.$size-5;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-large;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-white;
+  box-shadow: tokens.$shadow-level-1;
+}
+
+.game-developer__title {
+  font-size: tokens.$font-size-headline-large;
+  font-weight: tokens.$font-weight-bold;
+  margin-bottom: tokens.$size-4;
+}
+
+.game-developer__description {
+  width: 100%;
+  max-width: tokens.$game-developer-copy-width-desktop;
+  color: tokens.$color-on-bg;
+  font-size: tokens.$font-size-body-large;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.game-developer__button {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$size-1;
+  margin-top: tokens.$size-3;
+  padding: tokens.$button-padding-xsmall-inline
+    tokens.$button-padding-large-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-primary;
+  font-family: tokens.$font-family-roboto;
+  font-size: tokens.$font-size-body-large;
+  font-weight: tokens.$font-weight-bold;
+  cursor: pointer;
+  transition:
+    background-color tokens.$transition-duration-fast ease,
+    box-shadow tokens.$transition-duration-fast ease,
+    transform tokens.$transition-duration-fast ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: tokens.$color-primary-high;
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translate(tokens.$size-0-5, tokens.$size-0-5);
+  }
+}
+
+.game-developer__button-icon {
+  width: tokens.$size-3;
+  height: tokens.$size-3;
+}
+
+.game-developer__contact {
+  margin-top: tokens.$size-3;
+  color: tokens.$color-on-bg-low;
+  font-size: tokens.$font-size-label-large;
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-compact) {
+  .game-developer__container {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: tokens.$size-4;
+    padding: tokens.$size-5 tokens.$size-8;
+  }
+
+  .game-developer__content {
+    min-height: 0;
+    padding: tokens.$size-4;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .game-developer__container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: tokens.$size-3;
+    padding: tokens.$size-3 tokens.$size-5;
+  }
+
+  .game-developer__content {
+    padding: tokens.$size-4;
+  }
+
+  .game-developer__illustration {
+    height: tokens.$game-developer-illustration-height-tablet;
+  }
+
+  .game-developer__image {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .game-developer__title {
+    font-size: tokens.$font-size-headline-medium;
+    margin-bottom: tokens.$size-2;
+  }
+
+  .game-developer__description {
+    font-size: tokens.$font-size-body-small;
+    max-width: tokens.$game-developer-copy-width-tablet;
+  }
+
+  .game-developer__button {
+    margin-top: tokens.$size-2;
+    padding: tokens.$button-padding-small-block
+      tokens.$button-padding-small-inline;
+    font-size: tokens.$font-size-label-large;
+  }
+
+  .game-developer__button-icon {
+    width: tokens.$size-2;
+    height: tokens.$size-2;
+  }
+
+  .game-developer__contact {
+    margin-top: tokens.$size-2;
+    font-size: tokens.$font-size-label-medium;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+  .game-developer__container {
+    padding: tokens.$size-3 tokens.$size-2;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-mobile) {
+  .game-developer__container {
+    gap: tokens.$size-2;
+    padding: tokens.$size-2;
+  }
+
+  .game-developer__illustration {
+    height: auto;
+    border-radius: tokens.$corner-large;
+  }
+
+  .game-developer__image {
+    height: auto;
+  }
+
+  .game-developer__content {
+    padding: tokens.$size-3;
+    border-radius: tokens.$corner-extra-large;
+  }
+
+  .game-developer__title {
+    font-size: tokens.$font-size-headline-medium;
+  }
+
+  .game-developer__description {
+    font-size: tokens.$font-size-label-medium;
+  }
+
+  .game-developer__button {
+    font-size: tokens.$font-size-label-medium;
+  }
+}
