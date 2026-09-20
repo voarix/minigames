@@ -98,6 +98,7 @@ $corner-full: 9999px;
 // Button paddings
 $button-padding-large-inline: 24px;
 $button-padding-large-block: 16px;
+$button-padding-xsmall-inline: 14px;
 
 $button-padding-medium-inline: 20px;
 $button-padding-medium-block: 10px;
@@ -112,9 +113,21 @@ $shadow-level-1: 4px 4px 0 $color-on-primary;
 $shadow-level-2: 6px 6px 0 $color-on-primary;
 $shadow-level-3: 8px 8px 0 $color-on-primary;
 
+// Borders and motion
+$border-width-regular: 2px;
+$transition-duration-fast: 150ms;
+
 // Breakpoints
 $breakpoint-mobile: 375px;
 $breakpoint-tablet: 768px;
 $breakpoint-desktop: 1920px;
 
-$breakpoint-header-compact: 1100px;
+$breakpoint-compact-desktop: 1100px;
+
+// Hero section
+$hero-height-desktop: 627px;
+$hero-height-tablet: 383px;
+$hero-height-mobile: 331px;
+$hero-content-height-desktop: 403px;
+$hero-content-width-desktop: 640px;
+$hero-content-width-tablet: 480px;

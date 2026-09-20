@@ -38,7 +38,7 @@
 .header__navigation-list {
   display: flex;
   align-items: center;
-  gap: tokens.$size-6;
+  gap: tokens.$size-5;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -68,8 +68,8 @@
 }
 
 .header__auth-button {
-  padding: tokens.$button-padding-small-block
-    tokens.$button-padding-small-inline;
+  padding: tokens.$button-padding-medium-block
+    tokens.$button-padding-medium-inline;
   border: 2px solid tokens.$color-on-primary;
   border-radius: tokens.$corner-small;
   color: tokens.$color-on-primary;
@@ -101,7 +101,7 @@
   }
 }
 
-@include mixins.media-max(tokens.$breakpoint-header-compact) {
+@include mixins.media-max(tokens.$breakpoint-compact-desktop) {
   .header__container {
     padding-inline: tokens.$size-2;
   }
@@ -118,7 +118,7 @@
 
 @include mixins.media-max(tokens.$breakpoint-tablet) {
   .header__container {
-    padding-inline: tokens.$size-5;
+    padding: tokens.$size-2 tokens.$size-5;
   }
 
   .header__navigation,
@@ -128,6 +128,11 @@
 
   .header__logo-text {
     font-size: tokens.$font-size-headline-small;
+  }
+
+  .header__auth-button {
+    padding: tokens.$button-padding-small-block
+      tokens.$button-padding-xsmall-inline;
   }
 }
 

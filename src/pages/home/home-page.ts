@@ -1,10 +1,10 @@
+import { createHero } from "../../components/hero/hero.ts";
+
 export const createHomePage = (): HTMLElement => {
   const main = document.createElement("main");
-  const title = document.createElement("h1");
+  const hero = createHero();
 
-  title.textContent = "MiniGames";
-
-  main.append(title);
+  main.append(hero);
 
   return main;
 };
