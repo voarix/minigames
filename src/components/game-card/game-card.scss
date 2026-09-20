@@ -1,0 +1,98 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.game-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-extra-large;
+  background-color: tokens.$color-black;
+  box-shadow: tokens.$shadow-level-1;
+  container-type: inline-size;
+
+  &::after {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    height: tokens.$game-card-overlay-height;
+    background: tokens.$game-card-overlay-gradient;
+    content: "";
+    pointer-events: none;
+  }
+}
+
+.game-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.game-card__information {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: tokens.$size-1;
+
+  height: tokens.$game-card-overlay-height;
+  padding: tokens.$size-2;
+  color: tokens.$color-white;
+}
+
+@container (min-width: #{tokens.$game-card-information-threshold}) {
+  .game-card__information {
+    display: flex;
+  }
+}
+
+.game-card__title {
+  overflow: hidden;
+  font-size: tokens.$font-size-body-large;
+  font-weight: tokens.$font-weight-bold;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.game-card__statistics {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-card__rating,
+.game-card__likes {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-0-5;
+  font-size: tokens.$font-size-label-extra-large;
+  font-weight: tokens.$font-weight-bold;
+}
+
+.game-card__rating-icon,
+.game-card__likes-icon {
+  width: tokens.$size-3;
+  height: tokens.$size-3;
+}
+
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .game-card {
+    border-radius: tokens.$corner-large;
+  }
+
+  .game-card__rating,
+  .game-card__likes {
+    font-size: tokens.$font-size-label-large;
+  }
+}
