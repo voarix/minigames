@@ -156,6 +156,7 @@ $game-card-overlay-gradient: linear-gradient(
   rgba($color-black, 0.85) 46%
 );
 
+// Leaders section
 $leaderboard-rank-column-width: 80px;
 $leaderboard-column-width-desktop: 294px;
 
@@ -164,3 +165,11 @@ $leaderboard-avatar-size-tablet: 28px;
 $leaderboard-row-padding-mobile: 12px;
 
 $shadow-row-divider: inset 0 -1px 0 $color-outline;
+
+// Game developer section
+$game-developer-illustration-width-desktop: 680px;
+$game-developer-illustration-height-tablet: 300px;
+$game-developer-card-min-height-desktop: 344px;
+
+$game-developer-copy-width-desktop: 590px;
+$game-developer-copy-width-tablet: 560px;
