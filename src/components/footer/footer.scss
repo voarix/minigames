@@ -213,12 +213,26 @@
     max-width: none;
   }
 
+  .footer__logo {
+    font-size: tokens.$font-size-headline-small;
+  }
+
   .footer__navigation-groups {
     width: 100%;
     max-width: none;
     margin-left: 0;
     flex-wrap: nowrap;
-    gap: tokens.$size-8;
+    gap: tokens.$size-5;
+  }
+
+  .footer__social-link {
+    width: tokens.$size-4;
+    height: tokens.$size-4;
+  }
+
+  .footer__social-icon {
+    width: tokens.$size-2;
+    height: auto;
   }
 
   .footer__bottom {

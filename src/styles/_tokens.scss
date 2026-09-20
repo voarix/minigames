@@ -173,3 +173,18 @@ $game-developer-card-min-height-desktop: 344px;
 
 $game-developer-copy-width-desktop: 590px;
 $game-developer-copy-width-tablet: 560px;
+
+// Auth dialog
+$auth-dialog-width: 420px;
+$auth-dialog-login-height: 623px;
+$auth-dialog-register-height: 768px;
+$auth-dialog-tab-height: 44px;
+$auth-dialog-border-width: 3px;
+$auth-dialog-transition-duration: 200ms;
+$auth-dialog-view-transition-duration: 180ms;
+$auth-dialog-backdrop-opacity: 0.6;
+$auth-dialog-initial-scale: 0.97;
+$auth-dialog-close-hover-scale: 1.06;
+$auth-dialog-title-line-height: 1.2;
+$auth-dialog-description-line-height: 1.4;
+$z-index-auth-dialog: 1000;
