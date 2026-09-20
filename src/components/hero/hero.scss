@@ -1,0 +1,186 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.hero {
+  display: flex;
+  align-items: center;
+  min-height: tokens.$hero-height-desktop;
+  background-image: url("../../assets/hero-background-desktop.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.hero__container {
+  width: 100%;
+  max-width: tokens.$breakpoint-desktop;
+  margin: 0 auto;
+  padding: tokens.$size-14 tokens.$size-15;
+}
+
+.hero__content {
+  max-width: tokens.$hero-content-width-desktop;
+  padding: tokens.$size-6 tokens.$size-6 tokens.$size-3 tokens.$size-6;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-extra-large;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-bg;
+  box-shadow: tokens.$shadow-level-3;
+}
+
+.hero__title {
+  font-size: tokens.$font-size-display-large;
+  font-weight: tokens.$font-weight-bold;
+  line-height: 1.1;
+}
+
+.hero__description {
+  margin-top: tokens.$size-3;
+  color: tokens.$color-on-bg;
+  font-size: tokens.$font-size-body-large;
+  font-weight: tokens.$font-weight-medium;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hero__description-break,
+.hero__description-mobile {
+  display: none;
+}
+
+.hero__button {
+  margin-top: tokens.$size-3;
+  margin-bottom: tokens.$size-2;
+  padding: tokens.$button-padding-xsmall-inline
+    tokens.$button-padding-large-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-primary;
+  font-size: tokens.$font-size-body-large;
+  font-weight: tokens.$font-weight-bold;
+  cursor: pointer;
+  transition:
+    background-color tokens.$transition-duration-fast ease,
+    transform tokens.$transition-duration-fast ease,
+    box-shadow tokens.$transition-duration-fast ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: tokens.$color-primary-high;
+  }
+
+  &:active {
+    box-shadow: none;
+    transform: translate(tokens.$size-0-5, tokens.$size-0-5);
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-compact-desktop) {
+  .hero__container {
+    padding: tokens.$size-10 tokens.$size-8;
+  }
+
+  .hero__content {
+    max-width: 560px;
+    padding: tokens.$size-4;
+    border-radius: tokens.$corner-large;
+  }
+
+  .hero__title {
+    font-size: tokens.$font-size-display-medium;
+    line-height: 1.15;
+  }
+
+  .hero__description {
+    margin-top: tokens.$size-2;
+    font-size: tokens.$font-size-body-medium;
+  }
+
+  .hero__button {
+    margin-top: tokens.$size-2;
+    margin-bottom: 0;
+    font-size: tokens.$font-size-body-medium;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .hero {
+    min-height: tokens.$hero-height-tablet;
+    background-image: url("../../assets/hero-background-tablet.png");
+  }
+
+  .hero__container {
+    padding: tokens.$size-9 tokens.$size-5;
+  }
+
+  .hero__content {
+    max-width: tokens.$hero-content-width-tablet;
+    border-radius: tokens.$corner-large;
+    padding: tokens.$size-3;
+  }
+
+  .hero__title {
+    font-size: tokens.$font-size-display-medium;
+    line-height: 1.15;
+  }
+
+  .hero__description {
+    margin-top: tokens.$size-1;
+    font-size: tokens.$font-size-body-small;
+  }
+
+  .hero__description-break {
+    display: block;
+  }
+
+  .hero__button {
+    margin-top: tokens.$size-2;
+    margin-bottom: 0;
+    padding: tokens.$button-padding-small-block
+      tokens.$button-padding-small-inline;
+    font-size: tokens.$font-size-label-large;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-mobile) {
+  .hero {
+    min-height: tokens.$hero-height-mobile;
+    background-image: url("../../assets/hero-background-mobile.png");
+  }
+
+  .hero__container {
+    padding: tokens.$size-8 tokens.$size-2;
+  }
+
+  .hero__content {
+    padding: tokens.$size-3;
+    border-radius: tokens.$corner-medium;
+    box-shadow: tokens.$shadow-level-1;
+  }
+
+  .hero__title {
+    font-size: tokens.$font-size-display-small;
+    line-height: 1.2;
+  }
+
+  .hero__description {
+    margin-top: tokens.$size-2;
+    font-size: tokens.$font-size-label-medium;
+  }
+
+  .hero__description-break,
+  .hero__description-desktop {
+    display: none;
+  }
+
+  .hero__description-mobile {
+    display: inline;
+  }
+
+  .hero__button {
+    margin-top: tokens.$size-1;
+    padding: tokens.$button-padding-small-block
+      tokens.$button-padding-small-inline;
+    font-size: tokens.$font-size-label-medium;
+  }
+}
