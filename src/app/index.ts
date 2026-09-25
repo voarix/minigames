@@ -13,6 +13,7 @@ export const startApp = (): void => {
 
     main.replaceWith(otherMain);
     main = otherMain;
+    updateActiveNavigation(page);
   };
 
   const authDialog = createAuthDialog();
@@ -26,7 +27,28 @@ export const startApp = (): void => {
     onNavigate: showPage,
   });
 
+  const updateActiveNavigation = (page: "home" | "library"): void => {
+    const activeText = page === "home" ? "Home" : "Library";
+
+    for (const link of header.querySelectorAll(".header__navigation-link")) {
+      link.classList.toggle(
+        "header__navigation-link--active",
+        link.textContent?.trim() === activeText,
+      );
+    }
+
+    for (const link of header.querySelectorAll(
+      ".burger-menu__navigation-link",
+    )) {
+      link.classList.toggle(
+        "burger-menu__navigation-link--active",
+        link.textContent?.trim() === activeText,
+      );
+    }
+  };
+
   const footer = createFooter();
 
   document.body.replaceChildren(header, main, footer, authDialog.element);
+  updateActiveNavigation("home");
 };

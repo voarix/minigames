@@ -36,6 +36,7 @@ export const createHeader = ({
   const burgerMenu = createBurgerMenu(navigationItems, {
     onLogin,
     onRegister,
+    onNavigate,
   });
 
   header.className = "header";
@@ -57,6 +58,11 @@ export const createHeader = ({
   logoImage.alt = "";
   logoText.textContent = "MiniGames";
   logo.append(logoImage, logoText);
+
+  logo.addEventListener("click", (event) => {
+    event.preventDefault();
+    onNavigate("home");
+  });
 
   for (const item of navigationItems) {
     const listItem = document.createElement("li");
