@@ -1,0 +1,39 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.library-page {
+  background-color: tokens.$color-bg;
+}
+
+.library-page__container {
+  max-width: tokens.$breakpoint-desktop;
+  margin: 0 auto;
+  padding: tokens.$size-5 tokens.$size-15;
+}
+
+.library-page__title {
+  color: tokens.$color-on-primary;
+  font-size: tokens.$font-size-display-large;
+}
+
+.library-page__description {
+  margin-top: tokens.$size-1;
+  color: tokens.$color-on-bg;
+  font-size: tokens.$font-size-body-large;
+}
+
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .library-page__container {
+    padding: tokens.$size-4 tokens.$size-5;
+  }
+
+  .library-page__title {
+    font-size: tokens.$font-size-display-small;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+  .library-page__container {
+    padding-inline: tokens.$size-2;
+  }
+}
