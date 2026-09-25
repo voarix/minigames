@@ -1,5 +1,4 @@
 import "./auth-dialog.scss";
-import closeIcon from "../../assets/icons/close.svg";
 import googleIcon from "../../assets/icons/google.svg";
 
 export type AuthMode = "login" | "register";
@@ -66,8 +65,6 @@ const createField = ({
 export const createAuthDialog = (): AuthDialog => {
   const dialog = document.createElement("div");
   const panel = document.createElement("section");
-  const closeButton = document.createElement("button");
-  const closeButtonIcon = document.createElement("img");
   const tabs = document.createElement("div");
   const loginTab = document.createElement("button");
   const registerTab = document.createElement("button");
@@ -75,8 +72,6 @@ export const createAuthDialog = (): AuthDialog => {
 
   dialog.className = "auth-dialog";
   panel.className = "auth-dialog__panel";
-  closeButton.className = "auth-dialog__close-button";
-  closeButtonIcon.className = "auth-dialog__close-icon";
   tabs.className = "auth-dialog__tabs";
   loginTab.className = "auth-dialog__tab";
   registerTab.className = "auth-dialog__tab";
@@ -89,12 +84,6 @@ export const createAuthDialog = (): AuthDialog => {
   panel.setAttribute("aria-modal", "true");
   panel.setAttribute("aria-labelledby", "auth-dialog-title");
   panel.tabIndex = -1;
-
-  closeButton.type = "button";
-  closeButton.setAttribute("aria-label", "Close authentication dialog");
-  closeButtonIcon.src = closeIcon;
-  closeButtonIcon.alt = "";
-  closeButton.append(closeButtonIcon);
 
   tabs.setAttribute("role", "tablist");
   tabs.setAttribute("aria-label", "Authentication options");
@@ -115,7 +104,7 @@ export const createAuthDialog = (): AuthDialog => {
   view.setAttribute("role", "tabpanel");
 
   tabs.append(loginTab, registerTab);
-  panel.append(closeButton, tabs, view);
+  panel.append(tabs, view);
   dialog.append(panel);
 
   let activeMode: AuthMode = "login";
@@ -289,7 +278,10 @@ export const createAuthDialog = (): AuthDialog => {
 
     requestAnimationFrame(() => {
       dialog.classList.add("auth-dialog--open");
-      view.querySelector<HTMLInputElement>("input")?.focus();
+
+      requestAnimationFrame(() => {
+        view.querySelector<HTMLInputElement>("input")?.focus();
+      });
     });
   };
 
@@ -304,8 +296,6 @@ export const createAuthDialog = (): AuthDialog => {
       renderView("register");
     }
   });
-
-  closeButton.addEventListener("click", close);
 
   dialog.addEventListener("click", (event: MouseEvent) => {
     if (event.target === dialog) {
