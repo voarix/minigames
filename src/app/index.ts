@@ -47,7 +47,7 @@ export const startApp = (): void => {
     }
   };
 
-  const footer = createFooter();
+  const footer = createFooter({ onNavigate: showPage });
 
   document.body.replaceChildren(header, main, footer, authDialog.element);
   updateActiveNavigation("home");
