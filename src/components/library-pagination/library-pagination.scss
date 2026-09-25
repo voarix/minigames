@@ -24,7 +24,7 @@
   font: inherit;
   cursor: pointer;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled):not(.library-pagination__button--active) {
     background-color: tokens.$color-surface;
   }
 
@@ -45,7 +45,15 @@
 }
 
 @include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
-  .library-pagination__pages .library-pagination__button:nth-child(n + 4) {
+  .library-pagination__pages .library-pagination__button:last-child {
     display: none;
+  }
+
+  .library-pagination__pages--end .library-pagination__button:first-child {
+    display: none;
+  }
+
+  .library-pagination__pages--end .library-pagination__button:last-child {
+    display: block;
   }
 }
