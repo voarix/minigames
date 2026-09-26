@@ -3,13 +3,13 @@ import { createLibraryCards } from "../../components/library-cards/library-cards
 import { createLibraryFilters } from "../../components/library-filters/library-filters.ts";
 import { createLibraryPagination } from "../../components/library-pagination/library-pagination.ts";
 
-export const createLibraryPage = (): HTMLElement => {
+export const createLibraryPage = (onDetails: () => void): HTMLElement => {
   const main = document.createElement("main");
   const container = document.createElement("div");
   const title = document.createElement("h1");
   const description = document.createElement("p");
   const filters = createLibraryFilters();
-  const cards = createLibraryCards();
+  const cards = createLibraryCards(onDetails);
   const pagination = createLibraryPagination();
 
   main.className = "library-page";

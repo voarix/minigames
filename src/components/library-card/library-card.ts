@@ -3,7 +3,10 @@ import type { GameCardData } from "../../data/games.ts";
 import starIcon from "../../assets/icons/star.svg";
 import favoriteIcon from "../../assets/icons/favorite.svg";
 
-export const createLibraryCard = (game: GameCardData): HTMLElement => {
+export const createLibraryCard = (
+  game: GameCardData,
+  onDetails: () => void,
+): HTMLElement => {
   const card = document.createElement("article");
   const image = document.createElement("img");
   const content = document.createElement("div");
@@ -54,6 +57,7 @@ export const createLibraryCard = (game: GameCardData): HTMLElement => {
   likes.append(likesIcon, likesText);
   detailsButton.type = "button";
   detailsButton.textContent = "Details";
+  detailsButton.addEventListener("click", onDetails);
 
   heading.append(title, category, price);
   statistics.append(rating, likes);
