@@ -14,8 +14,14 @@
   display: grid;
 }
 
-@include mixins.media-max(tokens.$breakpoint-compact-desktop) {
+@include mixins.media-max(tokens.$breakpoint-carousel-compact) {
   .library-cards {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-mobile) {
+  .library-cards {
+    gap: tokens.$size-2;
   }
 }
