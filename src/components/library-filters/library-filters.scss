@@ -136,6 +136,10 @@
     flex-direction: column;
     align-items: stretch;
   }
+
+  .library-filters__sorting {
+    align-self: flex-start;
+  }
 }
 
 @include mixins.media-max(tokens.$breakpoint-tablet) {
