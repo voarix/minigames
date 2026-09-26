@@ -1,0 +1,21 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.library-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: tokens.$size-3;
+  margin-top: tokens.$size-2;
+  padding: 0;
+  list-style: none;
+}
+
+.library-cards__item {
+  display: grid;
+}
+
+@include mixins.media-max(tokens.$breakpoint-compact-desktop) {
+  .library-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
