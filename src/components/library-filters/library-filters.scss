@@ -1,0 +1,148 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.library-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: tokens.$size-2;
+  margin-top: tokens.$size-7;
+}
+
+.library-filters__categories {
+  min-width: 0;
+  display: flex;
+  gap: tokens.$size-2;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.library-filters__category {
+  flex-shrink: 0;
+  padding: 6px tokens.$button-padding-xsmall-inline; // Use 6px to match the mockup
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-extra-large;
+  color: tokens.$color-on-primary;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: tokens.$font-size-label-large;
+  font-weight: tokens.$font-weight-bold;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(.library-filters__category--active) {
+    background-color: tokens.$color-surface;
+  }
+}
+
+.library-filters__category--active {
+  background-color: tokens.$color-primary;
+}
+
+.library-filters__sorting {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.library-filters__sort-button {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-2;
+  padding-block: 12px;
+  padding-right: 25px; // Match the mockup and leave space for the arrow
+  padding-left: tokens.$button-padding-medium-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-extra-large;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-white;
+  font-size: tokens.$font-size-label-large;
+  font-weight: tokens.$font-weight-bold;
+  cursor: pointer;
+
+  &::after {
+    content: "▾";
+  }
+
+  &:hover,
+  &--open {
+    background-color: tokens.$color-surface;
+  }
+
+  &--open::after {
+    content: "▴";
+  }
+}
+
+.library-filters__sort-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 1; // Keep the dropdown above the game cards.
+  min-width: 100%;
+  overflow: hidden;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-medium;
+  background-color: tokens.$color-white;
+  box-shadow: tokens.$shadow-level-1;
+}
+
+.library-filters__sort-option {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding-block: tokens.$size-2;
+  padding-right: tokens.$size-2;
+  padding-left: 38px; // Match the mockup and leave space for the check icon
+  border: 0;
+  border-block: tokens.$border-width-thin solid transparent;
+  color: tokens.$color-on-primary;
+  background-color: transparent;
+  font: inherit;
+  font-size: tokens.$font-size-label-large;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(.library-filters__sort-option--active) {
+    background-color: tokens.$color-surface;
+  }
+
+  &--active {
+    background-color: tokens.$color-primary-low;
+    font-weight: tokens.$font-weight-bold;
+    border-block: tokens.$border-width-thin solid tokens.$color-on-primary;
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: tokens.$size-2;
+      width: 14px; // Match the check icon size in Figma
+      height: 14px;
+      transform: translateY(-50%);
+      background: url("../../assets/icons/check.svg") center / contain no-repeat;
+      content: "";
+    }
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-compact-desktop) {
+  .library-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .library-filters__sorting {
+    align-self: flex-start;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+  .library-filters__sorting {
+    align-self: stretch;
+  }
+
+  .library-filters__sort-button {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
