@@ -11,6 +11,7 @@ const categoryNames = [
 ];
 
 const sortOptions = ["Rating ↑", "Rating ↓", "Name A→Z", "Name Z→A"];
+const minDragDistance = 5;
 
 export const createLibraryFilters = (): HTMLElement => {
   const filters = document.createElement("div");
@@ -23,6 +24,68 @@ export const createLibraryFilters = (): HTMLElement => {
   filters.className = "library-filters";
   categories.className = "library-filters__categories";
   sorting.className = "library-filters__sorting";
+
+  let pointerId: number | undefined;
+  let startX = 0;
+  let startScrollLeft = 0;
+  let wasDragged = false;
+
+  categories.addEventListener("pointerdown", (event) => {
+    wasDragged = false;
+
+    const isPrimaryMouseClick =
+      event.pointerType === "mouse" && event.button === 0;
+    const isScrollable = categories.scrollWidth > categories.clientWidth;
+    if (!isPrimaryMouseClick || !isScrollable) return;
+
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startScrollLeft = categories.scrollLeft;
+  });
+
+  categories.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+
+    const distance = event.clientX - startX;
+
+    if (!wasDragged && Math.abs(distance) < minDragDistance) {
+      return;
+    }
+
+    wasDragged = true;
+    categories.setPointerCapture(event.pointerId);
+    categories.classList.add("library-filters__categories--dragging");
+    categories.scrollLeft = startScrollLeft - distance;
+  });
+
+  const stopDragging = (): void => {
+    if (pointerId !== undefined && categories.hasPointerCapture(pointerId)) {
+      categories.releasePointerCapture(pointerId);
+    }
+
+    pointerId = undefined;
+    categories.classList.remove("library-filters__categories--dragging");
+  };
+
+  categories.addEventListener("pointerup", stopDragging);
+  categories.addEventListener("pointercancel", stopDragging);
+  categories.addEventListener("lostpointercapture", stopDragging);
+  categories.addEventListener("pointerleave", () => {
+    if (!wasDragged) stopDragging();
+  });
+
+  categories.addEventListener(
+    "click",
+    (event) => {
+      if (!wasDragged || event.detail === 0) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    { capture: true },
+  );
 
   for (const category of categoryNames) {
     const button = document.createElement("button");

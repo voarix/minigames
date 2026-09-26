@@ -15,6 +15,12 @@
   gap: tokens.$size-2;
   overflow-x: auto;
   scrollbar-width: none;
+  user-select: none;
+
+  &--dragging,
+  &--dragging .library-filters__category {
+    cursor: grabbing;
+  }
 }
 
 .library-filters__category {
