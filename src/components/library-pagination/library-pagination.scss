@@ -44,7 +44,21 @@
   line-height: 1;
 }
 
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .library-pagination,
+  .library-pagination__pages {
+    gap: tokens.$size-1;
+  }
+  .library-pagination {
+    margin-bottom: tokens.$size-2;
+  }
+}
+
 @include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+  .library-pagination {
+    margin-bottom: 0;
+  }
+
   .library-pagination__pages .library-pagination__button:last-child {
     display: none;
   }

@@ -24,16 +24,28 @@
 
 @include mixins.media-max(tokens.$breakpoint-tablet) {
   .library-page__container {
-    padding: tokens.$size-4 tokens.$size-5;
+    padding: tokens.$size-3 tokens.$size-5;
   }
 
   .library-page__title {
-    font-size: tokens.$font-size-display-small;
+    font-size: tokens.$font-size-display-medium;
+  }
+
+  .library-page__description {
+    font-size: tokens.$font-size-body-medium;
   }
 }
 
 @include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
   .library-page__container {
-    padding-inline: tokens.$size-2;
+    padding: 14px tokens.$size-2; // Use 14px to match the mobile mockup
+  }
+
+  .library-page__title {
+    font-size: tokens.$font-size-display-small;
+  }
+
+  .library-page__description {
+    font-size: tokens.$font-size-body-small;
   }
 }
