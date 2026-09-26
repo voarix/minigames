@@ -22,11 +22,16 @@
   font-size: tokens.$font-size-body-large;
 }
 
-@include mixins.media-max(tokens.$breakpoint-tablet) {
+@include mixins.media-max(tokens.$breakpoint-compact-desktop) {
   .library-page__container {
     padding: tokens.$size-3 tokens.$size-5;
   }
+  .library-page__title {
+    font-size: tokens.$font-size-display-medium;
+  }
+}
 
+@include mixins.media-max(tokens.$breakpoint-tablet) {
   .library-page__title {
     font-size: tokens.$font-size-display-medium;
   }
@@ -36,7 +41,7 @@
   }
 }
 
-@include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+@include mixins.media-max(tokens.$breakpoint-mobile) {
   .library-page__container {
     padding: 14px tokens.$size-2; // Use 14px to match the mobile mockup
   }

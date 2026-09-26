@@ -1,0 +1,94 @@
+@use "../../styles/tokens" as tokens;
+
+.game-details-open {
+  overflow: hidden;
+}
+
+.game-details {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: tokens.$size-2;
+  border: 0;
+  overflow-y: auto;
+  color: tokens.$color-on-primary;
+  background-color: rgba(
+    tokens.$color-black,
+    tokens.$auth-dialog-backdrop-opacity
+  );
+
+  &[open] {
+    display: grid;
+    justify-items: center;
+    align-items: safe center;
+    animation: game-details-in tokens.$game-details-duration ease both;
+  }
+
+  &--closing[open] {
+    animation: game-details-out tokens.$game-details-duration ease both;
+  }
+
+  &::backdrop {
+    background-color: transparent;
+  }
+}
+
+.game-details__panel {
+  position: relative;
+  width: 100%;
+  max-width: tokens.$game-details-panel-width;
+  padding: tokens.$size-4;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-extra-large;
+  background-color: tokens.$color-bg;
+  box-shadow: tokens.$shadow-level-1;
+}
+
+.game-details__title {
+  padding-right: tokens.$size-5;
+  font-size: tokens.$font-size-headline-medium;
+}
+
+.game-details__close {
+  position: absolute;
+  top: tokens.$size-2;
+  right: tokens.$size-2;
+  display: grid;
+  place-items: center;
+  padding: tokens.$button-padding-icon;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-full;
+  background-color: tokens.$color-white;
+  cursor: pointer;
+
+  img {
+    width: tokens.$size-2;
+    height: tokens.$size-2;
+  }
+
+  &:hover {
+    background-color: tokens.$color-surface;
+  }
+}
+
+@keyframes game-details-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes game-details-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
