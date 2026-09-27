@@ -78,7 +78,6 @@ export const createAuthDialog = (): AuthDialog => {
   view.className = "auth-dialog__view";
 
   dialog.hidden = true;
-  dialog.setAttribute("aria-hidden", "true");
 
   panel.setAttribute("role", "dialog");
   panel.setAttribute("aria-modal", "true");
@@ -255,7 +254,6 @@ export const createAuthDialog = (): AuthDialog => {
     clearTimeout(closeTimer);
     dialog.classList.remove("auth-dialog--open");
     document.body.classList.remove("auth-dialog-open");
-    dialog.setAttribute("aria-hidden", "true");
 
     closeTimer = setTimeout(() => {
       dialog.hidden = true;
@@ -273,7 +271,6 @@ export const createAuthDialog = (): AuthDialog => {
 
     renderView(mode);
     dialog.hidden = false;
-    dialog.setAttribute("aria-hidden", "false");
     document.body.classList.add("auth-dialog-open");
 
     requestAnimationFrame(() => {

@@ -136,7 +136,7 @@ const createStreakCell = (streakDays: number): HTMLTableCellElement => {
   tabletUnit.textContent = "d";
 
   value.append(String(streakDays), desktopUnit, tabletUnit);
-  value.setAttribute("aria-label", `${streakDays} days`);
+  cell.setAttribute("aria-label", `${streakDays} days`);
 
   cell.append(icon, value);
 
