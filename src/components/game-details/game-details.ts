@@ -2,6 +2,7 @@ import "./game-details.scss";
 import heroImage from "../../assets/games/tukoni-forest-keepers-hero.jpg";
 import { createGameDetailsInfo } from "./game-details-info";
 import closeIcon from "../../assets/icons/close-details.svg";
+import { createGameDetailsRecords } from "./game-details-records.ts";
 
 interface GameDetailsDialog {
   readonly element: HTMLDialogElement;
@@ -43,7 +44,10 @@ export const createGameDetails = (): GameDetailsDialog => {
     dialog.classList.remove("game-details--closing");
     isClosing = false;
     wasBackdropPressed = false;
-    content.replaceChildren(createGameDetailsInfo());
+    content.replaceChildren(
+      createGameDetailsInfo(),
+      createGameDetailsRecords(),
+    );
     dialog.showModal();
     document.body.classList.add("game-details-open");
     dialog.scrollTop = 0;

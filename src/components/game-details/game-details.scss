@@ -106,6 +106,10 @@
   flex-direction: column;
   gap: tokens.$size-3;
   padding: tokens.$size-3;
+
+  h3 {
+    font-size: tokens.$font-size-label-extra-large;
+  }
 }
 
 .game-details__info {
@@ -233,9 +237,55 @@
   mask: url("../../assets/icons/favorite.svg") center / contain no-repeat;
 }
 
+.game-details__records h3 {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-1;
+}
+
+.game-details__records {
+  ol {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$size-1;
+    margin-top: tokens.$size-2;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: tokens.$size-2;
+    padding: tokens.$size-2;
+    border-radius: tokens.$corner-small;
+    background-color: tokens.$color-white;
+    font-size: tokens.$font-size-label-large;
+    font-weight: tokens.$font-weight-bold;
+  }
+
+  li span:last-child {
+    color: tokens.$color-on-bg-low;
+    font-size: tokens.$font-size-label-medium;
+    font-weight: tokens.$font-weight-regular;
+  }
+}
+
 @include mixins.media-max(tokens.$game-details-mobile-layout) {
   .game-details {
-    padding: 0;
+    padding: tokens.$size-1;
+  }
+
+  .game-details__close {
+    top: tokens.$size-2;
+    right: tokens.$size-2;
+    padding: tokens.$button-padding-icon-mobile;
+    border-radius: tokens.$corner-full;
+    img {
+      width: tokens.$size-3;
+      height: tokens.$size-3;
+    }
   }
 
   .game-details__heading {
@@ -245,7 +295,9 @@
   }
 
   .game-details__specs {
+    padding-inline: tokens.$size-1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px; // use to match the mockup
   }
 
   .game-details__actions {
@@ -258,5 +310,16 @@
     span {
       display: none;
     }
+  }
+
+  .game-details__records li {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    gap: tokens.$size-1;
+    padding: tokens.$size-2;
+  }
+
+  .game-details__records li span:last-child {
+    font-size: tokens.$font-size-label-medium;
+    color: tokens.$color-on-bg;
   }
 }
