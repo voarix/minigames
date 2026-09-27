@@ -3,11 +3,8 @@ import { createGameCard } from "../game-card/game-card.ts";
 import { featuredGames } from "../../data/games.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
 
-const initialGames = [
-  ...featuredGames.slice(-2),
-  ...featuredGames.slice(0, -2),
-];
-const initialSlidePositions = ["preview", "side", "center", "side", "preview"];
+const slidePositions = ["preview", "side", "center", "side", "preview"];
+const centerPosition = 2;
 
 export const createCarousel = (): HTMLElement => {
   const section = document.createElement("section");
@@ -25,6 +22,28 @@ export const createCarousel = (): HTMLElement => {
 
   const viewport = document.createElement("div");
   const track = document.createElement("div");
+  const slides: HTMLDivElement[] = [];
+  let currentIndex = 0;
+
+  const updateSlides = (): void => {
+    for (const slide of slides) {
+      slide.className = "carousel__slide carousel__slide--hidden";
+    }
+
+    for (const [positionIndex, position] of slidePositions.entries()) {
+      const offset = positionIndex - centerPosition;
+      const gameIndex = (currentIndex + offset + slides.length) % slides.length;
+      const slide = slides[gameIndex];
+
+      slide.className = `carousel__slide carousel__slide--${position}`;
+      track.append(slide);
+    }
+  };
+
+  const moveSlides = (direction: -1 | 1): void => {
+    currentIndex = (currentIndex + direction + slides.length) % slides.length;
+    updateSlides();
+  };
 
   section.className = "carousel";
   container.className = "carousel__container";
@@ -55,6 +74,9 @@ export const createCarousel = (): HTMLElement => {
   nextButton.type = "button";
   nextButton.setAttribute("aria-label", "Next games");
 
+  previousButton.addEventListener("click", () => moveSlides(-1));
+  nextButton.addEventListener("click", () => moveSlides(1));
+
   previousIcon.src = arrowIcon;
   previousIcon.alt = "";
   previousIcon.draggable = false;
@@ -68,14 +90,15 @@ export const createCarousel = (): HTMLElement => {
 
   section.setAttribute("aria-labelledby", title.id);
 
-  for (const [index, game] of initialGames.entries()) {
+  for (const game of featuredGames) {
     const slide = document.createElement("div");
-    const position = initialSlidePositions[index] ?? "hidden";
 
-    slide.className = `carousel__slide carousel__slide--${position}`;
     slide.append(createGameCard(game));
+    slides.push(slide);
     track.append(slide);
   }
+
+  updateSlides();
 
   heading.append(accent, title);
   controls.append(previousButton, nextButton);
