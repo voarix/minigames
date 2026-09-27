@@ -8,9 +8,12 @@ interface HomePage {
   readonly destroy: () => void;
 }
 
-export const createHomePage = (onDetails: () => void): HomePage => {
+export const createHomePage = (
+  onDetails: () => void,
+  onBrowseLibrary: () => void,
+): HomePage => {
   const main = document.createElement("main");
-  const hero = createHero();
+  const hero = createHero(onBrowseLibrary);
   const carousel = createCarousel(onDetails);
   const leaderboard = createLeaderboard();
   const gameDeveloper = createGameDeveloper();
