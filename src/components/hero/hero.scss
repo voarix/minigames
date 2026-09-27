@@ -64,7 +64,12 @@
     transform tokens.$transition-duration-fast ease,
     box-shadow tokens.$transition-duration-fast ease;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
+  }
+
   &:focus-visible {
     background-color: tokens.$color-primary-high;
   }

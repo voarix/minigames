@@ -36,8 +36,10 @@
   white-space: nowrap;
   cursor: pointer;
 
-  &:hover:not(.library-filters__category--active) {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(.library-filters__category--active) {
+      background-color: tokens.$color-surface;
+    }
   }
 }
 
@@ -69,7 +71,12 @@
     content: "▾";
   }
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
+  }
+
   &--open {
     background-color: tokens.$color-surface;
   }
@@ -109,8 +116,10 @@
   white-space: nowrap;
   cursor: pointer;
 
-  &:hover:not(.library-filters__sort-option--active) {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(.library-filters__sort-option--active) {
+      background-color: tokens.$color-surface;
+    }
   }
 
   &--active {

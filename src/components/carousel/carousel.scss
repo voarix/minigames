@@ -108,7 +108,12 @@
   transition: background-color tokens.$transition-duration-fast ease;
   cursor: pointer;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
+  }
+
   &:focus-visible {
     background-color: tokens.$color-surface;
   }
@@ -117,7 +122,12 @@
 .carousel__control--next {
   background-color: tokens.$color-primary;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
+  }
+
   &:focus-visible {
     background-color: tokens.$color-primary-high;
   }

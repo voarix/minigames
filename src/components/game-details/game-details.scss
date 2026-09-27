@@ -71,8 +71,10 @@
     height: tokens.$size-3;
   }
 
-  &:hover {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
   }
 }
 
@@ -211,16 +213,20 @@
 .game-details__play {
   background-color: tokens.$color-primary;
 
-  &:hover {
-    background-color: tokens.$color-primary-high;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
   }
 }
 
 .game-details__favorite {
   background-color: tokens.$color-white;
 
-  &:hover {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
   }
 
   &--active::before {
@@ -355,8 +361,10 @@
     mask: url("../../assets/icons/send.svg") center / contain no-repeat;
   }
 
-  &:hover {
-    background-color: tokens.$color-tertiary;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-tertiary;
+    }
   }
 }
 
@@ -438,13 +446,15 @@
     pointer-events: none;
   }
 
-  &:hover {
-    &::after {
-      background-color: tokens.$color-surface;
-    }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      &::after {
+        background-color: tokens.$color-surface;
+      }
 
-    &::before {
-      background-color: currentColor;
+      &::before {
+        background-color: currentColor;
+      }
     }
   }
 

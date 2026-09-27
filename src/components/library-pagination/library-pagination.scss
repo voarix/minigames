@@ -24,8 +24,10 @@
   font: inherit;
   cursor: pointer;
 
-  &:hover:not(:disabled):not(.library-pagination__button--active) {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled):not(.library-pagination__button--active) {
+      background-color: tokens.$color-surface;
+    }
   }
 
   &:disabled {

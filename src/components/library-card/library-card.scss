@@ -114,8 +114,10 @@
   font-weight: tokens.$font-weight-bold;
   cursor: pointer;
 
-  &:hover {
-    background-color: tokens.$color-primary-high;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
   }
 }
 

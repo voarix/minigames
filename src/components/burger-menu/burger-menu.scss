@@ -39,7 +39,12 @@ body.menu-open {
   }
 
   .burger-menu__button[aria-expanded="false"] {
-    &:hover,
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: tokens.$color-surface;
+      }
+    }
+
     &:focus-visible {
       background-color: tokens.$color-surface;
     }
@@ -57,7 +62,12 @@ body.menu-open {
     margin: 0;
     background-color: transparent;
 
-    &:hover,
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        outline-color: tokens.$color-primary;
+      }
+    }
+
     &:focus-visible {
       outline-color: tokens.$color-primary;
     }
@@ -139,7 +149,12 @@ body.menu-open {
     text-decoration: none;
     transition: color 150ms ease;
 
-    &:hover,
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: tokens.$color-primary;
+      }
+    }
+
     &:focus-visible {
       color: tokens.$color-primary;
     }
@@ -181,7 +196,12 @@ body.menu-open {
   .burger-menu__login-button {
     background-color: transparent;
 
-    &:hover,
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        border-color: tokens.$color-primary;
+      }
+    }
+
     &:focus-visible {
       border-color: tokens.$color-primary;
     }
@@ -192,7 +212,12 @@ body.menu-open {
     color: tokens.$color-on-primary;
     background-color: tokens.$color-primary;
 
-    &:hover,
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: tokens.$color-primary-high;
+      }
+    }
+
     &:focus-visible {
       background-color: tokens.$color-primary-high;
     }

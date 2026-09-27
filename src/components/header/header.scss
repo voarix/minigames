@@ -50,8 +50,10 @@
   cursor: pointer;
   transition: color 150ms ease;
 
-  &:hover {
-    color: tokens.$color-on-primary;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: tokens.$color-on-primary;
+    }
   }
 }
 
@@ -88,16 +90,20 @@
 .header__login-button {
   background-color: transparent;
 
-  &:hover {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
   }
 }
 
 .header__signup-button {
   background-color: tokens.$color-primary;
 
-  &:hover {
-    background-color: tokens.$color-primary-high;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
   }
 }
 
