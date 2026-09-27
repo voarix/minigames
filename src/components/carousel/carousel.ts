@@ -3,6 +3,9 @@ import { createGameCard } from "../game-card/game-card.ts";
 import { featuredGames } from "../../data/games.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
 
+const minDragDistance = 5;
+const minSwipeDistance = 40;
+
 export const createCarousel = (): HTMLElement => {
   const section = document.createElement("section");
   const container = document.createElement("div");
@@ -59,6 +62,93 @@ export const createCarousel = (): HTMLElement => {
 
   track.addEventListener("transitionend", finishMove);
   track.addEventListener("transitioncancel", finishMove);
+
+  let pointerId: number | undefined;
+  let startX = 0;
+  let startY = 0;
+  let wasDragged = false;
+
+  const stopDragging = (event: PointerEvent): void => {
+    if (event.pointerId !== pointerId) return;
+
+    pointerId = undefined;
+    viewport.classList.remove("carousel__viewport--dragging");
+
+    if (viewport.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  viewport.addEventListener("pointerdown", (event) => {
+    if (pointerId !== undefined || !event.isPrimary || event.button !== 0) {
+      return;
+    }
+
+    wasDragged = false;
+    if (track.classList.contains("carousel__track--moving")) return;
+
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+  });
+
+  viewport.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+
+    const distanceX = event.clientX - startX;
+    const distanceY = event.clientY - startY;
+
+    if (
+      Math.abs(distanceX) < minDragDistance ||
+      Math.abs(distanceX) <= Math.abs(distanceY)
+    ) {
+      return;
+    }
+
+    wasDragged = true;
+    viewport.classList.add("carousel__viewport--dragging");
+    if (!viewport.hasPointerCapture(event.pointerId)) {
+      viewport.setPointerCapture(event.pointerId);
+    }
+  });
+
+  viewport.addEventListener("pointerup", (event) => {
+    if (event.pointerId !== pointerId) return;
+
+    const distanceX = event.clientX - startX;
+    const distanceY = event.clientY - startY;
+    stopDragging(event);
+
+    if (
+      Math.abs(distanceX) < minSwipeDistance ||
+      Math.abs(distanceX) <= Math.abs(distanceY)
+    ) {
+      return;
+    }
+
+    wasDragged = true;
+    moveSlides(distanceX < 0 ? 1 : -1);
+  });
+
+  viewport.addEventListener("pointercancel", stopDragging);
+  viewport.addEventListener("lostpointercapture", (event) => {
+    if (event.target === viewport) {
+      stopDragging(event);
+    }
+  });  viewport.addEventListener("pointerleave", (event) => {
+    if (!viewport.hasPointerCapture(event.pointerId)) stopDragging(event);
+  });
+
+  viewport.addEventListener(
+    "click",
+    (event) => {
+      if (!wasDragged || event.detail === 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    { capture: true },
+  );
 
   section.className = "carousel";
   container.className = "carousel__container";

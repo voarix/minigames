@@ -139,6 +139,13 @@
   overflow: hidden;
   padding-bottom: tokens.$size-0-5;
   padding-right: tokens.$size-0-5;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  cursor: grab;
+
+  &--dragging {
+    cursor: grabbing;
+  }
 }
 
 .carousel__track {
