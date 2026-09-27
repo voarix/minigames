@@ -40,6 +40,7 @@ export const createGameCard = (game: GameCardData): HTMLElement => {
   image.src = game.image;
   image.alt = game.name;
   image.loading = "lazy";
+  image.draggable = false;
 
   title.textContent = game.name;
 

@@ -3,7 +3,11 @@ import { createGameCard } from "../game-card/game-card.ts";
 import { featuredGames } from "../../data/games.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
 
-const initialGames = [...featuredGames.slice(-2), ...featuredGames.slice(0, 3)];
+const initialGames = [
+  ...featuredGames.slice(-2),
+  ...featuredGames.slice(0, -2),
+];
+const initialSlidePositions = ["preview", "side", "center", "side", "preview"];
 
 export const createCarousel = (): HTMLElement => {
   const section = document.createElement("section");
@@ -64,10 +68,11 @@ export const createCarousel = (): HTMLElement => {
 
   section.setAttribute("aria-labelledby", title.id);
 
-  for (const game of initialGames) {
+  for (const [index, game] of initialGames.entries()) {
     const slide = document.createElement("div");
+    const position = initialSlidePositions[index] ?? "hidden";
 
-    slide.className = "carousel__slide";
+    slide.className = `carousel__slide carousel__slide--${position}`;
     slide.append(createGameCard(game));
     track.append(slide);
   }
