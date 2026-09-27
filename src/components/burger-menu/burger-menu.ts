@@ -11,11 +11,12 @@ interface BurgerMenu {
 interface BurgerMenuOptions {
   readonly onLogin: () => void;
   readonly onRegister: () => void;
+  readonly onNavigate: (page: "home" | "library") => void;
 }
 
 export const createBurgerMenu = (
   navigationItems: readonly string[],
-  { onLogin, onRegister }: BurgerMenuOptions,
+  { onLogin, onRegister, onNavigate }: BurgerMenuOptions,
 ): BurgerMenu => {
   const button = document.createElement("button");
   const buttonImage = document.createElement("img");
@@ -76,9 +77,10 @@ export const createBurgerMenu = (
     link.href = "./";
     link.textContent = item;
 
-    if (item === "Home") {
-      link.classList.add("burger-menu__navigation-link--active");
-    }
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      onNavigate(item === "Library" ? "library" : "home");
+    });
 
     listItem.append(link);
     navigationList.append(listItem);
@@ -137,6 +139,12 @@ export const createBurgerMenu = (
     if (event.target instanceof HTMLAnchorElement) {
       setMenuState(false);
     }
+  });
+
+  panelLogo.addEventListener("click", (event) => {
+    event.preventDefault();
+    setMenuState(false);
+    onNavigate("home");
   });
 
   document.addEventListener("keydown", (event: KeyboardEvent) => {

@@ -1,0 +1,43 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.library-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: tokens.$size-3;
+  margin-top: tokens.$size-2;
+  padding: 0;
+  list-style: none;
+}
+
+.library-cards__item {
+  display: grid;
+}
+
+@include mixins.media-max(tokens.$breakpoint-carousel-compact) {
+  .library-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .library-cards__item:nth-child(2) {
+    grid-row: 3;
+  }
+
+  .library-cards__item:nth-child(3) {
+    grid-row: 2;
+  }
+
+  .library-cards__item:nth-child(5) {
+    grid-row: 6;
+  }
+
+  .library-cards__item:nth-child(6) {
+    grid-row: 5;
+  }
+}
+
+@include mixins.media-max(tokens.$breakpoint-mobile) {
+  .library-cards {
+    gap: tokens.$size-2;
+  }
+}

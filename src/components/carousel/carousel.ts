@@ -2,10 +2,17 @@ import "./carousel.scss";
 import { createGameCard } from "../game-card/game-card.ts";
 import { featuredGames } from "../../data/games.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
+import { createCarouselAutoplay } from "./carousel-autoplay.ts";
 
-const initialGames = [...featuredGames.slice(-2), ...featuredGames.slice(0, 3)];
+const minDragDistance = 5;
+const minSwipeDistance = 40;
 
-export const createCarousel = (): HTMLElement => {
+interface Carousel {
+  readonly element: HTMLElement;
+  readonly destroy: () => void;
+}
+
+export const createCarousel = (onDetails: () => void): Carousel => {
   const section = document.createElement("section");
   const container = document.createElement("div");
   const header = document.createElement("div");
@@ -21,6 +28,146 @@ export const createCarousel = (): HTMLElement => {
 
   const viewport = document.createElement("div");
   const track = document.createElement("div");
+  const slides: HTMLDivElement[] = [];
+  let currentIndex = 0;
+
+  const updateSlides = (): void => {
+    const halfLength = Math.floor(slides.length / 2);
+
+    for (const [index, slide] of slides.entries()) {
+      let position = index - currentIndex;
+
+      if (position > halfLength) {
+        position -= slides.length;
+      } else if (position < -halfLength) {
+        position += slides.length;
+      }
+
+      slide.dataset.position = String(position);
+      slide.classList.toggle("carousel__slide--hidden", Math.abs(position) > 3);
+    }
+  };
+
+  const moveSlides = (direction: -1 | 1): void => {
+    if (track.classList.contains("carousel__track--moving")) return;
+    track.classList.add("carousel__track--moving");
+    currentIndex = (currentIndex + direction + slides.length) % slides.length;
+    updateSlides();
+  };
+
+  const autoplay = createCarouselAutoplay(() => {
+    moveSlides(1);
+  });
+
+  const moveManually = (direction: -1 | 1): void => {
+    if (track.classList.contains("carousel__track--moving")) return;
+
+    moveSlides(direction);
+    autoplay.reset();
+  };
+
+  const finishMove = (event: TransitionEvent): void => {
+    if (
+      event.target !== slides[currentIndex] ||
+      event.propertyName !== "left"
+    ) {
+      return;
+    }
+
+    track.classList.remove("carousel__track--moving");
+  };
+
+  track.addEventListener("transitionend", finishMove);
+  track.addEventListener("transitioncancel", finishMove);
+
+  let pointerId: number | undefined;
+  let startX = 0;
+  let startY = 0;
+  let wasDragged = false;
+
+  const stopDragging = (event: PointerEvent): void => {
+    if (event.pointerId !== pointerId) return;
+
+    pointerId = undefined;
+    viewport.classList.remove("carousel__viewport--dragging");
+
+    if (viewport.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+
+    autoplay.start();
+  };
+
+  viewport.addEventListener("pointerdown", (event) => {
+    if (pointerId !== undefined || !event.isPrimary || event.button !== 0) {
+      return;
+    }
+
+    wasDragged = false;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    autoplay.pause();
+  });
+
+  viewport.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+
+    const distanceX = event.clientX - startX;
+    const distanceY = event.clientY - startY;
+
+    if (
+      Math.abs(distanceX) < minDragDistance ||
+      Math.abs(distanceX) <= Math.abs(distanceY)
+    ) {
+      return;
+    }
+
+    wasDragged = true;
+    viewport.classList.add("carousel__viewport--dragging");
+    if (!viewport.hasPointerCapture(event.pointerId)) {
+      viewport.setPointerCapture(event.pointerId);
+    }
+  });
+
+  viewport.addEventListener("pointerup", (event) => {
+    if (event.pointerId !== pointerId) return;
+
+    const distanceX = event.clientX - startX;
+    const distanceY = event.clientY - startY;
+    stopDragging(event);
+
+    if (
+      Math.abs(distanceX) < minSwipeDistance ||
+      Math.abs(distanceX) <= Math.abs(distanceY)
+    ) {
+      return;
+    }
+
+    wasDragged = true;
+    moveManually(distanceX < 0 ? 1 : -1);
+  });
+
+  viewport.addEventListener("pointercancel", stopDragging);
+  viewport.addEventListener("lostpointercapture", (event) => {
+    if (event.target === viewport) {
+      stopDragging(event);
+    }
+  });
+  viewport.addEventListener("pointerleave", (event) => {
+    if (!viewport.hasPointerCapture(event.pointerId)) stopDragging(event);
+  });
+
+  viewport.addEventListener(
+    "click",
+    (event) => {
+      if (!wasDragged || event.detail === 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    { capture: true },
+  );
 
   section.className = "carousel";
   container.className = "carousel__container";
@@ -51,6 +198,13 @@ export const createCarousel = (): HTMLElement => {
   nextButton.type = "button";
   nextButton.setAttribute("aria-label", "Next games");
 
+  previousButton.addEventListener("click", () => {
+    moveManually(-1);
+  });
+  nextButton.addEventListener("click", () => {
+    moveManually(1);
+  });
+
   previousIcon.src = arrowIcon;
   previousIcon.alt = "";
   previousIcon.draggable = false;
@@ -64,13 +218,16 @@ export const createCarousel = (): HTMLElement => {
 
   section.setAttribute("aria-labelledby", title.id);
 
-  for (const game of initialGames) {
+  for (const game of featuredGames) {
     const slide = document.createElement("div");
 
     slide.className = "carousel__slide";
-    slide.append(createGameCard(game));
+    slide.append(createGameCard(game, onDetails));
+    slides.push(slide);
     track.append(slide);
   }
+
+  updateSlides();
 
   heading.append(accent, title);
   controls.append(previousButton, nextButton);
@@ -79,5 +236,7 @@ export const createCarousel = (): HTMLElement => {
   container.append(header, viewport);
   section.append(container);
 
-  return section;
+  autoplay.start();
+
+  return { element: section, destroy: autoplay.destroy };
 };

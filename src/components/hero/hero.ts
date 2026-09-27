@@ -1,6 +1,6 @@
 import "./hero.scss";
 
-export const createHero = (): HTMLElement => {
+export const createHero = (onBrowseLibrary: () => void): HTMLElement => {
   const hero = document.createElement("section");
   const container = document.createElement("div");
   const content = document.createElement("div");
@@ -37,6 +37,7 @@ export const createHero = (): HTMLElement => {
 
   button.type = "button";
   button.textContent = "Browse Library";
+  button.addEventListener("click", onBrowseLibrary);
 
   content.append(title, description, button);
   container.append(content);

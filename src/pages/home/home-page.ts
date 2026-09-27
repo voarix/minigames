@@ -3,14 +3,22 @@ import { createGameDeveloper } from "../../components/game-developer/game-develo
 import { createHero } from "../../components/hero/hero.ts";
 import { createLeaderboard } from "../../components/leaderboard/leaderboard.ts";
 
-export const createHomePage = (): HTMLElement => {
+interface HomePage {
+  readonly element: HTMLElement;
+  readonly destroy: () => void;
+}
+
+export const createHomePage = (
+  onDetails: () => void,
+  onBrowseLibrary: () => void,
+): HomePage => {
   const main = document.createElement("main");
-  const hero = createHero();
-  const carousel = createCarousel();
+  const hero = createHero(onBrowseLibrary);
+  const carousel = createCarousel(onDetails);
   const leaderboard = createLeaderboard();
   const gameDeveloper = createGameDeveloper();
 
-  main.append(hero, carousel, leaderboard, gameDeveloper);
+  main.append(hero, carousel.element, leaderboard, gameDeveloper);
 
-  return main;
+  return { element: main, destroy: carousel.destroy };
 };

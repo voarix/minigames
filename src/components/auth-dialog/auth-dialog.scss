@@ -65,37 +65,6 @@
   transform: translateY(0) scale(1);
 }
 
-.auth-dialog__close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  padding: 0;
-  border: 0;
-  border-radius: tokens.$corner-small;
-  background-color: transparent;
-  cursor: pointer;
-  transform: translate(50%, -50%);
-
-  transition:
-    outline-color tokens.$transition-duration-fast ease,
-    transform tokens.$transition-duration-fast ease;
-
-  &:hover {
-    transform: translate(50%, -50%) scale(tokens.$auth-dialog-close-hover-scale);
-  }
-
-  &:focus-visible {
-    outline: tokens.$border-width-regular solid tokens.$color-primary;
-    outline-offset: tokens.$size-0-5;
-  }
-}
-
-.auth-dialog__close-icon {
-  width: tokens.$size-4;
-  height: tokens.$size-4;
-}
-
 .auth-dialog__tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -120,7 +89,14 @@
     color tokens.$transition-duration-fast ease,
     background-color tokens.$transition-duration-fast ease;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: tokens.$color-on-primary;
+      background-color: tokens.$color-surface;
+      outline: none;
+    }
+  }
+
   &:focus-visible {
     color: tokens.$color-on-primary;
     background-color: tokens.$color-surface;
@@ -132,8 +108,14 @@
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .auth-dialog__tab--active:hover {
+    color: tokens.$color-white;
+    background-color: tokens.$color-bg-footer-low;
+  }
+}
+
 .auth-dialog__tab--active,
-.auth-dialog__tab--active:hover,
 .auth-dialog__tab--active:focus-visible {
   color: tokens.$color-white;
   background-color: tokens.$color-bg-footer-low;
@@ -221,8 +203,10 @@
     color: tokens.$color-on-bg-low;
   }
 
-  &:hover {
-    background-color: tokens.$color-surface-low;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface-low;
+    }
   }
 
   &:focus {
@@ -274,16 +258,20 @@
   background-color: tokens.$color-primary;
   box-shadow: tokens.$shadow-level-1;
 
-  &:hover {
-    background-color: tokens.$color-primary-high;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
   }
 }
 
 .auth-dialog__google-button {
   background-color: tokens.$color-white;
 
-  &:hover {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
   }
 }
 
@@ -325,7 +313,12 @@
   text-underline-offset: tokens.$border-width-regular;
   cursor: pointer;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: tokens.$color-on-primary;
+    }
+  }
+
   &:focus-visible {
     color: tokens.$color-on-primary;
   }

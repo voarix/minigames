@@ -6,6 +6,7 @@ $color-black: #000000;
 $color-bg: #f9f8f3;
 $color-on-bg: #5f5d75;
 $color-on-bg-low: #737380;
+$color-text-placeholder: #969696;
 
 $color-bg-footer: #1e1b3a;
 $color-bg-footer-low: #2a264f;
@@ -106,7 +107,8 @@ $button-padding-medium-block: 10px;
 $button-padding-small-inline: 16px;
 $button-padding-small-block: 8px;
 
-$button-padding-icon: 8px;
+$button-padding-icon: 6px;
+$button-padding-icon-mobile: 3px;
 
 // Shadows
 $shadow-level-1: 4px 4px 0 $color-on-primary;
@@ -133,9 +135,11 @@ $hero-height-tablet: 383px;
 $hero-height-mobile: 331px;
 $hero-content-height-desktop: 403px;
 $hero-content-width-desktop: 640px;
+$hero-content-width-compact: 560px;
 $hero-content-width-tablet: 480px;
 
 // Carousel
+$carousel-transition-duration: 400ms;
 $carousel-card-height-desktop: 388px;
 $carousel-card-height-compact: 320px;
 $carousel-card-height-tablet: 284px;
@@ -174,6 +178,10 @@ $game-developer-card-min-height-desktop: 344px;
 $game-developer-copy-width-desktop: 590px;
 $game-developer-copy-width-tablet: 560px;
 
+// Footer
+$footer-brand-max-width: 400px;
+$footer-navigation-max-width: 520px;
+
 // Auth dialog
 $auth-dialog-width: 420px;
 $auth-dialog-login-height: 623px;
@@ -188,3 +196,21 @@ $auth-dialog-close-hover-scale: 1.06;
 $auth-dialog-title-line-height: 1.2;
 $auth-dialog-description-line-height: 1.4;
 $z-index-auth-dialog: 1000;
+
+// Library filters
+$library-sort-button-padding-block: 12px;
+$library-sort-check-size: 14px;
+
+// Library cards
+$library-card-height-desktop: 152px;
+
+// Game details
+$game-details-panel-width: 600px;
+$game-details-hero-height: 220px;
+$game-details-mobile-layout: 600px;
+$game-details-comment-max-height: 88px;
+$game-details-comment-border-color: #111111;
+$game-details-duration: 200ms;
+$game-details-comment-avatar-size: 28px;
+$game-details-comment-line-height: 18px;
+$game-details-user-avatar-border-width: 1.5px;

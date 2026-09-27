@@ -15,6 +15,10 @@ interface SocialLink {
   readonly icon: string;
 }
 
+interface FooterOptions {
+  readonly onNavigate: (page: "home" | "library") => void;
+}
+
 const navigationGroups: readonly FooterNavigationGroup[] = [
   {
     title: "Explore",
@@ -35,6 +39,7 @@ const socialLinks: readonly SocialLink[] = [
 const createNavigationGroup = (
   group: FooterNavigationGroup,
   index: number,
+  onNavigate: (page: "home" | "library") => void,
 ): HTMLElement => {
   const navigation = document.createElement("nav");
   const title = document.createElement("h2");
@@ -61,6 +66,11 @@ const createNavigationGroup = (
 
     listItem.append(link);
     list.append(listItem);
+
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      onNavigate(item === "Library" ? "library" : "home");
+    });
   }
 
   navigation.append(title, list);
@@ -68,7 +78,9 @@ const createNavigationGroup = (
   return navigation;
 };
 
-const createSocialNavigation = (): HTMLElement => {
+const createSocialNavigation = (
+  onNavigate: (page: "home" | "library") => void,
+): HTMLElement => {
   const navigation = document.createElement("nav");
   const title = document.createElement("h2");
   const list = document.createElement("ul");
@@ -98,6 +110,11 @@ const createSocialNavigation = (): HTMLElement => {
     accessibleLabel.textContent = label;
     icon.setAttribute("aria-hidden", "true");
 
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      onNavigate("home");
+    });
+
     link.append(icon, accessibleLabel);
     listItem.append(link);
     list.append(listItem);
@@ -108,7 +125,7 @@ const createSocialNavigation = (): HTMLElement => {
   return navigation;
 };
 
-export const createFooter = (): HTMLElement => {
+export const createFooter = ({ onNavigate }: FooterOptions): HTMLElement => {
   const footer = document.createElement("footer");
   const container = document.createElement("div");
   const content = document.createElement("div");
@@ -151,14 +168,19 @@ export const createFooter = (): HTMLElement => {
   logoImage.src = logoIcon;
   logoImage.alt = "";
   logoText.textContent = "MiniGames";
+  logo.addEventListener("click", (event) => {
+    event.preventDefault();
+    onNavigate("home");
+  });
+
   description.textContent =
     "Take a short break and have fun. Hundreds of curated casual mini-games right in your web browser. No download required.";
 
   for (const [index, group] of navigationGroups.entries()) {
-    navigation.append(createNavigationGroup(group, index));
+    navigation.append(createNavigationGroup(group, index, onNavigate));
   }
 
-  navigation.append(createSocialNavigation());
+  navigation.append(createSocialNavigation(onNavigate));
 
   copyright.textContent = "© 2026 MiniGames. All rights reserved.";
 

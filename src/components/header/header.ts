@@ -12,11 +12,13 @@ const navigationItems: string[] = [
 interface HeaderOptions {
   readonly onLogin: () => void;
   readonly onRegister: () => void;
+  readonly onNavigate: (page: "home" | "library") => void;
 }
 
 export const createHeader = ({
   onLogin,
   onRegister,
+  onNavigate,
 }: HeaderOptions): HTMLElement => {
   const header = document.createElement("header");
   const container = document.createElement("div");
@@ -34,6 +36,7 @@ export const createHeader = ({
   const burgerMenu = createBurgerMenu(navigationItems, {
     onLogin,
     onRegister,
+    onNavigate,
   });
 
   header.className = "header";
@@ -56,6 +59,11 @@ export const createHeader = ({
   logoText.textContent = "MiniGames";
   logo.append(logoImage, logoText);
 
+  logo.addEventListener("click", (event) => {
+    event.preventDefault();
+    onNavigate("home");
+  });
+
   for (const item of navigationItems) {
     const listItem = document.createElement("li");
     const link = document.createElement("a");
@@ -63,9 +71,10 @@ export const createHeader = ({
     listItem.className = "header__navigation-item";
     link.className = "header__navigation-link";
 
-    if (item === "Home") {
-      link.classList.add("header__navigation-link--active");
-    }
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      onNavigate(item === "Library" ? "library" : "home");
+    });
 
     link.href = "./";
     link.textContent = item;
