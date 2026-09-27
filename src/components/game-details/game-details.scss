@@ -274,7 +274,7 @@
 
 @include mixins.media-max(tokens.$game-details-mobile-layout) {
   .game-details {
-    padding: tokens.$size-1;
+    padding: 0;
   }
 
   .game-details__close {
