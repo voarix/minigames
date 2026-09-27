@@ -228,7 +228,8 @@
   }
 }
 
-.game-details__favorite::before {
+.game-details__favorite::before,
+.game-details__comment-like::before {
   content: "";
   flex-shrink: 0;
   width: tokens.$size-3;
@@ -269,6 +270,158 @@
     color: tokens.$color-on-bg-low;
     font-size: tokens.$font-size-label-medium;
     font-weight: tokens.$font-weight-regular;
+  }
+}
+
+.game-details__comments {
+  margin-top: -1 * tokens.$size-3;
+}
+
+.game-details__comment-form {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-2;
+  margin-top: tokens.$size-2;
+
+  textarea {
+    flex: 1;
+    min-width: 0;
+    min-height: tokens.$size-6;
+    max-height: tokens.$game-details-comment-max-height;
+    padding: tokens.$size-1 tokens.$size-2;
+    resize: none;
+    overflow-y: auto;
+    border: tokens.$border-width-thin solid tokens.$color-on-primary;
+    border-radius: tokens.$corner-small;
+    background-color: tokens.$color-white;
+    color: tokens.$color-on-primary;
+    font: inherit;
+    font-size: tokens.$font-size-body-small;
+    line-height: tokens.$game-details-comment-line-height;
+
+    &::placeholder {
+      color: tokens.$color-text-placeholder;
+      opacity: 1;
+    }
+  }
+}
+
+.game-details__avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: tokens.$game-details-comment-avatar-size;
+  height: tokens.$game-details-comment-avatar-size;
+  border: tokens.$border-width-thin solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-full;
+  background-color: tokens.$color-avatar-random-3;
+  font-size: tokens.$font-size-label-medium;
+  font-weight: tokens.$font-weight-bold;
+
+  &--user {
+    width: tokens.$size-5;
+    height: tokens.$size-5;
+    border-width: tokens.$game-details-user-avatar-border-width;
+    background-color: tokens.$color-primary;
+    font-size: tokens.$font-size-label-large;
+  }
+}
+
+.game-details__submit {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: tokens.$size-5;
+  height: tokens.$size-5;
+  padding: tokens.$button-padding-icon;
+  border: 0;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-white;
+  background-color: tokens.$color-bg-footer-low;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    width: tokens.$size-3;
+    height: tokens.$size-3;
+    background-color: currentColor;
+    mask: url("../../assets/icons/send.svg") center / contain no-repeat;
+  }
+
+  &:hover {
+    background-color: tokens.$color-bg-footer-lowest;
+  }
+}
+
+.game-details__comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$size-2;
+  margin: tokens.$size-2 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: tokens.$size-2 15px; // use to match the mockup
+    border-radius: tokens.$corner-medium;
+    background-color: tokens.$color-white;
+    box-shadow: tokens.$shadow-level-1;
+  }
+
+  li:nth-child(2) .game-details__avatar {
+    background-color: tokens.$color-primary;
+  }
+
+  li:nth-child(3) .game-details__avatar {
+    background-color: tokens.$color-avatar-random-1;
+  }
+
+  p {
+    margin-top: tokens.$size-1;
+    font-size: tokens.$font-size-body-small;
+    line-height: tokens.$game-details-comment-line-height;
+  }
+}
+
+.game-details__comment-heading {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-1;
+  font-size: tokens.$font-size-label-large;
+  font-weight: tokens.$font-weight-bold;
+
+  span:last-child {
+    margin-left: auto;
+    color: tokens.$color-on-bg;
+    font-size: tokens.$font-size-label-medium;
+    font-weight: tokens.$font-weight-regular;
+  }
+}
+
+.game-details__comment-like {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-0-5;
+  margin-top: tokens.$size-1;
+  padding: 0;
+  border: 0;
+  color: tokens.$color-on-primary;
+  background-color: transparent;
+  font: inherit;
+  font-size: tokens.$font-size-label-medium;
+  font-weight: tokens.$font-weight-bold;
+  line-height: tokens.$size-2;
+  cursor: pointer;
+
+  &::before {
+    width: tokens.$size-2;
+    height: tokens.$size-2;
+    background-color: tokens.$color-on-bg;
+  }
+
+  &:hover::before,
+  &--active::before {
+    background-color: tokens.$color-like;
   }
 }
 
