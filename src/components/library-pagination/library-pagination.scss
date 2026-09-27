@@ -24,8 +24,10 @@
   font: inherit;
   cursor: pointer;
 
-  &:hover:not(:disabled):not(.library-pagination__button--active) {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled):not(.library-pagination__button--active) {
+      background-color: tokens.$color-surface;
+    }
   }
 
   &:disabled {
@@ -56,7 +58,8 @@
 
 @include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
   .library-pagination {
-    margin-bottom: 10px; // Match the spacing below pagination in the mockup
+    margin-top: tokens.$size-3;
+    margin-bottom: 10px; // 2px more than the 8px spacing token to match the mockup
   }
 
   .library-pagination__pages .library-pagination__button:last-child {

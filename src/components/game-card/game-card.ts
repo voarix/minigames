@@ -51,11 +51,13 @@ export const createGameCard = (
   ratingIcon.src = starIcon;
   ratingIcon.alt = "";
   ratingValue.textContent = game.rating.toFixed(1);
+  rating.setAttribute("role", "img");
   rating.setAttribute("aria-label", `Rating ${game.rating} out of 5`);
 
   likesIcon.src = favoriteIcon;
   likesIcon.alt = "";
   likesValue.textContent = formatLikesCount(game.likesCount);
+  likes.setAttribute("role", "img");
   likes.setAttribute("aria-label", `${game.likesCount} likes`);
 
   rating.append(ratingIcon, ratingValue);

@@ -65,6 +65,10 @@ export const createGameDetailsInfo = (): HTMLElement => {
       "game-details__favorite--active",
     );
     favoriteButton.setAttribute("aria-pressed", String(isActive));
+    favoriteLabel.textContent = isActive
+      ? "Remove from Favorites"
+      : "Add to Favorites";
+    favoriteButton.setAttribute("aria-label", favoriteLabel.textContent);
   });
   actions.append(playButton, favoriteButton);
   info.append(heading, description, specs, actions);

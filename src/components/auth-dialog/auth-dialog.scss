@@ -89,7 +89,14 @@
     color tokens.$transition-duration-fast ease,
     background-color tokens.$transition-duration-fast ease;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: tokens.$color-on-primary;
+      background-color: tokens.$color-surface;
+      outline: none;
+    }
+  }
+
   &:focus-visible {
     color: tokens.$color-on-primary;
     background-color: tokens.$color-surface;
@@ -101,8 +108,14 @@
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .auth-dialog__tab--active:hover {
+    color: tokens.$color-white;
+    background-color: tokens.$color-bg-footer-low;
+  }
+}
+
 .auth-dialog__tab--active,
-.auth-dialog__tab--active:hover,
 .auth-dialog__tab--active:focus-visible {
   color: tokens.$color-white;
   background-color: tokens.$color-bg-footer-low;
@@ -190,8 +203,10 @@
     color: tokens.$color-on-bg-low;
   }
 
-  &:hover {
-    background-color: tokens.$color-surface-low;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface-low;
+    }
   }
 
   &:focus {
@@ -243,16 +258,20 @@
   background-color: tokens.$color-primary;
   box-shadow: tokens.$shadow-level-1;
 
-  &:hover {
-    background-color: tokens.$color-primary-high;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
   }
 }
 
 .auth-dialog__google-button {
   background-color: tokens.$color-white;
 
-  &:hover {
-    background-color: tokens.$color-surface;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-surface;
+    }
   }
 }
 
@@ -294,7 +313,12 @@
   text-underline-offset: tokens.$border-width-regular;
   cursor: pointer;
 
-  &:hover,
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: tokens.$color-on-primary;
+    }
+  }
+
   &:focus-visible {
     color: tokens.$color-on-primary;
   }

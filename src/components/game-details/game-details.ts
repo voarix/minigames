@@ -13,7 +13,7 @@ interface GameDetailsDialog {
 
 export const createGameDetails = (): GameDetailsDialog => {
   const dialog = document.createElement("dialog");
-  const panel = document.createElement("section");
+  const panel = document.createElement("div");
   const closeButton = document.createElement("button");
   const closeImage = document.createElement("img");
   const hero = document.createElement("img");
@@ -26,7 +26,6 @@ export const createGameDetails = (): GameDetailsDialog => {
   hero.src = heroImage;
   hero.alt = "Tukoni: Forest Keepers forest characters";
   content.className = "game-details__body";
-  dialog.setAttribute("aria-labelledby", "game-details-title");
 
   closeButton.type = "button";
   closeButton.setAttribute("aria-label", "Close game details");
@@ -50,6 +49,7 @@ export const createGameDetails = (): GameDetailsDialog => {
       createGameDetailsRecords(),
       createGameDetailsComments(),
     );
+    dialog.setAttribute("aria-labelledby", "game-details-title");
     dialog.showModal();
     document.body.classList.add("game-details-open");
     dialog.scrollTop = 0;
