@@ -7,7 +7,7 @@ import { createLibraryPage } from "../pages/library/library-pages.ts";
 
 export const startApp = (): void => {
   const gameDetails = createGameDetails();
-  const homePage = createHomePage(gameDetails.open);
+  const homePage = createHomePage(gameDetails.open, () => showPage("library"));
   let main: HTMLElement = homePage.element;
   let destroyPage: (() => void) | undefined = homePage.destroy;
 
@@ -19,7 +19,9 @@ export const startApp = (): void => {
       otherMain = createLibraryPage(gameDetails.open);
       destroyPage = undefined;
     } else {
-      const nextHomePage = createHomePage(gameDetails.open);
+      const nextHomePage = createHomePage(gameDetails.open, () =>
+        showPage("library"),
+      );
       otherMain = nextHomePage.element;
       destroyPage = nextHomePage.destroy;
     }
