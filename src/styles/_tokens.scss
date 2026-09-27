@@ -6,6 +6,7 @@ $color-black: #000000;
 $color-bg: #f9f8f3;
 $color-on-bg: #5f5d75;
 $color-on-bg-low: #737380;
+$color-text-placeholder: #969696;
 
 $color-bg-footer: #1e1b3a;
 $color-bg-footer-low: #2a264f;
@@ -106,7 +107,8 @@ $button-padding-medium-block: 10px;
 $button-padding-small-inline: 16px;
 $button-padding-small-block: 8px;
 
-$button-padding-icon: 8px;
+$button-padding-icon: 6px;
+$button-padding-icon-mobile: 3px;
 
 // Shadows
 $shadow-level-1: 4px 4px 0 $color-on-primary;
@@ -192,5 +194,12 @@ $z-index-auth-dialog: 1000;
 // Library cards
 $library-card-height-desktop: 152px;
 
-$game-details-panel-width: 960px;
+// Game details
+$game-details-panel-width: 600px;
+$game-details-hero-height: 220px;
+$game-details-mobile-layout: 600px;
+$game-details-comment-max-height: 88px;
 $game-details-duration: 200ms;
+$game-details-comment-avatar-size: 28px;
+$game-details-comment-line-height: 18px;
+$game-details-user-avatar-border-width: 1.5px;
