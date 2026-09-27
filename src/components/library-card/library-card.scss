@@ -122,7 +122,7 @@
 @include mixins.media-max(tokens.$breakpoint-compact-desktop) {
   .library-card {
     grid-template-columns: 39% minmax(0, 1fr);
-    height: tokens.$library-card-height-desktop;
+    min-height: tokens.$library-card-height-desktop;
   }
 
   .library-card__content {
