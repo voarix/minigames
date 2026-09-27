@@ -399,12 +399,15 @@
 }
 
 .game-details__comment-like {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: tokens.$size-0-5;
   margin-top: tokens.$size-1;
   padding: 0;
   border: 0;
+  border-radius: tokens.$corner-full;
   color: tokens.$color-on-primary;
   background-color: transparent;
   font: inherit;
@@ -419,7 +422,25 @@
     background-color: tokens.$color-on-bg;
   }
 
-  &:hover,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -#{tokens.$size-0-5} -#{tokens.$size-1};
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  &:hover {
+    &::after {
+      background-color: tokens.$color-surface;
+    }
+
+    &::before {
+      background-color: currentColor;
+    }
+  }
+
   &--active {
     color: tokens.$color-like;
 
