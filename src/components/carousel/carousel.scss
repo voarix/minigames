@@ -1,6 +1,56 @@
 @use "../../styles/tokens" as tokens;
 @use "../../styles/mixins" as mixins;
 
+@mixin carousel-layout(
+  $side-width,
+  $preview-width: $side-width,
+  $show-previews: false
+) {
+  $gap: tokens.$size-1;
+  $preview-left: -($preview-width + $gap);
+  $side-left: 0px;
+
+  @if $show-previews {
+    $preview-left: 0px;
+    $side-left: $preview-width + $gap;
+  }
+
+  $center-left: $side-left + $side-width + $gap;
+
+  .carousel__slide {
+    left: calc(100% + $gap);
+    width: $preview-width;
+  }
+
+  .carousel__slide[data-position="-4"],
+  .carousel__slide[data-position="-3"] {
+    left: -($preview-width + $gap);
+  }
+
+  .carousel__slide[data-position="-2"] {
+    left: $preview-left;
+  }
+
+  .carousel__slide[data-position="-1"] {
+    left: $side-left;
+    width: $side-width;
+  }
+
+  .carousel__slide[data-position="0"] {
+    left: $center-left;
+    width: calc(100% - 2 * $center-left);
+  }
+
+  .carousel__slide[data-position="1"] {
+    left: calc(100% - $side-left - $side-width);
+    width: $side-width;
+  }
+
+  .carousel__slide[data-position="2"] {
+    left: calc(100% - $preview-left - $preview-width);
+  }
+}
+
 .carousel {
   background-color: tokens.$color-bg;
 }
@@ -89,36 +139,51 @@
   overflow: hidden;
   padding-bottom: tokens.$size-0-5;
   padding-right: tokens.$size-0-5;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  cursor: grab;
+
+  &--dragging,
+  &--dragging .game-card {
+    cursor: grabbing;
+  }
 }
 
 .carousel__track {
-  display: flex;
-  gap: tokens.$size-1;
+  position: relative;
   width: 100%;
   height: tokens.$carousel-card-height-desktop;
 }
 
 .carousel__slide {
+  position: absolute;
+  top: 0;
   min-width: 0;
   height: 100%;
-  flex-shrink: 0;
+  container: carousel-card / inline-size;
 }
 
-.carousel__slide:nth-child(1),
-.carousel__slide:nth-child(5) {
-  width: tokens.$carousel-card-preview-width-desktop;
+.carousel__track--moving .carousel__slide:not(.carousel__slide--hidden) {
+  transition:
+    left tokens.$carousel-transition-duration ease,
+    width tokens.$carousel-transition-duration ease;
 }
 
-.carousel__slide:nth-child(2),
-.carousel__slide:nth-child(4) {
-  width: tokens.$carousel-card-side-width-desktop;
+.carousel__slide--hidden {
+  visibility: hidden;
 }
 
-.carousel__slide:nth-child(3) {
-  flex: 1;
-}
+@include carousel-layout(
+  $side-width: tokens.$carousel-card-side-width-desktop,
+  $preview-width: tokens.$carousel-card-preview-width-desktop,
+  $show-previews: true
+);
 
 @include mixins.media-max(tokens.$breakpoint-carousel-compact) {
+  @include carousel-layout(
+    $side-width: tokens.$carousel-card-side-width-compact
+  );
+
   .carousel__container {
     padding: tokens.$size-5 tokens.$size-8;
   }
@@ -126,19 +191,13 @@
   .carousel__track {
     height: tokens.$carousel-card-height-compact;
   }
-
-  .carousel__slide:nth-child(1),
-  .carousel__slide:nth-child(5) {
-    display: none;
-  }
-
-  .carousel__slide:nth-child(2),
-  .carousel__slide:nth-child(4) {
-    width: tokens.$carousel-card-side-width-compact;
-  }
 }
 
 @include mixins.media-max(tokens.$breakpoint-tablet) {
+  @include carousel-layout(
+    $side-width: tokens.$carousel-card-side-width-tablet
+  );
+
   .carousel__container {
     padding: tokens.$size-3 tokens.$size-5;
   }
@@ -163,30 +222,19 @@
   .carousel__track {
     height: tokens.$carousel-card-height-tablet;
   }
-
-  .carousel__slide:nth-child(2),
-  .carousel__slide:nth-child(4) {
-    width: tokens.$carousel-card-side-width-tablet;
-  }
 }
 
 @include mixins.media-max(tokens.$breakpoint-carousel-mobile-layout) {
+  @include carousel-layout(
+    $side-width: tokens.$carousel-card-side-width-mobile
+  );
+
   .carousel__container {
     padding: tokens.$size-3 tokens.$size-2;
   }
 
   .carousel__track {
     height: tokens.$carousel-card-height-mobile;
-  }
-
-  .carousel__slide:nth-child(2),
-  .carousel__slide:nth-child(4) {
-    width: tokens.$carousel-card-side-width-mobile;
-  }
-
-  .carousel__slide:nth-child(3) {
-    min-width: 0;
-    flex: 1;
   }
 }
 

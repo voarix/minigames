@@ -8,7 +8,10 @@ const formatLikesCount = (likesCount: number): string =>
     ? String(likesCount)
     : `${Math.floor(likesCount / 100) / 10}K`;
 
-export const createGameCard = (game: GameCardData): HTMLElement => {
+export const createGameCard = (
+  game: GameCardData,
+  onDetails: () => void,
+): HTMLElement => {
   const card = document.createElement("article");
   const image = document.createElement("img");
   const information = document.createElement("div");
@@ -24,6 +27,7 @@ export const createGameCard = (game: GameCardData): HTMLElement => {
   const likesValue = document.createElement("span");
 
   card.className = "game-card";
+  card.addEventListener("click", onDetails);
   image.className = "game-card__image";
   information.className = "game-card__information";
   title.className = "game-card__title";
@@ -40,6 +44,7 @@ export const createGameCard = (game: GameCardData): HTMLElement => {
   image.src = game.image;
   image.alt = game.name;
   image.loading = "lazy";
+  image.draggable = false;
 
   title.textContent = game.name;
 

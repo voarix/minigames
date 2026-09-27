@@ -10,20 +10,7 @@
   border-radius: tokens.$corner-extra-large;
   background-color: tokens.$color-black;
   box-shadow: tokens.$shadow-level-1;
-  container-type: inline-size;
-
-  &::after {
-    position: absolute;
-    z-index: 1;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    height: tokens.$game-card-overlay-height;
-    background: tokens.$game-card-overlay-gradient;
-    content: "";
-    pointer-events: none;
-  }
+  cursor: pointer;
 }
 
 .game-card__image {
@@ -49,9 +36,10 @@
   height: tokens.$game-card-overlay-height;
   padding: tokens.$size-2;
   color: tokens.$color-white;
+  background: tokens.$game-card-overlay-gradient;
 }
 
-@container (min-width: #{tokens.$game-card-information-threshold}) {
+@container carousel-card (min-width: #{tokens.$game-card-information-threshold}) {
   .game-card__information {
     display: flex;
   }
