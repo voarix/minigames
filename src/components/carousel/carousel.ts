@@ -2,11 +2,17 @@ import "./carousel.scss";
 import { createGameCard } from "../game-card/game-card.ts";
 import { featuredGames } from "../../data/games.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
+import { createCarouselAutoplay } from "./carousel-autoplay.ts";
 
 const minDragDistance = 5;
 const minSwipeDistance = 40;
 
-export const createCarousel = (): HTMLElement => {
+interface Carousel {
+  readonly element: HTMLElement;
+  readonly destroy: () => void;
+}
+
+export const createCarousel = (onDetails: () => void): Carousel => {
   const section = document.createElement("section");
   const container = document.createElement("div");
   const header = document.createElement("div");
@@ -49,6 +55,17 @@ export const createCarousel = (): HTMLElement => {
     updateSlides();
   };
 
+  const autoplay = createCarouselAutoplay(() => {
+    moveSlides(1);
+  });
+
+  const moveManually = (direction: -1 | 1): void => {
+    if (track.classList.contains("carousel__track--moving")) return;
+
+    moveSlides(direction);
+    autoplay.reset();
+  };
+
   const finishMove = (event: TransitionEvent): void => {
     if (
       event.target !== slides[currentIndex] ||
@@ -77,6 +94,8 @@ export const createCarousel = (): HTMLElement => {
     if (viewport.hasPointerCapture(event.pointerId)) {
       viewport.releasePointerCapture(event.pointerId);
     }
+
+    autoplay.start();
   };
 
   viewport.addEventListener("pointerdown", (event) => {
@@ -85,11 +104,10 @@ export const createCarousel = (): HTMLElement => {
     }
 
     wasDragged = false;
-    if (track.classList.contains("carousel__track--moving")) return;
-
     pointerId = event.pointerId;
     startX = event.clientX;
     startY = event.clientY;
+    autoplay.pause();
   });
 
   viewport.addEventListener("pointermove", (event) => {
@@ -127,7 +145,7 @@ export const createCarousel = (): HTMLElement => {
     }
 
     wasDragged = true;
-    moveSlides(distanceX < 0 ? 1 : -1);
+    moveManually(distanceX < 0 ? 1 : -1);
   });
 
   viewport.addEventListener("pointercancel", stopDragging);
@@ -135,7 +153,8 @@ export const createCarousel = (): HTMLElement => {
     if (event.target === viewport) {
       stopDragging(event);
     }
-  });  viewport.addEventListener("pointerleave", (event) => {
+  });
+  viewport.addEventListener("pointerleave", (event) => {
     if (!viewport.hasPointerCapture(event.pointerId)) stopDragging(event);
   });
 
@@ -179,8 +198,12 @@ export const createCarousel = (): HTMLElement => {
   nextButton.type = "button";
   nextButton.setAttribute("aria-label", "Next games");
 
-  previousButton.addEventListener("click", () => moveSlides(-1));
-  nextButton.addEventListener("click", () => moveSlides(1));
+  previousButton.addEventListener("click", () => {
+    moveManually(-1);
+  });
+  nextButton.addEventListener("click", () => {
+    moveManually(1);
+  });
 
   previousIcon.src = arrowIcon;
   previousIcon.alt = "";
@@ -199,7 +222,7 @@ export const createCarousel = (): HTMLElement => {
     const slide = document.createElement("div");
 
     slide.className = "carousel__slide";
-    slide.append(createGameCard(game));
+    slide.append(createGameCard(game, onDetails));
     slides.push(slide);
     track.append(slide);
   }
@@ -213,5 +236,7 @@ export const createCarousel = (): HTMLElement => {
   container.append(header, viewport);
   section.append(container);
 
-  return section;
+  autoplay.start();
+
+  return { element: section, destroy: autoplay.destroy };
 };

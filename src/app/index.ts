@@ -7,13 +7,22 @@ import { createLibraryPage } from "../pages/library/library-pages.ts";
 
 export const startApp = (): void => {
   const gameDetails = createGameDetails();
-  let main: HTMLElement = createHomePage();
+  const homePage = createHomePage(gameDetails.open);
+  let main: HTMLElement = homePage.element;
+  let destroyPage: (() => void) | undefined = homePage.destroy;
 
   const showPage = (page: "home" | "library"): void => {
-    const otherMain =
-      page === "library"
-        ? createLibraryPage(gameDetails.open)
-        : createHomePage();
+    destroyPage?.();
+    let otherMain: HTMLElement;
+
+    if (page === "library") {
+      otherMain = createLibraryPage(gameDetails.open);
+      destroyPage = undefined;
+    } else {
+      const nextHomePage = createHomePage(gameDetails.open);
+      otherMain = nextHomePage.element;
+      destroyPage = nextHomePage.destroy;
+    }
 
     main.replaceWith(otherMain);
     main = otherMain;
