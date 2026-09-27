@@ -223,7 +223,7 @@
     background-color: tokens.$color-surface;
   }
 
-  &--active {
+  &--active::before {
     color: tokens.$color-like;
   }
 }
@@ -349,7 +349,7 @@
   }
 
   &:hover {
-    background-color: tokens.$color-bg-footer-lowest;
+    background-color: tokens.$color-tertiary;
   }
 }
 
@@ -419,9 +419,13 @@
     background-color: tokens.$color-on-bg;
   }
 
-  &:hover::before,
-  &--active::before {
-    background-color: tokens.$color-like;
+  &:hover,
+  &--active {
+    color: tokens.$color-like;
+
+    &::before {
+      background-color: currentColor;
+    }
   }
 }
 
