@@ -291,13 +291,20 @@
     padding: tokens.$size-1 tokens.$size-2;
     resize: none;
     overflow-y: auto;
-    border: tokens.$border-width-thin solid tokens.$color-on-primary;
+    border: tokens.$border-width-thin solid
+      tokens.$game-details-comment-border-color;
     border-radius: tokens.$corner-small;
     background-color: tokens.$color-white;
     color: tokens.$color-on-primary;
     font: inherit;
     font-size: tokens.$font-size-body-small;
     line-height: tokens.$game-details-comment-line-height;
+
+    &:focus {
+      outline: none;
+      border-color: tokens.$color-on-primary;
+      box-shadow: inset 0 0 0 tokens.$border-width-thin tokens.$color-on-primary;
+    }
 
     &::placeholder {
       color: tokens.$color-text-placeholder;
