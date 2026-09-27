@@ -2,7 +2,7 @@
 @use "../../styles/mixins" as mixins;
 
 .header {
-  border-bottom: 2px solid tokens.$color-on-primary;
+  border-bottom: tokens.$border-width-regular solid tokens.$color-on-primary;
   background-color: tokens.$color-bg;
 }
 
@@ -72,7 +72,7 @@
 .header__auth-button {
   padding: tokens.$button-padding-medium-block
     tokens.$button-padding-medium-inline;
-  border: 2px solid tokens.$color-on-primary;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
   border-radius: tokens.$corner-small;
   color: tokens.$color-on-primary;
   font-weight: tokens.$font-weight-bold;
@@ -83,7 +83,9 @@
     transform 150ms ease;
 
   &:active {
-    transform: translateY(1px);
+    transform: translateY(
+      1px
+    ); // subtle button shift; the 4px spacing token is too large
   }
 }
 

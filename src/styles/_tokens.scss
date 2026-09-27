@@ -135,6 +135,7 @@ $hero-height-tablet: 383px;
 $hero-height-mobile: 331px;
 $hero-content-height-desktop: 403px;
 $hero-content-width-desktop: 640px;
+$hero-content-width-compact: 560px;
 $hero-content-width-tablet: 480px;
 
 // Carousel
@@ -177,6 +178,10 @@ $game-developer-card-min-height-desktop: 344px;
 $game-developer-copy-width-desktop: 590px;
 $game-developer-copy-width-tablet: 560px;
 
+// Footer
+$footer-brand-max-width: 400px;
+$footer-navigation-max-width: 520px;
+
 // Auth dialog
 $auth-dialog-width: 420px;
 $auth-dialog-login-height: 623px;
@@ -191,6 +196,10 @@ $auth-dialog-close-hover-scale: 1.06;
 $auth-dialog-title-line-height: 1.2;
 $auth-dialog-description-line-height: 1.4;
 $z-index-auth-dialog: 1000;
+
+// Library filters
+$library-sort-button-padding-block: 12px;
+$library-sort-check-size: 14px;
 
 // Library cards
 $library-card-height-desktop: 152px;

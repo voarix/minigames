@@ -1,5 +1,57 @@
+@use "./tokens" as tokens;
+
 @mixin media-max($breakpoint) {
   @media (max-width: $breakpoint) {
     @content;
+  }
+}
+
+@mixin carousel-layout(
+  $side-width,
+  $preview-width: $side-width,
+  $show-previews: false
+) {
+  $gap: tokens.$size-1;
+  $preview-left: -($preview-width + $gap);
+  $side-left: 0px;
+
+  @if $show-previews {
+    $preview-left: 0px;
+    $side-left: $preview-width + $gap;
+  }
+
+  $center-left: $side-left + $side-width + $gap;
+
+  .carousel__slide {
+    left: calc(100% + $gap);
+    width: $preview-width;
+  }
+
+  .carousel__slide[data-position="-4"],
+  .carousel__slide[data-position="-3"] {
+    left: -($preview-width + $gap);
+  }
+
+  .carousel__slide[data-position="-2"] {
+    left: $preview-left;
+  }
+
+  .carousel__slide[data-position="-1"] {
+    left: $side-left;
+    width: $side-width;
+  }
+
+  .carousel__slide[data-position="0"] {
+    left: $center-left;
+    width: calc(100% - 2 * $center-left);
+  }
+
+  .carousel__slide[data-position="1"] {
+    left: calc(100% - $side-left - $side-width);
+    width: $side-width;
+  }
+
+  .carousel__slide[data-position="2"] {
+    left: calc(100% - $preview-left - $preview-width);
   }
 }

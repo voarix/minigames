@@ -43,7 +43,7 @@
 
 @include mixins.media-max(tokens.$breakpoint-mobile) {
   .library-page__container {
-    padding: 14px tokens.$size-2; // Use 14px to match the mobile mockup
+    padding: 14px tokens.$size-2; // 2px less than the 16px spacing token for the mobile mockup
   }
 
   .library-page__title {

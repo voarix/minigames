@@ -123,7 +123,7 @@
 .game-details__heading {
   display: flex;
   align-items: center;
-  gap: 12px; // use to match the mockup
+  gap: 12px; // between the 8px and 16px spacing tokens to match the heading
 }
 
 .game-details__statistics {
@@ -377,7 +377,7 @@
   list-style: none;
 
   li {
-    padding: tokens.$size-2 15px; // use to match the mockup
+    padding: tokens.$size-2 15px; // 1px less than the 16px spacing token to align comment content
     border-radius: tokens.$corner-medium;
     background-color: tokens.$color-white;
     box-shadow: tokens.$shadow-level-1;
@@ -492,7 +492,7 @@
   .game-details__specs {
     padding-inline: tokens.$size-1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 20px; // use to match the mockup
+    column-gap: 20px; // 4px more than the 16px spacing token to match the widget gap
   }
 
   .game-details__actions {

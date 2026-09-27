@@ -86,7 +86,7 @@
   }
 
   .hero__content {
-    max-width: 560px;
+    max-width: tokens.$hero-content-width-compact;
     padding: tokens.$size-4;
     border-radius: tokens.$corner-large;
   }

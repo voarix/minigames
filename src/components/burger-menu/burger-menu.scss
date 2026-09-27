@@ -6,8 +6,8 @@
   padding: 0;
   border: 0;
   border-radius: tokens.$corner-small;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
+  outline: tokens.$border-width-regular solid transparent;
+  outline-offset: -(tokens.$border-width-regular);
   background-color: transparent;
   line-height: 0;
   cursor: pointer;
@@ -176,7 +176,7 @@ body.menu-open {
     width: 100%;
     padding: tokens.$button-padding-large-block
       tokens.$button-padding-large-inline;
-    border: 2px solid tokens.$color-white;
+    border: tokens.$border-width-regular solid tokens.$color-white;
     border-radius: tokens.$corner-small;
     color: tokens.$color-white;
     font-size: tokens.$font-size-label-extra-large;
@@ -189,7 +189,9 @@ body.menu-open {
       transform 150ms ease;
 
     &:active {
-      transform: translateY(1px);
+      transform: translateY(
+        1px
+      ); // subtle button shift; the 4px spacing token is too large
     }
   }
 

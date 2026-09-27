@@ -25,7 +25,7 @@
 }
 
 .footer__brand {
-  max-width: 400px;
+  max-width: tokens.$footer-brand-max-width;
   display: flex;
   flex-direction: column;
   gap: tokens.$size-2;
@@ -48,7 +48,7 @@
 }
 
 .footer__navigation-groups {
-  max-width: 520px;
+  max-width: tokens.$footer-navigation-max-width;
   display: flex;
   gap: tokens.$size-10;
   flex-wrap: wrap;
@@ -125,6 +125,7 @@
 
 .footer__visually-hidden {
   position: absolute;
+  // hide text visually while keeping it available to screen readers
   width: 1px;
   height: 1px;
   margin: -1px;

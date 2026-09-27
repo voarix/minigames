@@ -3,7 +3,7 @@
 
 .library-card {
   display: grid;
-  grid-template-columns: 38.5% minmax(0, 1fr);
+  grid-template-columns: 38.5% minmax(0, 1fr); // image proportion from the desktop mockup; no matching token
   min-width: 0;
   overflow: hidden;
   border: tokens.$border-width-regular solid tokens.$color-on-primary;
@@ -123,7 +123,7 @@
 
 @include mixins.media-max(tokens.$breakpoint-compact-desktop) {
   .library-card {
-    grid-template-columns: 39% minmax(0, 1fr);
+    grid-template-columns: 39% minmax(0, 1fr); // image proportion from the tablet mockup; no matching token
     min-height: tokens.$library-card-height-desktop;
   }
 
@@ -195,7 +195,7 @@
   .library-card__category {
     grid-area: category;
     justify-self: start;
-    padding: 2px tokens.$size-1; // match the category height in mockup
+    padding: 2px tokens.$size-1; // 2px less than the 4px spacing token to match the badge height
     border-radius: tokens.$corner-extra-large;
     margin-top: tokens.$size-1;
   }

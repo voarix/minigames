@@ -25,7 +25,7 @@
 
 .library-filters__category {
   flex-shrink: 0;
-  padding: 6px tokens.$button-padding-xsmall-inline; // Use 6px to match the mockup
+  padding: 6px tokens.$button-padding-xsmall-inline; // 2px less than the 8px button padding to match the chip height
   border: tokens.$border-width-regular solid tokens.$color-on-primary;
   border-radius: tokens.$corner-extra-large;
   color: tokens.$color-on-primary;
@@ -56,8 +56,8 @@
   display: flex;
   align-items: center;
   gap: tokens.$size-2;
-  padding-block: 12px;
-  padding-right: 25px; // Match the mockup and leave space for the arrow
+  padding-block: tokens.$library-sort-button-padding-block;
+  padding-right: 25px; // 5px more than the 20px button padding for the arrow spacing
   padding-left: tokens.$button-padding-medium-inline;
   border: tokens.$border-width-regular solid tokens.$color-on-primary;
   border-radius: tokens.$corner-extra-large;
@@ -88,9 +88,9 @@
 
 .library-filters__sort-list {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + #{tokens.$size-0-5});
   right: 0;
-  z-index: 1; // Keep the dropdown above the game cards.
+  z-index: 1;
   min-width: 100%;
   overflow: hidden;
   border: tokens.$border-width-regular solid tokens.$color-on-primary;
@@ -105,7 +105,7 @@
   width: 100%;
   padding-block: tokens.$size-2;
   padding-right: tokens.$size-2;
-  padding-left: 38px; // Match the mockup and leave space for the check icon
+  padding-left: 38px; // 16px inset + 14px check icon + 8px text gap
   border: 0;
   border-block: tokens.$border-width-thin solid transparent;
   color: tokens.$color-on-primary;
@@ -131,8 +131,8 @@
       position: absolute;
       top: 50%;
       left: tokens.$size-2;
-      width: 14px; // Match the check icon size in Figma
-      height: 14px;
+      width: tokens.$library-sort-check-size;
+      height: tokens.$library-sort-check-size;
       transform: translateY(-50%);
       background: url("../../assets/icons/check.svg") center / contain no-repeat;
       content: "";
@@ -158,8 +158,8 @@
   }
 
   .library-filters__sort-button {
-    padding-block: 10px;
-    padding-right: 20px; // Match the mockup and leave space for the arrow
+    padding-block: tokens.$button-padding-medium-block;
+    padding-right: tokens.$button-padding-medium-inline;
     padding-left: tokens.$button-padding-small-inline;
   }
 
