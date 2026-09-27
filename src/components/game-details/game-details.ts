@@ -1,4 +1,6 @@
 import "./game-details.scss";
+import heroImage from "../../assets/games/tukoni-forest-keepers-hero.jpg";
+import { createGameDetailsInfo } from "./game-details-info";
 import closeIcon from "../../assets/icons/close-details.svg";
 
 interface GameDetailsDialog {
@@ -12,23 +14,24 @@ export const createGameDetails = (): GameDetailsDialog => {
   const panel = document.createElement("section");
   const closeButton = document.createElement("button");
   const closeImage = document.createElement("img");
-  const title = document.createElement("h2");
+  const hero = document.createElement("img");
+  const content = document.createElement("div");
 
   dialog.className = "game-details";
   panel.className = "game-details__panel";
   closeButton.className = "game-details__close";
-  title.className = "game-details__title";
-
-  title.id = "game-details-title";
-  title.textContent = "Tukoni: Forest Keepers";
-  dialog.setAttribute("aria-labelledby", title.id);
+  hero.className = "game-details__hero";
+  hero.src = heroImage;
+  hero.alt = "Tukoni: Forest Keepers forest characters";
+  content.className = "game-details__body";
+  dialog.setAttribute("aria-labelledby", "game-details-title");
 
   closeButton.type = "button";
   closeButton.setAttribute("aria-label", "Close game details");
   closeImage.src = closeIcon;
   closeImage.alt = "";
   closeButton.append(closeImage);
-  panel.append(closeButton, title);
+  panel.append(hero, closeButton, content);
   dialog.append(panel);
 
   let isClosing = false;
@@ -40,6 +43,7 @@ export const createGameDetails = (): GameDetailsDialog => {
     dialog.classList.remove("game-details--closing");
     isClosing = false;
     wasBackdropPressed = false;
+    content.replaceChildren(createGameDetailsInfo());
     dialog.showModal();
     document.body.classList.add("game-details-open");
     dialog.scrollTop = 0;

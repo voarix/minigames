@@ -1,4 +1,5 @@
 @use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
 
 .game-details-open {
   overflow: hidden;
@@ -41,16 +42,16 @@
   position: relative;
   width: 100%;
   max-width: tokens.$game-details-panel-width;
-  padding: tokens.$size-4;
-  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  overflow: hidden;
+  border: tokens.$border-width-thin solid tokens.$color-outline-variant;
   border-radius: tokens.$corner-extra-large;
   background-color: tokens.$color-bg;
   box-shadow: tokens.$shadow-level-1;
 }
 
 .game-details__title {
-  padding-right: tokens.$size-5;
-  font-size: tokens.$font-size-headline-medium;
+  min-width: 0;
+  font-size: tokens.$font-size-display-medium;
 }
 
 .game-details__close {
@@ -66,8 +67,8 @@
   cursor: pointer;
 
   img {
-    width: tokens.$size-2;
-    height: tokens.$size-2;
+    width: tokens.$size-3;
+    height: tokens.$size-3;
   }
 
   &:hover {
@@ -90,5 +91,172 @@
   }
   to {
     opacity: 0;
+  }
+}
+
+.game-details__hero {
+  display: block;
+  width: 100%;
+  height: tokens.$game-details-hero-height;
+  object-fit: cover;
+}
+
+.game-details__body {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$size-3;
+  padding: tokens.$size-3;
+}
+
+.game-details__info {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$size-3;
+}
+
+.game-details__heading {
+  display: flex;
+  align-items: center;
+  gap: 12px; // use to match the mockup
+}
+
+.game-details__statistics {
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-2;
+  flex-shrink: 0;
+  font-size: tokens.$font-size-label-large;
+  font-weight: tokens.$font-weight-bold;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: tokens.$size-0-5;
+  }
+
+  img {
+    width: tokens.$size-3;
+    height: tokens.$size-3;
+  }
+}
+
+.game-details__description {
+  color: tokens.$color-on-bg;
+  font-size: tokens.$font-size-body-medium;
+  line-height: 1.25;
+}
+
+.game-details__specs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: tokens.$size-2;
+  margin: 0;
+
+  div {
+    padding: tokens.$size-1 tokens.$size-2;
+    border: tokens.$border-width-thin solid tokens.$color-outline-variant;
+    border-radius: tokens.$corner-small;
+    background-color: tokens.$color-white;
+    box-shadow: tokens.$shadow-level-1;
+  }
+
+  dt {
+    margin-bottom: tokens.$size-1;
+    color: tokens.$color-on-bg-low;
+    font-size: tokens.$font-size-label-medium;
+  }
+
+  dd {
+    margin: 0;
+    font-size: tokens.$font-size-label-large;
+    font-weight: tokens.$font-weight-bold;
+  }
+}
+
+.game-details__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: tokens.$size-2;
+}
+
+.game-details__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$size-1;
+  padding: tokens.$button-padding-medium-block
+    tokens.$button-padding-small-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-medium;
+  box-shadow: tokens.$shadow-level-1;
+  color: tokens.$color-on-primary;
+  font: inherit;
+  font-size: tokens.$font-size-label-extra-large;
+  font-weight: tokens.$font-weight-bold;
+  cursor: pointer;
+
+  &:active {
+    transform: translate(
+      tokens.$border-width-regular,
+      tokens.$border-width-regular
+    );
+    box-shadow: none;
+  }
+}
+
+.game-details__play {
+  background-color: tokens.$color-primary;
+
+  &:hover {
+    background-color: tokens.$color-primary-high;
+  }
+}
+
+.game-details__favorite {
+  background-color: tokens.$color-white;
+
+  &:hover {
+    background-color: tokens.$color-surface;
+  }
+
+  &--active {
+    color: tokens.$color-like;
+  }
+}
+
+.game-details__favorite::before {
+  content: "";
+  flex-shrink: 0;
+  width: tokens.$size-3;
+  height: tokens.$size-3;
+  background-color: currentColor;
+  mask: url("../../assets/icons/favorite.svg") center / contain no-repeat;
+}
+
+@include mixins.media-max(tokens.$game-details-mobile-layout) {
+  .game-details {
+    padding: 0;
+  }
+
+  .game-details__heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: tokens.$size-1;
+  }
+
+  .game-details__specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-details__actions {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .game-details__favorite {
+    padding: tokens.$button-padding-medium-block;
+
+    span {
+      display: none;
+    }
   }
 }
