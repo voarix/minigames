@@ -18,7 +18,7 @@ export interface GameCardData {
   readonly featured: boolean;
 }
 
-const getGameImage = (slug: string): string => {
+export const getGameImage = (slug: string): string => {
   const imagePath = `../assets/games/${slug}-card.jpg`;
   const image = cardImages[imagePath];
 
