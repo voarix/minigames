@@ -1,0 +1,69 @@
+@use "../../styles/tokens" as tokens;
+
+.snackbar {
+  position: fixed;
+  z-index: tokens.$z-index-snackbar;
+  bottom: tokens.$size-3;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: tokens.$size-2;
+  width: max-content;
+  max-width: min(
+    #{tokens.$snackbar-max-width},
+    calc(100% - #{2 * tokens.$size-2})
+  );
+  padding: tokens.$size-2;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-medium;
+  color: tokens.$color-white;
+  box-shadow: tokens.$shadow-level-1;
+}
+
+.snackbar--success {
+  background-color: tokens.$color-success;
+}
+
+.snackbar--error {
+  background-color: tokens.$color-error;
+}
+
+.snackbar__message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: tokens.$font-size-body-small;
+  line-height: 1.5;
+}
+
+.snackbar__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: tokens.$size-4;
+  height: tokens.$size-4;
+  padding: 0;
+  border: tokens.$border-width-thin solid currentColor;
+  border-radius: tokens.$corner-small;
+  color: inherit;
+  background-color: transparent;
+  font-size: tokens.$font-size-headline-medium;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color tokens.$transition-duration-fast ease,
+    color tokens.$transition-duration-fast ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: tokens.$color-on-primary;
+      background-color: tokens.$color-white;
+    }
+  }
+
+  &:focus-visible {
+    outline: tokens.$border-width-regular solid currentColor;
+    outline-offset: tokens.$size-0-5;
+  }
+}

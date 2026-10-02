@@ -4,6 +4,7 @@ import { getGameImage, type GameCardData } from "../../data/games.ts";
 import { getFeaturedGames } from "../../api/games-api.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
 import { createCarouselAutoplay } from "./carousel-autoplay.ts";
+import { showSnackbar } from "../snackbar/snackbar.ts";
 
 const minDragDistance = 5;
 const minSwipeDistance = 40;
@@ -315,12 +316,14 @@ export const createCarousel = (onDetails: () => void): Carousel => {
       message.textContent = "Failed to load featured games.";
       message.setAttribute("role", "alert");
       const retryButton = document.createElement("button");
+      retryButton.className = "carousel__retry";
       retryButton.type = "button";
       retryButton.textContent = "Retry";
       retryButton.addEventListener("click", () => {
         void loadGames();
       });
       viewport.replaceChildren(message, retryButton);
+      showSnackbar("Failed to load featured games. Please try again.", "error");
     } finally {
       if (!isDestroyed) viewport.setAttribute("aria-busy", "false");
     }
