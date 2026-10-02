@@ -260,14 +260,33 @@ export const createCarousel = (onDetails: () => void): Carousel => {
   container.append(header, viewport);
   section.append(container);
 
+  const createSkeleton = (): HTMLElement => {
+    const skeleton = document.createElement("div");
+    skeleton.className = "carousel__track carousel__skeleton";
+    skeleton.setAttribute("role", "status");
+    skeleton.setAttribute("aria-label", "Loading featured games");
+
+    for (let position = -2; position <= 2; position += 1) {
+      const slide = document.createElement("div");
+      const placeholder = document.createElement("div");
+      slide.className = "carousel__slide";
+      slide.dataset.position = String(position);
+      slide.setAttribute("aria-hidden", "true");
+      placeholder.className = "carousel__skeleton-card";
+      slide.append(placeholder);
+      skeleton.append(slide);
+    }
+
+    return skeleton;
+  };
+
   const loadGames = async (): Promise<void> => {
     autoplay.pause();
     previousButton.disabled = true;
     nextButton.disabled = true;
     viewport.setAttribute("aria-busy", "true");
     const message = document.createElement("p");
-    message.textContent = "Loading games…";
-    viewport.replaceChildren(message);
+    viewport.replaceChildren(createSkeleton());
 
     try {
       const games = await getFeaturedGames();
@@ -281,6 +300,7 @@ export const createCarousel = (onDetails: () => void): Carousel => {
 
       if (cards.length === 0) {
         message.textContent = "No featured games found.";
+        viewport.replaceChildren(message);
         return;
       }
 

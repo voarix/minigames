@@ -133,6 +133,26 @@
   visibility: hidden;
 }
 
+.carousel__skeleton-card {
+  width: 100%;
+  height: 100%;
+  border: tokens.$border-width-regular solid tokens.$color-outline-variant;
+  border-radius: tokens.$corner-extra-large;
+  background-color: tokens.$color-outline;
+  animation: carousel-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes carousel-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
 @include mixins.carousel-layout(
   $side-width: tokens.$carousel-card-side-width-desktop,
   $preview-width: tokens.$carousel-card-preview-width-desktop,
@@ -181,6 +201,10 @@
 
   .carousel__track {
     height: tokens.$carousel-card-height-tablet;
+  }
+
+  .carousel__skeleton-card {
+    border-radius: tokens.$corner-large;
   }
 }
 
