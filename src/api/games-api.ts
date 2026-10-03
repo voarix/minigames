@@ -25,3 +25,14 @@ export const getFeaturedGames = async () => {
   const result: GamesResponse = await response.json();
   return result.data;
 };
+
+export const getGames = async (): Promise<readonly ApiGameCard[]> => {
+  const response = await fetch(API_BASE_URL + "/games?limit=6");
+
+  if (!response.ok) {
+    throw new Error("Failed to load games");
+  }
+
+  const result: GamesResponse = await response.json();
+  return result.data;
+};
