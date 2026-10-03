@@ -18,6 +18,15 @@ export interface GameCardData {
   readonly featured: boolean;
 }
 
+export const resolveGameImage = (cardImage: string): string => {
+  const imagePath = cardImage.replace(
+    "/assets/images/games/",
+    "../assets/games/",
+  );
+
+  return cardImages[imagePath] ?? cardImage;
+};
+
 export const getGameImage = (slug: string): string => {
   const imagePath = `../assets/games/${slug}-card.jpg`;
   const image = cardImages[imagePath];
