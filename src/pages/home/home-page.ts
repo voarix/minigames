@@ -18,7 +18,13 @@ export const createHomePage = (
   const leaderboard = createLeaderboard();
   const gameDeveloper = createGameDeveloper();
 
-  main.append(hero, carousel.element, leaderboard, gameDeveloper);
+  main.append(hero, carousel.element, leaderboard.element, gameDeveloper);
 
-  return { element: main, destroy: carousel.destroy };
+  return {
+    element: main,
+    destroy: () => {
+      carousel.destroy();
+      leaderboard.destroy();
+    },
+  };
 };

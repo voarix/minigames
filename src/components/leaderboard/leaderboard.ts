@@ -1,20 +1,17 @@
 import "./leaderboard.scss";
-import leaderboardData from "../../data/leaderboard.json";
+import {
+  getLeaderboard,
+  type LeaderboardPlayer,
+} from "../../api/leaderboard-api.ts";
+import { showSnackbar } from "../snackbar/snackbar.ts";
 
-interface LeaderboardPlayer {
-  readonly rank: number;
-  readonly playerName: string;
-  readonly gamesPlayed: number;
-  readonly totalScore: number;
-  readonly streakDays: number;
-  readonly favoriteGameSlug: string;
-  readonly favoriteGameName: string;
+interface Leaderboard {
+  readonly element: HTMLElement;
+  readonly destroy: () => void;
 }
 
 type LeaderboardCellModifier =
   "rank" | "player" | "games" | "score" | "streak" | "favorite";
-
-const players: readonly LeaderboardPlayer[] = leaderboardData.data;
 
 const getPlayerInitials = (playerName: string): string => {
   const capitalLetters = playerName.match(/[A-Z]/g);
@@ -178,7 +175,8 @@ const createPlayerRow = (
   return row;
 };
 
-export const createLeaderboard = (): HTMLElement => {
+export const createLeaderboard = (): Leaderboard => {
+  let isDestroyed = false;
   const section = document.createElement("section");
   const container = document.createElement("div");
   const heading = document.createElement("div");
@@ -225,15 +223,103 @@ export const createLeaderboard = (): HTMLElement => {
 
   tableHead.append(headerRow);
 
-  for (const [index, player] of players.entries()) {
-    tableBody.append(createPlayerRow(player, index));
-  }
-
   table.append(tableHead, tableBody);
   tableWrapper.append(table);
   heading.append(accent, title);
   container.append(heading, tableWrapper);
   section.append(container);
 
-  return section;
+  const showLoading = (): void => {
+    const loadingMessage = document.createElement("p");
+    loadingMessage.className = "leaderboard__loading";
+    loadingMessage.setAttribute("role", "status");
+    loadingMessage.textContent = "Loading top players…";
+    tableWrapper.setAttribute("aria-busy", "true");
+    table.setAttribute("aria-hidden", "true");
+    tableBody.replaceChildren();
+
+    const modifiers: readonly LeaderboardCellModifier[] = [
+      "rank",
+      "player",
+      "games",
+      "score",
+      "streak",
+      "favorite",
+    ];
+
+    for (let index = 0; index < 5; index += 1) {
+      const row = document.createElement("tr");
+      row.className = "leaderboard__row";
+      for (const modifier of modifiers) {
+        const cell = createDataCell("", modifier);
+        const placeholder = document.createElement("span");
+        placeholder.className = "leaderboard__skeleton";
+        cell.append(placeholder);
+        row.append(cell);
+      }
+      tableBody.append(row);
+    }
+
+    tableWrapper.replaceChildren(loadingMessage, table);
+  };
+
+  const showMessage = (text: string, isError: boolean): void => {
+    const state = document.createElement("div");
+    const message = document.createElement("p");
+    state.className = isError
+      ? "leaderboard__state leaderboard__state--error"
+      : "leaderboard__state";
+    message.textContent = text;
+    message.setAttribute("role", isError ? "alert" : "status");
+    state.append(message);
+
+    if (isError) {
+      const retryButton = document.createElement("button");
+      retryButton.className = "leaderboard__retry";
+      retryButton.type = "button";
+      retryButton.textContent = "Retry";
+      retryButton.addEventListener("click", () => {
+        void loadPlayers();
+      });
+      state.append(retryButton);
+    }
+
+    tableWrapper.replaceChildren(state);
+  };
+
+  const loadPlayers = async (): Promise<void> => {
+    showLoading();
+
+    try {
+      const players = await getLeaderboard();
+      if (isDestroyed) return;
+
+      if (players.length === 0) {
+        showMessage("No top players found.", false);
+        return;
+      }
+
+      const rows = players.map((player, index) =>
+        createPlayerRow(player, index),
+      );
+      tableBody.replaceChildren(...rows);
+      table.removeAttribute("aria-hidden");
+      tableWrapper.replaceChildren(table);
+    } catch {
+      if (isDestroyed) return;
+      showMessage("Failed to load top players.", true);
+      showSnackbar("Failed to load top players. Please try again.", "error");
+    } finally {
+      if (!isDestroyed) tableWrapper.setAttribute("aria-busy", "false");
+    }
+  };
+
+  void loadPlayers();
+
+  return {
+    element: section,
+    destroy: () => {
+      isDestroyed = true;
+    },
+  };
 };
