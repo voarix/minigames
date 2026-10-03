@@ -17,6 +17,19 @@ interface GamesResponse {
   readonly data: readonly ApiGameCard[];
 }
 
+interface PaginatedGamesResponse extends GamesResponse {
+  readonly meta: {
+    readonly page: number;
+    readonly limit: number;
+    readonly totalItems: number;
+    readonly totalPages: number;
+    readonly appliedFilter: {
+      readonly category: string;
+      readonly sort: GameSort;
+    };
+  };
+}
+
 export const getFeaturedGames = async () => {
   const response = await fetch(API_BASE_URL + "/games?featured=true");
 
@@ -39,6 +52,6 @@ export const getGames = async (
     throw new Error("Failed to load games");
   }
 
-  const result: GamesResponse = await response.json();
-  return result.data;
+  const result: PaginatedGamesResponse = await response.json();
+  return result;
 };

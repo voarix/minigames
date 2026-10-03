@@ -76,7 +76,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
     pagination.hidden = true;
 
     try {
-      const games = await getGames(selectedCategory, selectedSort);
+      const { data: games } = await getGames(selectedCategory, selectedSort);
       if (isDestroyed || requestId !== gamesRequestId) return;
 
       if (games.length === 0) {
