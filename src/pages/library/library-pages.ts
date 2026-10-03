@@ -7,7 +7,7 @@ import {
 import { createLibraryFilters } from "../../components/library-filters/library-filters.ts";
 import { createLibraryPagination } from "../../components/library-pagination/library-pagination.ts";
 
-import { getGames } from "../../api/games-api.ts";
+import { getGames, type GameSort } from "../../api/games-api.ts";
 import { resolveGameImage, type GameCardData } from "../../data/games.ts";
 import { showSnackbar } from "../../components/snackbar/snackbar.ts";
 import { getCategories } from "../../api/categories-api.ts";
@@ -20,6 +20,7 @@ interface LibraryPage {
 export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   let isDestroyed = false;
   let selectedCategory = "all";
+  let selectedSort: GameSort = "rating-desc";
   let gamesRequestId = 0;
   const main = document.createElement("main");
   const container = document.createElement("div");
@@ -75,7 +76,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
     pagination.hidden = true;
 
     try {
-      const games = await getGames(selectedCategory);
+      const games = await getGames(selectedCategory, selectedSort);
       if (isDestroyed || requestId !== gamesRequestId) return;
 
       if (games.length === 0) {
@@ -103,29 +104,81 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
 
   void loadGames();
 
+  const showCategoriesMessage = (text: string, isError: boolean): void => {
+    const state = document.createElement("div");
+    const message = document.createElement("p");
+    state.className = isError
+      ? "library-page__state library-page__state--error"
+      : "library-page__state";
+    message.textContent = text;
+    message.setAttribute("role", isError ? "alert" : "status");
+    state.append(message);
+
+    if (isError) {
+      state.append(
+        createRetryButton(() => {
+          void loadCategories();
+        }),
+      );
+    }
+
+    filters.replaceChildren(state);
+  };
+
   const loadCategories = async (): Promise<void> => {
+    const loadingMessage = document.createElement("p");
+    const skeleton = document.createElement("div");
+    loadingMessage.className = "library-page__loading";
+    loadingMessage.setAttribute("role", "status");
+    loadingMessage.textContent = "Loading categories…";
+    skeleton.className = "library-page__filters-skeleton";
+    skeleton.setAttribute("aria-hidden", "true");
+    for (let index = 0; index < 7; index += 1) {
+      const chip = document.createElement("span");
+      chip.className = "library-page__filter-placeholder";
+      skeleton.append(chip);
+    }
+    filters.setAttribute("aria-busy", "true");
+    filters.replaceChildren(loadingMessage, skeleton);
+
     try {
       const categories = await getCategories();
 
       if (isDestroyed) return;
+
+      if (categories.length === 0) {
+        showCategoriesMessage("No categories found.", false);
+        return;
+      }
 
       const defaultCategory = categories.find((category) => category.isDefault);
       const previousCategory = selectedCategory;
       selectedCategory = defaultCategory?.slug ?? "all";
 
       filters.replaceChildren(
-        createLibraryFilters(categories, (slug) => {
-          if (selectedCategory === slug) return;
-          selectedCategory = slug;
-          void loadGames();
-        }),
+        createLibraryFilters(
+          categories,
+          (slug) => {
+            if (selectedCategory === slug) return;
+            selectedCategory = slug;
+            void loadGames();
+          },
+          (sort) => {
+            if (selectedSort === sort) return;
+            selectedSort = sort;
+            void loadGames();
+          },
+        ),
       );
 
       if (selectedCategory !== previousCategory) void loadGames();
     } catch {
       if (isDestroyed) return;
 
+      showCategoriesMessage("Failed to load categories.", true);
       showSnackbar("Failed to load categories. Please try again.", "error");
+    } finally {
+      if (!isDestroyed) filters.setAttribute("aria-busy", "false");
     }
   };
 

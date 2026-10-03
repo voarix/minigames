@@ -11,6 +11,8 @@ export interface ApiGameCard {
   readonly cardImage: string;
 }
 
+export type GameSort = "rating-desc" | "rating-asc" | "name-asc" | "name-desc";
+
 interface GamesResponse {
   readonly data: readonly ApiGameCard[];
 }
@@ -26,8 +28,11 @@ export const getFeaturedGames = async () => {
   return result.data;
 };
 
-export const getGames = async (category: string = "all") => {
-  const query = new URLSearchParams({ limit: "6", category });
+export const getGames = async (
+  category: string = "all",
+  sort: GameSort = "rating-desc",
+) => {
+  const query = new URLSearchParams({ limit: "6", category, sort });
   const response = await fetch(API_BASE_URL + "/games?" + query);
 
   if (!response.ok) {

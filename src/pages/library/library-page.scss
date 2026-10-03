@@ -77,3 +77,29 @@
 .library-page .library-pagination[hidden] {
   display: none;
 }
+
+.library-page__filters-skeleton {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$size-1;
+  margin-top: tokens.$size-2;
+}
+
+.library-page__filter-placeholder {
+  width: tokens.$size-10;
+  height: tokens.$size-5;
+  border-radius: tokens.$corner-full;
+  background-color: tokens.$color-outline;
+  animation: library-filter-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes library-filter-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
