@@ -1,3 +1,4 @@
+import { createRetryButton } from "../../components/ui/retry-button/retry-button.ts";
 import "./library-page.scss";
 import {
   createLibraryCards,
@@ -54,11 +55,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
     state.append(message);
 
     if (isError) {
-      const retryButton = document.createElement("button");
-      retryButton.className = "library-page__retry";
-      retryButton.type = "button";
-      retryButton.textContent = "Retry";
-      retryButton.addEventListener("click", () => {
+      const retryButton = createRetryButton(() => {
         void loadGames();
       });
       state.append(retryButton);

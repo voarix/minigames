@@ -1,3 +1,4 @@
+import { createRetryButton } from "../ui/retry-button/retry-button.ts";
 import "./leaderboard.scss";
 import {
   getLeaderboard,
@@ -274,11 +275,7 @@ export const createLeaderboard = (): Leaderboard => {
     state.append(message);
 
     if (isError) {
-      const retryButton = document.createElement("button");
-      retryButton.className = "leaderboard__retry";
-      retryButton.type = "button";
-      retryButton.textContent = "Retry";
-      retryButton.addEventListener("click", () => {
+      const retryButton = createRetryButton(() => {
         void loadPlayers();
       });
       state.append(retryButton);
