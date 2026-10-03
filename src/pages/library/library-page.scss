@@ -54,3 +54,52 @@
     font-size: tokens.$font-size-body-small;
   }
 }
+
+.library-page__loading {
+  margin-top: tokens.$size-2;
+  color: tokens.$color-on-bg;
+  font-size: tokens.$font-size-body-small;
+}
+
+.library-page__state {
+  margin-top: tokens.$size-3;
+  padding: tokens.$size-4;
+  border: tokens.$border-width-regular solid tokens.$color-outline-variant;
+  border-radius: tokens.$corner-large;
+  text-align: center;
+}
+
+.library-page__state--error {
+  border-color: tokens.$color-error;
+  color: tokens.$color-error;
+}
+
+.library-page__retry {
+  margin-top: tokens.$size-2;
+  padding: tokens.$button-padding-medium-block
+    tokens.$button-padding-medium-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-primary;
+  font-size: tokens.$font-size-label-large;
+  font-weight: tokens.$font-weight-bold;
+  box-shadow: tokens.$shadow-level-1;
+  cursor: pointer;
+  transition: background-color tokens.$transition-duration-fast ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: tokens.$color-primary-high;
+    }
+  }
+
+  &:focus-visible {
+    outline: tokens.$border-width-regular solid tokens.$color-on-primary;
+    outline-offset: tokens.$size-0-5;
+  }
+}
+
+.library-page .library-pagination[hidden] {
+  display: none;
+}

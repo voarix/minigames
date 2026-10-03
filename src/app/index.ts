@@ -16,8 +16,9 @@ export const startApp = (): void => {
     let otherMain: HTMLElement;
 
     if (page === "library") {
-      otherMain = createLibraryPage(gameDetails.open);
-      destroyPage = undefined;
+      const libraryPage = createLibraryPage(gameDetails.open);
+      otherMain = libraryPage.element;
+      destroyPage = libraryPage.destroy;
     } else {
       const nextHomePage = createHomePage(gameDetails.open, () =>
         showPage("library"),

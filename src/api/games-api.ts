@@ -26,7 +26,7 @@ export const getFeaturedGames = async () => {
   return result.data;
 };
 
-export const getGames = async (): Promise<readonly ApiGameCard[]> => {
+export const getGames = async () => {
   const response = await fetch(API_BASE_URL + "/games?limit=6");
 
   if (!response.ok) {
