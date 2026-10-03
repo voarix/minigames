@@ -9,6 +9,7 @@ import { createLibraryPagination } from "../../components/library-pagination/lib
 import { getGames } from "../../api/games-api.ts";
 import { resolveGameImage, type GameCardData } from "../../data/games.ts";
 import { showSnackbar } from "../../components/snackbar/snackbar.ts";
+import { getCategories } from "../../api/categories-api.ts";
 
 interface LibraryPage {
   readonly element: HTMLElement;
@@ -21,7 +22,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   const container = document.createElement("div");
   const title = document.createElement("h1");
   const description = document.createElement("p");
-  const filters = createLibraryFilters();
+  const filters = document.createElement("div");
   const results = document.createElement("div");
   const pagination = createLibraryPagination();
 
@@ -99,6 +100,22 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   };
 
   void loadGames();
+
+  const loadCategories = async (): Promise<void> => {
+    try {
+      const categories = await getCategories();
+
+      if (isDestroyed) return;
+
+      filters.replaceChildren(createLibraryFilters(categories));
+    } catch {
+      if (isDestroyed) return;
+
+      showSnackbar("Failed to load categories. Please try again.", "error");
+    }
+  };
+
+  void loadCategories();
 
   return {
     element: main,

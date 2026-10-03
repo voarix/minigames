@@ -1,19 +1,12 @@
 import "./library-filters.scss";
-
-const categoryNames = [
-  "All Games",
-  "Puzzle",
-  "Card",
-  "Match",
-  "Farm",
-  "Strategy",
-  "Arcade",
-];
+import type { Category } from "../../api/categories-api.ts";
 
 const sortOptions = ["Rating ↑", "Rating ↓", "Name A→Z", "Name Z→A"];
 const minDragDistance = 5;
 
-export const createLibraryFilters = (): HTMLElement => {
+export const createLibraryFilters = (
+  categoryData: readonly Category[],
+): HTMLElement => {
   const filters = document.createElement("div");
   const categories = document.createElement("div");
   const sorting = document.createElement("div");
@@ -87,13 +80,13 @@ export const createLibraryFilters = (): HTMLElement => {
     { capture: true },
   );
 
-  for (const category of categoryNames) {
+  for (const category of categoryData) {
     const button = document.createElement("button");
 
     button.className = "library-filters__category";
-    button.textContent = category;
+    button.textContent = category.label;
 
-    if (category === "All Games") {
+    if (category.isDefault) {
       button.classList.add("library-filters__category--active");
     }
 
