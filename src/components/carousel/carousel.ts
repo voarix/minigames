@@ -1,6 +1,6 @@
 import "./carousel.scss";
 import { createGameCard } from "../game-card/game-card.ts";
-import { getGameImage, type GameCardData } from "../../data/games.ts";
+import { resolveGameImage, type GameCardData } from "../../data/games.ts";
 import { getFeaturedGames } from "../../api/games-api.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
 import { createCarouselAutoplay } from "./carousel-autoplay.ts";
@@ -295,7 +295,7 @@ export const createCarousel = (onDetails: () => void): Carousel => {
 
       const cards: GameCardData[] = games.map((game) => ({
         ...game,
-        image: getGameImage(game.slug),
+        image: resolveGameImage(game.cardImage),
         featured: true,
       }));
 
