@@ -6,6 +6,7 @@ const minDragDistance = 5;
 
 export const createLibraryFilters = (
   categoryData: readonly Category[],
+  onCategoryChange: (slug: string) => void,
 ): HTMLElement => {
   const filters = document.createElement("div");
   const categories = document.createElement("div");
@@ -97,6 +98,8 @@ export const createLibraryFilters = (
           categoryButton === button,
         );
       }
+
+      onCategoryChange(category.slug);
     });
 
     categories.append(button);

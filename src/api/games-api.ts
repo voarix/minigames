@@ -26,8 +26,9 @@ export const getFeaturedGames = async () => {
   return result.data;
 };
 
-export const getGames = async () => {
-  const response = await fetch(API_BASE_URL + "/games?limit=6");
+export const getGames = async (category: string = "all") => {
+  const query = new URLSearchParams({ limit: "6", category });
+  const response = await fetch(API_BASE_URL + "/games?" + query);
 
   if (!response.ok) {
     throw new Error("Failed to load games");

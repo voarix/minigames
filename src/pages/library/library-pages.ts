@@ -18,6 +18,8 @@ interface LibraryPage {
 
 export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   let isDestroyed = false;
+  let selectedCategory = "all";
+  let gamesRequestId = 0;
   const main = document.createElement("main");
   const container = document.createElement("div");
   const title = document.createElement("h1");
@@ -66,6 +68,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   };
 
   const loadGames = async (): Promise<void> => {
+    const requestId = ++gamesRequestId;
     const loadingMessage = document.createElement("p");
     loadingMessage.className = "library-page__loading";
     loadingMessage.setAttribute("role", "status");
@@ -75,8 +78,8 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
     pagination.hidden = true;
 
     try {
-      const games = await getGames();
-      if (isDestroyed) return;
+      const games = await getGames(selectedCategory);
+      if (isDestroyed || requestId !== gamesRequestId) return;
 
       if (games.length === 0) {
         showMessage("No games found.", false);
@@ -91,11 +94,13 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
       results.replaceChildren(createLibraryCards(cards, onDetails));
       pagination.hidden = false;
     } catch {
-      if (isDestroyed) return;
+      if (isDestroyed || requestId !== gamesRequestId) return;
       showMessage("Failed to load games.", true);
       showSnackbar("Failed to load games. Please try again.", "error");
     } finally {
-      if (!isDestroyed) results.setAttribute("aria-busy", "false");
+      if (!isDestroyed && requestId === gamesRequestId) {
+        results.setAttribute("aria-busy", "false");
+      }
     }
   };
 
@@ -107,7 +112,19 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
 
       if (isDestroyed) return;
 
-      filters.replaceChildren(createLibraryFilters(categories));
+      const defaultCategory = categories.find((category) => category.isDefault);
+      const previousCategory = selectedCategory;
+      selectedCategory = defaultCategory?.slug ?? "all";
+
+      filters.replaceChildren(
+        createLibraryFilters(categories, (slug) => {
+          if (selectedCategory === slug) return;
+          selectedCategory = slug;
+          void loadGames();
+        }),
+      );
+
+      if (selectedCategory !== previousCategory) void loadGames();
     } catch {
       if (isDestroyed) return;
 
