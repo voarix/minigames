@@ -44,9 +44,3 @@
     opacity: 0.45;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .library-cards__skeleton {
-    animation: none;
-  }
-}
