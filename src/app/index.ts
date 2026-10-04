@@ -1,4 +1,7 @@
-import { createAuthDialog } from "../components/auth-dialog/auth-dialog.ts";
+import {
+  createAuthDialog,
+  type AuthMode,
+} from "../components/auth-dialog/auth-dialog.ts";
 import { createGameDetails } from "../components/game-details/game-details.ts";
 import { createFooter } from "../components/footer/footer.ts";
 import { createHeader } from "../components/header/header.ts";
@@ -7,6 +10,7 @@ import { createLibraryPage } from "../pages/library/library-pages.ts";
 import {
   getPageFromPath,
   getGameSlugFromSearch,
+  getAuthModeFromSearch,
   getLibraryStateFromSearch,
   getLibrarySearchFromState,
   type LibraryState,
@@ -23,6 +27,10 @@ const getPageKey = (): string => {
 
 export const startApp = (): void => {
   const gameDetails = createGameDetails(() => navigateGame());
+  const authDialog = createAuthDialog({
+    onClose: () => navigateAuth(),
+    onModeChange: (mode) => navigateAuth(mode),
+  });
   let main: HTMLElement = document.createElement("main");
   let destroyPage: (() => void) | undefined;
   let renderedPageKey: string | undefined;
@@ -58,9 +66,18 @@ export const startApp = (): void => {
     updateActiveNavigation(page);
   };
 
-  const syncGameDetailsFromUrl = (): void => {
+  const syncDialogsFromUrl = (): void => {
+    const mode = getAuthModeFromSearch(location.search);
+    const isValidPage = getPageFromPath(location.pathname) !== "not-found";
+    if (mode && isValidPage) {
+      gameDetails.close();
+      authDialog.open(mode);
+      return;
+    }
+
+    authDialog.close();
     const slug = getGameSlugFromSearch(location.search);
-    if (slug && getPageFromPath(location.pathname) !== "not-found") {
+    if (slug && isValidPage) {
       gameDetails.open(slug);
     } else {
       gameDetails.close();
@@ -73,20 +90,34 @@ export const startApp = (): void => {
       showPage(getPageFromPath(location.pathname));
       renderedPageKey = pageKey;
     }
-    syncGameDetailsFromUrl();
+    syncDialogsFromUrl();
   };
 
   const navigateGame = (slug?: string): void => {
     const url = new URL(location.href);
     if (slug) {
       url.searchParams.set("game", slug);
+      url.searchParams.delete("auth");
     } else {
       url.searchParams.delete("game");
     }
     if (url.search !== location.search) {
       history.pushState(undefined, "", url.pathname + url.search + url.hash);
     }
-    syncGameDetailsFromUrl();
+    syncDialogsFromUrl();
+  };
+
+  const navigateAuth = (mode?: AuthMode): void => {
+    const url = new URL(location.href);
+    if (mode) {
+      url.searchParams.set("auth", mode);
+    } else {
+      url.searchParams.delete("auth");
+    }
+    if (url.search !== location.search) {
+      history.pushState(undefined, "", url.pathname + url.search + url.hash);
+    }
+    syncDialogsFromUrl();
   };
 
   const updateLibraryUrl = (
@@ -113,13 +144,12 @@ export const startApp = (): void => {
     renderFromUrl();
   };
 
-  const authDialog = createAuthDialog();
   const header = createHeader({
     onLogin: () => {
-      authDialog.open("login");
+      navigateAuth("login");
     },
     onRegister: () => {
-      authDialog.open("register");
+      navigateAuth("register");
     },
     onNavigate: navigate,
   });

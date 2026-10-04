@@ -1,4 +1,5 @@
 import type { GameSort } from "../api/games-api.ts";
+import type { AuthMode } from "../components/auth-dialog/auth-dialog.ts";
 
 export type Page = "home" | "library" | "not-found";
 
@@ -22,6 +23,12 @@ export const getPageFromPath = (pathname: string): Page => {
 export const getGameSlugFromSearch = (search: string): string | undefined => {
   const parameters = new URLSearchParams(search);
   return parameters.get("game") || undefined;
+};
+
+export const getAuthModeFromSearch = (search: string): AuthMode | undefined => {
+  const parameters = new URLSearchParams(search);
+  const mode = parameters.get("auth");
+  return mode === "login" || mode === "register" ? mode : undefined;
 };
 
 export const getLibraryStateFromSearch = (search: string): LibraryState => {
