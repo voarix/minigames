@@ -15,13 +15,19 @@ export const createLibraryFilters = (
   categoryData: readonly Category[],
   onCategoryChange: (slug: string) => void,
   onSortChange: (sort: GameSort) => void,
+  initialSelection: {
+    readonly category?: string;
+    readonly sort?: GameSort;
+  } = {},
 ): HTMLElement => {
   const filters = document.createElement("div");
   const categories = document.createElement("div");
   const sorting = document.createElement("div");
   const sortButton = document.createElement("button");
   const sortList = document.createElement("div");
-  let selectedSort = sortOptions[1];
+  let selectedSort =
+    sortOptions.find((option) => option.value === initialSelection.sort) ??
+    sortOptions[1];
 
   filters.className = "library-filters";
   categories.className = "library-filters__categories";
@@ -95,7 +101,11 @@ export const createLibraryFilters = (
     button.className = "library-filters__category";
     button.textContent = category.label;
 
-    if (category.isDefault) {
+    const isSelected =
+      initialSelection.category === undefined
+        ? category.isDefault
+        : category.slug === initialSelection.category;
+    if (isSelected) {
       button.classList.add("library-filters__category--active");
     }
 

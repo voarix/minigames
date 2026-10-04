@@ -11,19 +11,27 @@ import { getGames, type GameSort } from "../../api/games-api.ts";
 import { resolveGameImage, type GameCardData } from "../../data/games.ts";
 import { showSnackbar } from "../../components/snackbar/snackbar.ts";
 import { getCategories } from "../../api/categories-api.ts";
+import type { LibraryState } from "../../app/router.ts";
 
 interface LibraryPage {
   readonly element: HTMLElement;
   readonly destroy: () => void;
 }
 
+const defaultLibraryState: LibraryState = {
+  sort: "rating-desc",
+  page: 1,
+};
+
 export const createLibraryPage = (
   onDetails: (slug: string) => void,
+  initialState: LibraryState = defaultLibraryState,
+  onStateChange?: (state: LibraryState, shouldReplace?: boolean) => void,
 ): LibraryPage => {
   let isDestroyed = false;
-  let selectedCategory = "all";
-  let selectedSort: GameSort = "rating-desc";
-  let currentPage = 1;
+  let selectedCategory = initialState.category ?? "all";
+  let selectedSort: GameSort = initialState.sort;
+  let currentPage = initialState.page;
   let gamesRequestId = 0;
   const main = document.createElement("main");
   const container = document.createElement("div");
@@ -47,6 +55,13 @@ export const createLibraryPage = (
 
   container.append(title, description, filters, results, pagination);
   main.append(container);
+
+  const syncUrl = (shouldReplace: boolean = false): void => {
+    onStateChange?.(
+      { category: selectedCategory, sort: selectedSort, page: currentPage },
+      shouldReplace,
+    );
+  };
 
   const showMessage = (text: string, isError: boolean): void => {
     const state = document.createElement("div");
@@ -86,11 +101,15 @@ export const createLibraryPage = (
       );
       if (isDestroyed || requestId !== gamesRequestId) return;
 
-      currentPage = meta.page;
+      if (currentPage !== meta.page) {
+        currentPage = meta.page;
+        syncUrl(true);
+      }
       pagination.replaceChildren(
         createLibraryPagination(currentPage, meta.totalPages, (page) => {
           if (isDestroyed || currentPage === page) return;
           currentPage = page;
+          syncUrl();
           void loadGames();
         }),
       );
@@ -167,10 +186,16 @@ export const createLibraryPage = (
         return;
       }
 
-      const defaultCategory = categories.find((category) => category.isDefault);
-      const previousCategory = selectedCategory;
-      selectedCategory = defaultCategory?.slug ?? "all";
-      if (selectedCategory !== previousCategory) currentPage = 1;
+      if (initialState.category === undefined) {
+        const defaultCategory = categories.find(
+          (category) => category.isDefault,
+        );
+        if (defaultCategory && selectedCategory !== defaultCategory.slug) {
+          selectedCategory = defaultCategory.slug;
+          syncUrl(true);
+          void loadGames();
+        }
+      }
 
       filters.replaceChildren(
         createLibraryFilters(
@@ -179,18 +204,19 @@ export const createLibraryPage = (
             if (selectedCategory === slug) return;
             selectedCategory = slug;
             currentPage = 1;
+            syncUrl();
             void loadGames();
           },
           (sort) => {
             if (selectedSort === sort) return;
             selectedSort = sort;
             currentPage = 1;
+            syncUrl();
             void loadGames();
           },
+          { category: selectedCategory, sort: selectedSort },
         ),
       );
-
-      if (selectedCategory !== previousCategory) void loadGames();
     } catch {
       if (isDestroyed) return;
 

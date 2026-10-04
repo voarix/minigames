@@ -11,6 +11,11 @@ export interface AuthDialog {
   readonly close: () => void;
 }
 
+interface AuthDialogOptions {
+  readonly onClose?: () => void;
+  readonly onModeChange?: (mode: AuthMode) => void;
+}
+
 interface FieldOptions {
   readonly autocomplete: HTMLInputElement["autocomplete"];
   readonly label: string;
@@ -62,7 +67,10 @@ const createField = ({
   return field;
 };
 
-export const createAuthDialog = (): AuthDialog => {
+export const createAuthDialog = ({
+  onClose,
+  onModeChange,
+}: AuthDialogOptions = {}): AuthDialog => {
   const dialog = document.createElement("div");
   const panel = document.createElement("section");
   const tabs = document.createElement("div");
@@ -109,6 +117,7 @@ export const createAuthDialog = (): AuthDialog => {
   let activeMode: AuthMode = "login";
   let elementToRestoreFocus: HTMLElement | undefined;
   let closeTimer: number | undefined;
+  let isClosing = false;
 
   const renderView = (mode: AuthMode): void => {
     activeMode = mode;
@@ -237,7 +246,7 @@ export const createAuthDialog = (): AuthDialog => {
     });
 
     switchButton.addEventListener("click", () => {
-      renderView(isLogin ? "register" : "login");
+      changeMode(isLogin ? "register" : "login");
     });
 
     view.classList.remove("auth-dialog__view--entered");
@@ -246,63 +255,80 @@ export const createAuthDialog = (): AuthDialog => {
     });
   };
 
+  const changeMode = (mode: AuthMode): void => {
+    if (activeMode === mode) return;
+    renderView(mode);
+    onModeChange?.(mode);
+  };
+
   const close = (): void => {
-    if (dialog.hidden) {
+    if (isClosing || dialog.hidden) {
       return;
     }
 
     clearTimeout(closeTimer);
+    isClosing = true;
     dialog.classList.remove("auth-dialog--open");
     document.body.classList.remove("auth-dialog-open");
 
     closeTimer = setTimeout(() => {
       dialog.hidden = true;
+      isClosing = false;
       elementToRestoreFocus?.focus();
       elementToRestoreFocus = undefined;
     }, AUTH_DIALOG_TRANSITION_DURATION);
   };
 
+  const requestClose = (): void => {
+    if (isClosing || dialog.hidden) return;
+    close();
+    onClose?.();
+  };
+
   const open = (mode: AuthMode): void => {
+    if (!isClosing && activeMode === mode && !dialog.hidden) return;
+
     clearTimeout(closeTimer);
-    elementToRestoreFocus =
-      document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : undefined;
+    if (dialog.hidden) {
+      elementToRestoreFocus =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : undefined;
+    }
+    isClosing = false;
 
     renderView(mode);
     dialog.hidden = false;
     document.body.classList.add("auth-dialog-open");
 
     requestAnimationFrame(() => {
+      if (isClosing || dialog.hidden) return;
       dialog.classList.add("auth-dialog--open");
 
       requestAnimationFrame(() => {
+        if (isClosing || dialog.hidden) return;
         view.querySelector<HTMLInputElement>("input")?.focus();
       });
     });
   };
 
   loginTab.addEventListener("click", () => {
-    if (activeMode !== "login") {
-      renderView("login");
-    }
+    changeMode("login");
   });
 
   registerTab.addEventListener("click", () => {
-    if (activeMode !== "register") {
-      renderView("register");
-    }
+    changeMode("register");
   });
 
   dialog.addEventListener("click", (event: MouseEvent) => {
     if (event.target === dialog) {
-      close();
+      requestClose();
     }
   });
 
   dialog.addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.key === "Escape") {
-      close();
+      requestClose();
       return;
     }
 
