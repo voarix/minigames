@@ -361,35 +361,6 @@
   color: tokens.$color-error;
 }
 
-.leaderboard__retry {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: tokens.$size-2;
-  padding: tokens.$button-padding-medium-block
-    tokens.$button-padding-medium-inline;
-  border: tokens.$border-width-regular solid tokens.$color-on-primary;
-  border-radius: tokens.$corner-small;
-  color: tokens.$color-on-primary;
-  background-color: tokens.$color-primary;
-  font-size: tokens.$font-size-label-large;
-  font-weight: tokens.$font-weight-bold;
-  box-shadow: tokens.$shadow-level-1;
-  cursor: pointer;
-  transition: background-color tokens.$transition-duration-fast ease;
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      background-color: tokens.$color-primary-high;
-    }
-  }
-
-  &:focus-visible {
-    outline: tokens.$border-width-regular solid tokens.$color-on-primary;
-    outline-offset: tokens.$size-0-5;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .leaderboard__skeleton {
     animation: none;

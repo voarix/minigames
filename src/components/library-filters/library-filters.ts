@@ -1,25 +1,27 @@
 import "./library-filters.scss";
+import type { Category } from "../../api/categories-api.ts";
 
-const categoryNames = [
-  "All Games",
-  "Puzzle",
-  "Card",
-  "Match",
-  "Farm",
-  "Strategy",
-  "Arcade",
+import type { GameSort } from "../../api/games-api.ts";
+
+const sortOptions: readonly { label: string; value: GameSort }[] = [
+  { label: "Rating ↑", value: "rating-asc" },
+  { label: "Rating ↓", value: "rating-desc" },
+  { label: "Name A→Z", value: "name-asc" },
+  { label: "Name Z→A", value: "name-desc" },
 ];
-
-const sortOptions = ["Rating ↑", "Rating ↓", "Name A→Z", "Name Z→A"];
 const minDragDistance = 5;
 
-export const createLibraryFilters = (): HTMLElement => {
+export const createLibraryFilters = (
+  categoryData: readonly Category[],
+  onCategoryChange: (slug: string) => void,
+  onSortChange: (sort: GameSort) => void,
+): HTMLElement => {
   const filters = document.createElement("div");
   const categories = document.createElement("div");
   const sorting = document.createElement("div");
   const sortButton = document.createElement("button");
   const sortList = document.createElement("div");
-  let selectedSort = "Rating ↓";
+  let selectedSort = sortOptions[1];
 
   filters.className = "library-filters";
   categories.className = "library-filters__categories";
@@ -87,13 +89,13 @@ export const createLibraryFilters = (): HTMLElement => {
     { capture: true },
   );
 
-  for (const category of categoryNames) {
+  for (const category of categoryData) {
     const button = document.createElement("button");
 
     button.className = "library-filters__category";
-    button.textContent = category;
+    button.textContent = category.label;
 
-    if (category === "All Games") {
+    if (category.isDefault) {
       button.classList.add("library-filters__category--active");
     }
 
@@ -104,13 +106,15 @@ export const createLibraryFilters = (): HTMLElement => {
           categoryButton === button,
         );
       }
+
+      onCategoryChange(category.slug);
     });
 
     categories.append(button);
   }
 
   sortButton.className = "library-filters__sort-button";
-  sortButton.textContent = `Sort by: ${selectedSort}`;
+  sortButton.textContent = `Sort by: ${selectedSort.label}`;
   sortList.className = "library-filters__sort-list";
   sortList.hidden = true;
 
@@ -125,15 +129,15 @@ export const createLibraryFilters = (): HTMLElement => {
   for (const option of sortOptions) {
     const button = document.createElement("button");
     button.className = "library-filters__sort-option";
-    button.textContent = option;
+    button.textContent = option.label;
     button.classList.toggle(
       "library-filters__sort-option--active",
-      option === selectedSort,
+      option.value === selectedSort.value,
     );
 
     button.addEventListener("click", () => {
       selectedSort = option;
-      sortButton.textContent = `Sort by: ${selectedSort}`;
+      sortButton.textContent = `Sort by: ${selectedSort.label}`;
 
       for (const optionButton of sortList.querySelectorAll("button")) {
         optionButton.classList.toggle(
@@ -145,6 +149,7 @@ export const createLibraryFilters = (): HTMLElement => {
       sortList.hidden = true;
       sortButton.classList.remove("library-filters__sort-button--open");
       sortButton.focus();
+      onSortChange(option.value);
     });
 
     sortList.append(button);

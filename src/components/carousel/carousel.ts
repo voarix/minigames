@@ -1,3 +1,4 @@
+import { createRetryButton } from "../ui/retry-button/retry-button.ts";
 import "./carousel.scss";
 import { createGameCard } from "../game-card/game-card.ts";
 import { resolveGameImage, type GameCardData } from "../../data/games.ts";
@@ -313,13 +314,10 @@ export const createCarousel = (onDetails: () => void): Carousel => {
     } catch {
       if (isDestroyed) return;
 
+      message.className = "carousel__error-message";
       message.textContent = "Failed to load featured games.";
       message.setAttribute("role", "alert");
-      const retryButton = document.createElement("button");
-      retryButton.className = "carousel__retry";
-      retryButton.type = "button";
-      retryButton.textContent = "Retry";
-      retryButton.addEventListener("click", () => {
+      const retryButton = createRetryButton(() => {
         void loadGames();
       });
       viewport.replaceChildren(message, retryButton);
