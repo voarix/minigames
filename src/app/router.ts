@@ -4,7 +4,7 @@ import type { AuthMode } from "../components/auth-dialog/auth-dialog.ts";
 export type Page = "home" | "library" | "not-found";
 
 export interface LibraryState {
-  readonly category: string;
+  readonly category?: string;
   readonly sort: GameSort;
   readonly page: number;
 }
@@ -33,7 +33,7 @@ export const getAuthModeFromSearch = (search: string): AuthMode | undefined => {
 
 export const getLibraryStateFromSearch = (search: string): LibraryState => {
   const parameters = new URLSearchParams(search);
-  const category = parameters.get("category") || "all";
+  const category = parameters.get("category") || undefined;
   const sort = parameters.get("sort");
   const page = Number(parameters.get("page") ?? "1");
 
@@ -49,7 +49,11 @@ export const getLibrarySearchFromState = (
   search: string = "",
 ): string => {
   const parameters = new URLSearchParams(search);
-  parameters.set("category", state.category);
+  if (state.category) {
+    parameters.set("category", state.category);
+  } else {
+    parameters.delete("category");
+  }
   parameters.set("sort", state.sort);
   parameters.set("page", String(state.page));
   return `?${parameters}`;

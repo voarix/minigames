@@ -19,7 +19,6 @@ interface LibraryPage {
 }
 
 const defaultLibraryState: LibraryState = {
-  category: "all",
   sort: "rating-desc",
   page: 1,
 };
@@ -30,7 +29,7 @@ export const createLibraryPage = (
   onStateChange?: (state: LibraryState, shouldReplace?: boolean) => void,
 ): LibraryPage => {
   let isDestroyed = false;
-  let selectedCategory = initialState.category;
+  let selectedCategory = initialState.category ?? "all";
   let selectedSort: GameSort = initialState.sort;
   let currentPage = initialState.page;
   let gamesRequestId = 0;
@@ -185,6 +184,17 @@ export const createLibraryPage = (
       if (categories.length === 0) {
         showCategoriesMessage("No categories found.", false);
         return;
+      }
+
+      if (initialState.category === undefined) {
+        const defaultCategory = categories.find(
+          (category) => category.isDefault,
+        );
+        if (defaultCategory && selectedCategory !== defaultCategory.slug) {
+          selectedCategory = defaultCategory.slug;
+          syncUrl(true);
+          void loadGames();
+        }
       }
 
       filters.replaceChildren(
