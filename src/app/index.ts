@@ -4,7 +4,13 @@ import { createFooter } from "../components/footer/footer.ts";
 import { createHeader } from "../components/header/header.ts";
 import { createHomePage } from "../pages/home/home-page.ts";
 import { createLibraryPage } from "../pages/library/library-pages.ts";
-import { getPageFromPath, type Page } from "./router.ts";
+import {
+  getPageFromPath,
+  getLibraryStateFromSearch,
+  getLibrarySearchFromState,
+  type LibraryState,
+  type Page,
+} from "./router.ts";
 
 export const startApp = (): void => {
   const gameDetails = createGameDetails();
@@ -17,7 +23,11 @@ export const startApp = (): void => {
     let otherMain: HTMLElement;
 
     if (page === "library") {
-      const libraryPage = createLibraryPage(gameDetails.open);
+      const libraryPage = createLibraryPage(
+        gameDetails.open,
+        getLibraryStateFromSearch(location.search),
+        updateLibraryUrl,
+      );
       otherMain = libraryPage.element;
       destroyPage = libraryPage.destroy;
     } else if (page === "home") {
@@ -36,6 +46,21 @@ export const startApp = (): void => {
     main.replaceWith(otherMain);
     main = otherMain;
     updateActiveNavigation(page);
+  };
+
+  const updateLibraryUrl = (
+    state: LibraryState,
+    shouldReplace: boolean = false,
+  ): void => {
+    const search = getLibrarySearchFromState(state, location.search);
+    if (search === location.search) return;
+
+    const url = `${location.pathname}${search}${location.hash}`;
+    if (shouldReplace) {
+      history.replaceState(undefined, "", url);
+    } else {
+      history.pushState(undefined, "", url);
+    }
   };
 
   const navigate = (page: "home" | "library"): void => {
