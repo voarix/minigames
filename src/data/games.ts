@@ -1,6 +1,6 @@
 import gamesSeed from "./all-games-seed.json";
 
-const cardImages = import.meta.glob<string>("../assets/games/*-card.jpg", {
+const gameImages = import.meta.glob<string>("../assets/games/*.jpg", {
   eager: true,
   import: "default",
   query: "?url",
@@ -18,9 +18,18 @@ export interface GameCardData {
   readonly featured: boolean;
 }
 
-const getGameImage = (slug: string): string => {
+export const resolveGameImage = (cardImage: string): string => {
+  const imagePath = cardImage.replace(
+    "/assets/images/games/",
+    "../assets/games/",
+  );
+
+  return gameImages[imagePath] ?? cardImage;
+};
+
+export const getGameImage = (slug: string): string => {
   const imagePath = `../assets/games/${slug}-card.jpg`;
-  const image = cardImages[imagePath];
+  const image = gameImages[imagePath];
 
   if (image === undefined) {
     throw new Error(`Image not found for game: ${slug}`);

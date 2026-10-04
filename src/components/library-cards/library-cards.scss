@@ -18,26 +18,29 @@
   .library-cards {
     grid-template-columns: minmax(0, 1fr);
   }
-
-  .library-cards__item:nth-child(2) {
-    grid-row: 3;
-  }
-
-  .library-cards__item:nth-child(3) {
-    grid-row: 2;
-  }
-
-  .library-cards__item:nth-child(5) {
-    grid-row: 6;
-  }
-
-  .library-cards__item:nth-child(6) {
-    grid-row: 5;
-  }
 }
 
 @include mixins.media-max(tokens.$breakpoint-mobile) {
   .library-cards {
     gap: tokens.$size-2;
+  }
+}
+
+.library-cards__skeleton {
+  min-height: tokens.$library-card-height-desktop;
+  border: tokens.$border-width-regular solid tokens.$color-outline-variant;
+  border-radius: tokens.$corner-large;
+  background-color: tokens.$color-outline;
+  animation: library-cards-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes library-cards-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
   }
 }

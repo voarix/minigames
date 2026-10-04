@@ -113,10 +113,10 @@
   box-shadow: tokens.$shadow-row-divider;
 }
 
-.leaderboard__table-body
-  .leaderboard__row:first-child
-  .leaderboard__cell--rank {
-  color: tokens.$color-primary-high;
+.leaderboard__table-body {
+  .leaderboard__row:first-child .leaderboard__cell--rank {
+    color: tokens.$color-primary-high;
+  }
 }
 
 .leaderboard__cell--rank,
@@ -323,5 +323,46 @@
 
   .leaderboard__player {
     gap: tokens.$size-0-5;
+  }
+}
+
+.leaderboard__loading {
+  padding: tokens.$size-2;
+  color: tokens.$color-on-bg;
+  font-size: tokens.$font-size-body-small;
+}
+
+.leaderboard__skeleton {
+  display: inline-block;
+  width: 80%;
+  height: tokens.$size-5;
+  border-radius: tokens.$corner-small;
+  background-color: tokens.$color-outline;
+  animation: leaderboard-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes leaderboard-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.leaderboard__state {
+  padding: tokens.$size-4;
+  text-align: center;
+}
+
+.leaderboard__state--error {
+  color: tokens.$color-error;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaderboard__skeleton {
+    animation: none;
   }
 }

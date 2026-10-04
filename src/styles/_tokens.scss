@@ -26,6 +26,7 @@ $color-tertiary: #3a2ebf;
 
 $color-like: #ff4b4b;
 $color-error: #b3261e;
+$color-success: #0b8a8f;
 $color-price-free: #0b8a8f;
 
 // Border colors
@@ -214,3 +215,7 @@ $game-details-duration: 200ms;
 $game-details-comment-avatar-size: 28px;
 $game-details-comment-line-height: 18px;
 $game-details-user-avatar-border-width: 1.5px;
+
+// Snackbar
+$snackbar-max-width: 480px;
+$z-index-snackbar: $z-index-auth-dialog + 1;

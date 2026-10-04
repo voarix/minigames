@@ -1,9 +1,8 @@
-import gameData from "../../data/game-tukoni-forest-keepers.json";
+import type { ApiGameDetails } from "../../api/game-details-api.ts";
 import starIcon from "../../assets/icons/star.svg";
 import favoriteIcon from "../../assets/icons/favorite.svg";
 
-export const createGameDetailsInfo = (): HTMLElement => {
-  const game = gameData.data;
+export const createGameDetailsInfo = (game: ApiGameDetails): HTMLElement => {
   const info = document.createElement("section");
   const heading = document.createElement("div");
   const title = document.createElement("h2");
@@ -57,8 +56,18 @@ export const createGameDetailsInfo = (): HTMLElement => {
   favoriteButton.className = "game-details__action game-details__favorite";
   favoriteButton.type = "button";
   favoriteButton.setAttribute("aria-label", "Add to Favorites");
-  favoriteButton.setAttribute("aria-pressed", "false");
-  favoriteLabel.textContent = "Add to Favorites";
+  favoriteButton.classList.toggle(
+    "game-details__favorite--active",
+    game.isLikedByCurrentUser,
+  );
+  favoriteButton.setAttribute(
+    "aria-pressed",
+    String(game.isLikedByCurrentUser),
+  );
+  favoriteLabel.textContent = game.isLikedByCurrentUser
+    ? "Remove from Favorites"
+    : "Add to Favorites";
+  favoriteButton.setAttribute("aria-label", favoriteLabel.textContent);
   favoriteButton.append(favoriteLabel);
   favoriteButton.addEventListener("click", () => {
     const isActive = favoriteButton.classList.toggle(

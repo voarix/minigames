@@ -1,8 +1,11 @@
+import { createRetryButton } from "../ui/retry-button/retry-button.ts";
 import "./carousel.scss";
 import { createGameCard } from "../game-card/game-card.ts";
-import { featuredGames } from "../../data/games.ts";
+import { resolveGameImage, type GameCardData } from "../../data/games.ts";
+import { getFeaturedGames } from "../../api/games-api.ts";
 import arrowIcon from "../../assets/icons/arrow.svg";
 import { createCarouselAutoplay } from "./carousel-autoplay.ts";
+import { showSnackbar } from "../snackbar/snackbar.ts";
 
 const minDragDistance = 5;
 const minSwipeDistance = 40;
@@ -12,7 +15,7 @@ interface Carousel {
   readonly destroy: () => void;
 }
 
-export const createCarousel = (onDetails: () => void): Carousel => {
+export const createCarousel = (onDetails: (slug: string) => void): Carousel => {
   const section = document.createElement("section");
   const container = document.createElement("div");
   const header = document.createElement("div");
@@ -30,6 +33,25 @@ export const createCarousel = (onDetails: () => void): Carousel => {
   const track = document.createElement("div");
   const slides: HTMLDivElement[] = [];
   let currentIndex = 0;
+  let isDestroyed = false;
+
+  const renderSlides = (games: readonly GameCardData[]): void => {
+    slides.length = 0;
+    currentIndex = 0;
+    track.replaceChildren();
+    track.classList.remove("carousel__track--moving");
+
+    for (const game of games) {
+      const slide = document.createElement("div");
+
+      slide.className = "carousel__slide";
+      slide.append(createGameCard(game, onDetails));
+      slides.push(slide);
+      track.append(slide);
+    }
+
+    updateSlides();
+  };
 
   const updateSlides = (): void => {
     const halfLength = Math.floor(slides.length / 2);
@@ -49,7 +71,12 @@ export const createCarousel = (onDetails: () => void): Carousel => {
   };
 
   const moveSlides = (direction: -1 | 1): void => {
-    if (track.classList.contains("carousel__track--moving")) return;
+    if (
+      slides.length < 2 ||
+      track.classList.contains("carousel__track--moving")
+    ) {
+      return;
+    }
     track.classList.add("carousel__track--moving");
     currentIndex = (currentIndex + direction + slides.length) % slides.length;
     updateSlides();
@@ -60,7 +87,12 @@ export const createCarousel = (onDetails: () => void): Carousel => {
   });
 
   const moveManually = (direction: -1 | 1): void => {
-    if (track.classList.contains("carousel__track--moving")) return;
+    if (
+      slides.length < 2 ||
+      track.classList.contains("carousel__track--moving")
+    ) {
+      return;
+    }
 
     moveSlides(direction);
     autoplay.reset();
@@ -95,11 +127,16 @@ export const createCarousel = (onDetails: () => void): Carousel => {
       viewport.releasePointerCapture(event.pointerId);
     }
 
-    autoplay.start();
+    if (slides.length > 1) autoplay.start();
   };
 
   viewport.addEventListener("pointerdown", (event) => {
-    if (pointerId !== undefined || !event.isPrimary || event.button !== 0) {
+    if (
+      pointerId !== undefined ||
+      !event.isPrimary ||
+      event.button !== 0 ||
+      slides.length < 2
+    ) {
       return;
     }
 
@@ -218,17 +255,6 @@ export const createCarousel = (onDetails: () => void): Carousel => {
 
   section.setAttribute("aria-labelledby", title.id);
 
-  for (const game of featuredGames) {
-    const slide = document.createElement("div");
-
-    slide.className = "carousel__slide";
-    slide.append(createGameCard(game, onDetails));
-    slides.push(slide);
-    track.append(slide);
-  }
-
-  updateSlides();
-
   heading.append(accent, title);
   controls.append(previousButton, nextButton);
   header.append(heading, controls);
@@ -236,7 +262,77 @@ export const createCarousel = (onDetails: () => void): Carousel => {
   container.append(header, viewport);
   section.append(container);
 
-  autoplay.start();
+  const createSkeleton = (): HTMLElement => {
+    const skeleton = document.createElement("div");
+    skeleton.className = "carousel__track carousel__skeleton";
+    skeleton.setAttribute("role", "status");
+    skeleton.setAttribute("aria-label", "Loading featured games");
 
-  return { element: section, destroy: autoplay.destroy };
+    for (let position = -2; position <= 2; position += 1) {
+      const slide = document.createElement("div");
+      const placeholder = document.createElement("div");
+      slide.className = "carousel__slide";
+      slide.dataset.position = String(position);
+      slide.setAttribute("aria-hidden", "true");
+      placeholder.className = "carousel__skeleton-card";
+      slide.append(placeholder);
+      skeleton.append(slide);
+    }
+
+    return skeleton;
+  };
+
+  const loadGames = async (): Promise<void> => {
+    autoplay.pause();
+    previousButton.disabled = true;
+    nextButton.disabled = true;
+    viewport.setAttribute("aria-busy", "true");
+    const message = document.createElement("p");
+    viewport.replaceChildren(createSkeleton());
+
+    try {
+      const games = await getFeaturedGames();
+      if (isDestroyed) return;
+
+      const cards: GameCardData[] = games.map((game) => ({
+        ...game,
+        image: resolveGameImage(game.cardImage),
+        featured: true,
+      }));
+
+      if (cards.length === 0) {
+        message.textContent = "No featured games found.";
+        viewport.replaceChildren(message);
+        return;
+      }
+
+      renderSlides(cards);
+      viewport.replaceChildren(track);
+      previousButton.disabled = cards.length < 2;
+      nextButton.disabled = cards.length < 2;
+      if (cards.length > 1) autoplay.start();
+    } catch {
+      if (isDestroyed) return;
+
+      message.className = "carousel__error-message";
+      message.textContent = "Failed to load featured games.";
+      message.setAttribute("role", "alert");
+      const retryButton = createRetryButton(() => {
+        void loadGames();
+      });
+      viewport.replaceChildren(message, retryButton);
+      showSnackbar("Failed to load featured games. Please try again.", "error");
+    } finally {
+      if (!isDestroyed) viewport.setAttribute("aria-busy", "false");
+    }
+  };
+
+  void loadGames();
+
+  const destroy = (): void => {
+    isDestroyed = true;
+    autoplay.destroy();
+  };
+
+  return { element: section, destroy };
 };

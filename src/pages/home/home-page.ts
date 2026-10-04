@@ -9,7 +9,7 @@ interface HomePage {
 }
 
 export const createHomePage = (
-  onDetails: () => void,
+  onDetails: (slug: string) => void,
   onBrowseLibrary: () => void,
 ): HomePage => {
   const main = document.createElement("main");
@@ -18,7 +18,13 @@ export const createHomePage = (
   const leaderboard = createLeaderboard();
   const gameDeveloper = createGameDeveloper();
 
-  main.append(hero, carousel.element, leaderboard, gameDeveloper);
+  main.append(hero, carousel.element, leaderboard.element, gameDeveloper);
 
-  return { element: main, destroy: carousel.destroy };
+  return {
+    element: main,
+    destroy: () => {
+      carousel.destroy();
+      leaderboard.destroy();
+    },
+  };
 };

@@ -1,0 +1,31 @@
+@use "sass:color";
+@use "../../../styles/tokens" as tokens;
+
+.retry-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: tokens.$size-2;
+  padding: tokens.$button-padding-medium-block
+    tokens.$button-padding-medium-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-white;
+  background-color: tokens.$color-error;
+  font-size: tokens.$font-size-label-large;
+  font-weight: tokens.$font-weight-bold;
+  box-shadow: tokens.$shadow-level-1;
+  cursor: pointer;
+  transition: background-color tokens.$transition-duration-fast ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: color.adjust(tokens.$color-error, $lightness: -8%);
+    }
+  }
+
+  &:focus-visible {
+    outline: tokens.$border-width-regular solid tokens.$color-on-primary;
+    outline-offset: tokens.$size-0-5;
+  }
+}
