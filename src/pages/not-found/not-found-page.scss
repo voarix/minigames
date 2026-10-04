@@ -1,0 +1,49 @@
+@use "../../styles/tokens" as tokens;
+@use "../../styles/mixins" as mixins;
+
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$size-3;
+  min-height: 50vh;
+  padding: tokens.$size-8 tokens.$size-3;
+  text-align: center;
+}
+
+.not-found-page__title {
+  color: tokens.$color-on-primary;
+  font-size: tokens.$font-size-display-large;
+}
+
+@include mixins.media-max(tokens.$breakpoint-tablet) {
+  .not-found-page__title {
+    font-size: tokens.$font-size-display-medium;
+  }
+}
+
+.not-found-page__description {
+  color: tokens.$color-on-bg;
+  line-height: 1.5;
+}
+
+.not-found-page__button {
+  padding: tokens.$button-padding-large-block
+    tokens.$button-padding-large-inline;
+  border: tokens.$border-width-regular solid tokens.$color-on-primary;
+  border-radius: tokens.$corner-small;
+  color: tokens.$color-on-primary;
+  background-color: tokens.$color-primary;
+  font-weight: tokens.$font-weight-bold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: tokens.$color-primary-high;
+  }
+
+  &:focus-visible {
+    outline: tokens.$border-width-regular solid tokens.$color-tertiary;
+    outline-offset: tokens.$size-0-5;
+  }
+}

@@ -7,6 +7,7 @@ import { createFooter } from "../components/footer/footer.ts";
 import { createHeader } from "../components/header/header.ts";
 import { createHomePage } from "../pages/home/home-page.ts";
 import { createLibraryPage } from "../pages/library/library-pages.ts";
+import { createNotFoundPage } from "../pages/not-found/not-found-page.ts";
 import {
   getPageFromPath,
   getGameSlugFromSearch,
@@ -55,10 +56,7 @@ export const startApp = (): void => {
       otherMain = nextHomePage.element;
       destroyPage = nextHomePage.destroy;
     } else {
-      otherMain = document.createElement("main");
-      const title = document.createElement("h1");
-      title.textContent = "404 — Page Not Found";
-      otherMain.append(title);
+      otherMain = createNotFoundPage(() => navigate("home"));
     }
 
     main.replaceWith(otherMain);
