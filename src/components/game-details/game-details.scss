@@ -405,7 +405,7 @@
   font-size: tokens.$font-size-label-large;
   font-weight: tokens.$font-weight-bold;
 
-  span:last-child {
+  time {
     margin-left: auto;
     color: tokens.$color-on-bg;
     font-size: tokens.$font-size-label-medium;
@@ -517,4 +517,52 @@
     font-size: tokens.$font-size-label-medium;
     color: tokens.$color-on-bg;
   }
+}
+
+.game-details__body--error {
+  color: tokens.$color-error;
+}
+
+.game-details__skeleton {
+  height: tokens.$size-4;
+  border-radius: tokens.$corner-small;
+  background-color: tokens.$color-outline;
+  animation: game-details-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.game-details__skeleton--hero {
+  height: tokens.$game-details-hero-height;
+  border-radius: 0;
+}
+
+@keyframes game-details-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.game-details__comment-skeleton {
+  height: tokens.$size-10;
+}
+
+.game-details__comments-state {
+  margin-top: tokens.$size-2;
+}
+
+.game-details__comments-state--error {
+  color: tokens.$color-error;
+}
+
+.game-details__submit:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.game-details__comment-like:disabled {
+  cursor: default;
 }

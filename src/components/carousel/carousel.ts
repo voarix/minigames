@@ -15,7 +15,7 @@ interface Carousel {
   readonly destroy: () => void;
 }
 
-export const createCarousel = (onDetails: () => void): Carousel => {
+export const createCarousel = (onDetails: (slug: string) => void): Carousel => {
   const section = document.createElement("section");
   const container = document.createElement("div");
   const header = document.createElement("div");
