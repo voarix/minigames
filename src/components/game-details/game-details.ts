@@ -7,6 +7,8 @@ import { createGameDetailsInfo } from "./game-details-info";
 import closeIcon from "../../assets/icons/close-details.svg";
 import { createGameDetailsRecords } from "./game-details-records.ts";
 
+import { createGameDetailsComments } from "./game-details-comments.ts";
+
 interface GameDetailsDialog {
   readonly element: HTMLDialogElement;
   readonly open: (slug: string) => void;
@@ -36,6 +38,7 @@ export const createGameDetails = (): GameDetailsDialog => {
   panel.append(media, closeButton, content);
   dialog.append(panel);
 
+  let destroyComments: (() => void) | undefined;
   let requestId = 0;
   let isClosing = false;
   let wasBackdropPressed = false;
@@ -45,6 +48,8 @@ export const createGameDetails = (): GameDetailsDialog => {
     messageText: string,
     isError: boolean,
   ): void => {
+    destroyComments?.();
+    destroyComments = undefined;
     const title = document.createElement("h2");
     const message = document.createElement("p");
     title.id = "game-details-title";
@@ -89,9 +94,12 @@ export const createGameDetails = (): GameDetailsDialog => {
       hero.src = resolveGameImage(game.heroImage);
       hero.alt = game.name;
       media.replaceChildren(hero);
+      const comments = createGameDetailsComments(game.slug);
+      destroyComments = comments.destroy;
       content.replaceChildren(
         createGameDetailsInfo(game),
         createGameDetailsRecords(game.topRecords),
+        comments.element,
       );
     } catch {
       if (isClosing || currentRequestId !== requestId || !dialog.open) return;
@@ -125,6 +133,8 @@ export const createGameDetails = (): GameDetailsDialog => {
   const close = (): void => {
     if (isClosing || !dialog.open) return;
 
+    destroyComments?.();
+    destroyComments = undefined;
     isClosing = true;
     requestId += 1;
     content.setAttribute("aria-busy", "false");
