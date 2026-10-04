@@ -5,7 +5,7 @@ import favoriteIcon from "../../assets/icons/favorite.svg";
 
 export const createLibraryCard = (
   game: GameCardData,
-  onDetails: () => void,
+  onDetails: (slug: string) => void,
 ): HTMLElement => {
   const card = document.createElement("article");
   const image = document.createElement("img");
@@ -57,7 +57,7 @@ export const createLibraryCard = (
   likes.append(likesIcon, likesText);
   detailsButton.type = "button";
   detailsButton.textContent = "Details";
-  detailsButton.addEventListener("click", onDetails);
+  detailsButton.addEventListener("click", () => onDetails(game.slug));
 
   heading.append(title, category, price);
   statistics.append(rating, likes);

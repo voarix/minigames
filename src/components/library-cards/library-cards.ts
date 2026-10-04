@@ -4,7 +4,7 @@ import { createLibraryCard } from "../library-card/library-card.ts";
 
 export const createLibraryCards = (
   games: readonly GameCardData[],
-  onDetails: () => void,
+  onDetails: (slug: string) => void,
 ): HTMLElement => {
   const list = document.createElement("ul");
   list.className = "library-cards";

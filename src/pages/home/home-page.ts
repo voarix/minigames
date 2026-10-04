@@ -9,7 +9,7 @@ interface HomePage {
 }
 
 export const createHomePage = (
-  onDetails: () => void,
+  onDetails: (slug: string) => void,
   onBrowseLibrary: () => void,
 ): HomePage => {
   const main = document.createElement("main");

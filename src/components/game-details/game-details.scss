@@ -518,3 +518,30 @@
     color: tokens.$color-on-bg;
   }
 }
+
+.game-details__body--error {
+  color: tokens.$color-error;
+}
+
+.game-details__skeleton {
+  height: tokens.$size-4;
+  border-radius: tokens.$corner-small;
+  background-color: tokens.$color-outline;
+  animation: game-details-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.game-details__skeleton--hero {
+  height: tokens.$game-details-hero-height;
+  border-radius: 0;
+}
+
+@keyframes game-details-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}

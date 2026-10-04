@@ -17,7 +17,9 @@ interface LibraryPage {
   readonly destroy: () => void;
 }
 
-export const createLibraryPage = (onDetails: () => void): LibraryPage => {
+export const createLibraryPage = (
+  onDetails: (slug: string) => void,
+): LibraryPage => {
   let isDestroyed = false;
   let selectedCategory = "all";
   let selectedSort: GameSort = "rating-desc";
