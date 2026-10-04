@@ -22,7 +22,7 @@ export const startApp = (): void => {
       destroyPage = libraryPage.destroy;
     } else if (page === "home") {
       const nextHomePage = createHomePage(gameDetails.open, () =>
-        showPage("library"),
+        navigate("library"),
       );
       otherMain = nextHomePage.element;
       destroyPage = nextHomePage.destroy;
@@ -38,6 +38,14 @@ export const startApp = (): void => {
     updateActiveNavigation(page);
   };
 
+  const navigate = (page: "home" | "library"): void => {
+    if (getPageFromPath(location.pathname) === page) return;
+
+    const path = page === "home" ? "/" : "/library";
+    history.pushState(undefined, "", path);
+    showPage(page);
+  };
+
   const authDialog = createAuthDialog();
   const header = createHeader({
     onLogin: () => {
@@ -46,7 +54,7 @@ export const startApp = (): void => {
     onRegister: () => {
       authDialog.open("register");
     },
-    onNavigate: showPage,
+    onNavigate: navigate,
   });
 
   const updateActiveNavigation = (page: Page): void => {
@@ -74,7 +82,7 @@ export const startApp = (): void => {
     }
   };
 
-  const footer = createFooter({ onNavigate: showPage });
+  const footer = createFooter({ onNavigate: navigate });
 
   document.body.replaceChildren(
     header,
@@ -83,5 +91,8 @@ export const startApp = (): void => {
     authDialog.element,
     gameDetails.element,
   );
+  addEventListener("popstate", () => {
+    showPage(getPageFromPath(location.pathname));
+  });
   showPage(getPageFromPath(location.pathname));
 };
