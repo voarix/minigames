@@ -6,16 +6,26 @@ import { createHomePage } from "../pages/home/home-page.ts";
 import { createLibraryPage } from "../pages/library/library-pages.ts";
 import {
   getPageFromPath,
+  getGameSlugFromSearch,
   getLibraryStateFromSearch,
   getLibrarySearchFromState,
   type LibraryState,
   type Page,
 } from "./router.ts";
 
+const getPageKey = (): string => {
+  const page = getPageFromPath(location.pathname);
+  return page === "library"
+    ? page +
+        getLibrarySearchFromState(getLibraryStateFromSearch(location.search))
+    : page;
+};
+
 export const startApp = (): void => {
-  const gameDetails = createGameDetails();
+  const gameDetails = createGameDetails(() => navigateGame());
   let main: HTMLElement = document.createElement("main");
   let destroyPage: (() => void) | undefined;
+  let renderedPageKey: string | undefined;
 
   const showPage = (page: Page): void => {
     destroyPage?.();
@@ -24,14 +34,14 @@ export const startApp = (): void => {
 
     if (page === "library") {
       const libraryPage = createLibraryPage(
-        gameDetails.open,
+        navigateGame,
         getLibraryStateFromSearch(location.search),
         updateLibraryUrl,
       );
       otherMain = libraryPage.element;
       destroyPage = libraryPage.destroy;
     } else if (page === "home") {
-      const nextHomePage = createHomePage(gameDetails.open, () =>
+      const nextHomePage = createHomePage(navigateGame, () =>
         navigate("library"),
       );
       otherMain = nextHomePage.element;
@@ -48,6 +58,37 @@ export const startApp = (): void => {
     updateActiveNavigation(page);
   };
 
+  const syncGameDetailsFromUrl = (): void => {
+    const slug = getGameSlugFromSearch(location.search);
+    if (slug && getPageFromPath(location.pathname) !== "not-found") {
+      gameDetails.open(slug);
+    } else {
+      gameDetails.close();
+    }
+  };
+
+  const renderFromUrl = (): void => {
+    const pageKey = getPageKey();
+    if (renderedPageKey !== pageKey) {
+      showPage(getPageFromPath(location.pathname));
+      renderedPageKey = pageKey;
+    }
+    syncGameDetailsFromUrl();
+  };
+
+  const navigateGame = (slug?: string): void => {
+    const url = new URL(location.href);
+    if (slug) {
+      url.searchParams.set("game", slug);
+    } else {
+      url.searchParams.delete("game");
+    }
+    if (url.search !== location.search) {
+      history.pushState(undefined, "", url.pathname + url.search + url.hash);
+    }
+    syncGameDetailsFromUrl();
+  };
+
   const updateLibraryUrl = (
     state: LibraryState,
     shouldReplace: boolean = false,
@@ -61,6 +102,7 @@ export const startApp = (): void => {
     } else {
       history.pushState(undefined, "", url);
     }
+    renderedPageKey = getPageKey();
   };
 
   const navigate = (page: "home" | "library"): void => {
@@ -68,7 +110,7 @@ export const startApp = (): void => {
 
     const path = page === "home" ? "/" : "/library";
     history.pushState(undefined, "", path);
-    showPage(page);
+    renderFromUrl();
   };
 
   const authDialog = createAuthDialog();
@@ -116,8 +158,6 @@ export const startApp = (): void => {
     authDialog.element,
     gameDetails.element,
   );
-  addEventListener("popstate", () => {
-    showPage(getPageFromPath(location.pathname));
-  });
-  showPage(getPageFromPath(location.pathname));
+  addEventListener("popstate", renderFromUrl);
+  renderFromUrl();
 };

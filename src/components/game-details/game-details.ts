@@ -15,7 +15,7 @@ interface GameDetailsDialog {
   readonly close: () => void;
 }
 
-export const createGameDetails = (): GameDetailsDialog => {
+export const createGameDetails = (onClose?: () => void): GameDetailsDialog => {
   const dialog = document.createElement("dialog");
   const panel = document.createElement("div");
   const closeButton = document.createElement("button");
@@ -42,6 +42,7 @@ export const createGameDetails = (): GameDetailsDialog => {
   let requestId = 0;
   let isClosing = false;
   let wasBackdropPressed = false;
+  let currentSlug: string | undefined;
 
   const showState = (
     titleText: string,
@@ -118,13 +119,14 @@ export const createGameDetails = (): GameDetailsDialog => {
   };
 
   const open = (slug: string): void => {
-    if (dialog.open) return;
+    if (!isClosing && currentSlug === slug && dialog.open) return;
 
     dialog.classList.remove("game-details--closing");
     isClosing = false;
     wasBackdropPressed = false;
     dialog.setAttribute("aria-labelledby", "game-details-title");
-    dialog.showModal();
+    currentSlug = slug;
+    if (!dialog.open) dialog.showModal();
     document.body.classList.add("game-details-open");
     dialog.scrollTop = 0;
     void loadGame(slug);
@@ -141,8 +143,18 @@ export const createGameDetails = (): GameDetailsDialog => {
     dialog.classList.add("game-details--closing");
   };
 
+  const requestClose = (): void => {
+    if (isClosing || !dialog.open) return;
+    close();
+    onClose?.();
+  };
+
   dialog.addEventListener("animationend", (event) => {
-    if (event.target !== dialog || event.animationName !== "game-details-out") {
+    if (
+      !isClosing ||
+      event.target !== dialog ||
+      event.animationName !== "game-details-out"
+    ) {
       return;
     }
 
@@ -150,18 +162,19 @@ export const createGameDetails = (): GameDetailsDialog => {
     dialog.classList.remove("game-details--closing");
     document.body.classList.remove("game-details-open");
     isClosing = false;
+    currentSlug = undefined;
   });
 
-  closeButton.addEventListener("click", close);
+  closeButton.addEventListener("click", requestClose);
   dialog.addEventListener("cancel", (event) => {
     event.preventDefault();
-    close();
+    requestClose();
   });
   dialog.addEventListener("pointerdown", (event) => {
     wasBackdropPressed = event.target === dialog;
   });
   dialog.addEventListener("click", (event) => {
-    if (wasBackdropPressed && event.target === dialog) close();
+    if (wasBackdropPressed && event.target === dialog) requestClose();
   });
 
   return { element: dialog, open, close };

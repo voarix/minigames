@@ -19,6 +19,11 @@ export const getPageFromPath = (pathname: string): Page => {
   return pathname === "/library" ? "library" : "not-found";
 };
 
+export const getGameSlugFromSearch = (search: string): string | undefined => {
+  const parameters = new URLSearchParams(search);
+  return parameters.get("game") || undefined;
+};
+
 export const getLibraryStateFromSearch = (search: string): LibraryState => {
   const parameters = new URLSearchParams(search);
   const category = parameters.get("category") || "all";
