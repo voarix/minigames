@@ -4,27 +4,33 @@ import { createFooter } from "../components/footer/footer.ts";
 import { createHeader } from "../components/header/header.ts";
 import { createHomePage } from "../pages/home/home-page.ts";
 import { createLibraryPage } from "../pages/library/library-pages.ts";
+import { getPageFromPath, type Page } from "./router.ts";
 
 export const startApp = (): void => {
   const gameDetails = createGameDetails();
-  const homePage = createHomePage(gameDetails.open, () => showPage("library"));
-  let main: HTMLElement = homePage.element;
-  let destroyPage: (() => void) | undefined = homePage.destroy;
+  let main: HTMLElement = document.createElement("main");
+  let destroyPage: (() => void) | undefined;
 
-  const showPage = (page: "home" | "library"): void => {
+  const showPage = (page: Page): void => {
     destroyPage?.();
+    destroyPage = undefined;
     let otherMain: HTMLElement;
 
     if (page === "library") {
       const libraryPage = createLibraryPage(gameDetails.open);
       otherMain = libraryPage.element;
       destroyPage = libraryPage.destroy;
-    } else {
+    } else if (page === "home") {
       const nextHomePage = createHomePage(gameDetails.open, () =>
         showPage("library"),
       );
       otherMain = nextHomePage.element;
       destroyPage = nextHomePage.destroy;
+    } else {
+      otherMain = document.createElement("main");
+      const title = document.createElement("h1");
+      title.textContent = "404 — Page Not Found";
+      otherMain.append(title);
     }
 
     main.replaceWith(otherMain);
@@ -43,8 +49,13 @@ export const startApp = (): void => {
     onNavigate: showPage,
   });
 
-  const updateActiveNavigation = (page: "home" | "library"): void => {
-    const activeText = page === "home" ? "Home" : "Library";
+  const updateActiveNavigation = (page: Page): void => {
+    const navigationLabels = {
+      home: "Home",
+      library: "Library",
+      "not-found": "",
+    };
+    const activeText = navigationLabels[page];
 
     for (const link of header.querySelectorAll(".header__navigation-link")) {
       link.classList.toggle(
@@ -72,5 +83,5 @@ export const startApp = (): void => {
     authDialog.element,
     gameDetails.element,
   );
-  updateActiveNavigation("home");
+  showPage(getPageFromPath(location.pathname));
 };
