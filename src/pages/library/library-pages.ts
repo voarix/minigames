@@ -21,6 +21,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   let isDestroyed = false;
   let selectedCategory = "all";
   let selectedSort: GameSort = "rating-desc";
+  let currentPage = 1;
   let gamesRequestId = 0;
   const main = document.createElement("main");
   const container = document.createElement("div");
@@ -28,7 +29,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
   const description = document.createElement("p");
   const filters = document.createElement("div");
   const results = document.createElement("div");
-  const pagination = createLibraryPagination();
+  const pagination = document.createElement("div");
 
   main.className = "library-page";
   container.className = "library-page__container";
@@ -76,11 +77,25 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
     pagination.hidden = true;
 
     try {
-      const { data: games } = await getGames(selectedCategory, selectedSort);
+      const { data: games, meta } = await getGames(
+        selectedCategory,
+        selectedSort,
+        currentPage,
+      );
       if (isDestroyed || requestId !== gamesRequestId) return;
 
+      currentPage = meta.page;
+      pagination.replaceChildren(
+        createLibraryPagination(currentPage, meta.totalPages, (page) => {
+          if (isDestroyed || currentPage === page) return;
+          currentPage = page;
+          void loadGames();
+        }),
+      );
+      pagination.hidden = false;
+
       if (games.length === 0) {
-        showMessage("No games found.", false);
+        showMessage("Data Not Found", false);
         return;
       }
 
@@ -90,7 +105,6 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
         featured: false,
       }));
       results.replaceChildren(createLibraryCards(cards, onDetails));
-      pagination.hidden = false;
     } catch {
       if (isDestroyed || requestId !== gamesRequestId) return;
       showMessage("Failed to load games.", true);
@@ -154,6 +168,7 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
       const defaultCategory = categories.find((category) => category.isDefault);
       const previousCategory = selectedCategory;
       selectedCategory = defaultCategory?.slug ?? "all";
+      if (selectedCategory !== previousCategory) currentPage = 1;
 
       filters.replaceChildren(
         createLibraryFilters(
@@ -161,11 +176,13 @@ export const createLibraryPage = (onDetails: () => void): LibraryPage => {
           (slug) => {
             if (selectedCategory === slug) return;
             selectedCategory = slug;
+            currentPage = 1;
             void loadGames();
           },
           (sort) => {
             if (selectedSort === sort) return;
             selectedSort = sort;
+            currentPage = 1;
             void loadGames();
           },
         ),

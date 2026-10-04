@@ -44,8 +44,14 @@ export const getFeaturedGames = async () => {
 export const getGames = async (
   category: string = "all",
   sort: GameSort = "rating-desc",
+  page: number = 1,
 ) => {
-  const query = new URLSearchParams({ limit: "6", category, sort });
+  const query = new URLSearchParams({
+    limit: "6",
+    category,
+    sort,
+    page: String(page),
+  });
   const response = await fetch(API_BASE_URL + "/games?" + query);
 
   if (!response.ok) {
